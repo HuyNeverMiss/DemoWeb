@@ -33,7 +33,7 @@
     "entitySuffix": "",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.8.1",
-    "languages": ["en"],
+    "languages": ["en", "vi"],
     "lastLiquibaseTimestamp": 1654593316000,
     "messageBroker": false,
     "monorepository": true,

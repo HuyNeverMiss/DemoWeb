@@ -2,7 +2,7 @@
   "angularApp": {
     "lyDoCongTac": {
       "home": {
-        "title": "Ly Do Cong Tac",
+        "title": "Ly Do Cong Tacs",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Ly Do Cong Tac",
         "createOrEditLabel": "Create or edit a Ly Do Cong Tac",
