@@ -1,0 +1,33 @@
+{
+  "testApp": {
+    "hoTro": {
+      "home": {
+        "title": "Ho Tros",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Ho Tro",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Ho Tro",
+        "notFound": "No Ho Tros found"
+      },
+      "created": "Một Ho Tro mới được tạo với định danh {{ param }}",
+      "updated": "Một Ho Tro cập nhật với định danh {{ param }}",
+      "deleted": "Một Ho Tro đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Ho Tro {{ id }}?"
+      },
+      "detail": {
+        "title": "Ho Tro"
+      },
+      "id": "ID",
+      "maNoiDung": "Ma Noi Dung",
+      "ngayTao": "Ngay Tao",
+      "nhanVienCV": "Nhan Vien CV",
+      "kTHoTro": "K T Ho Tro",
+      "vatTuHoTro": "Vat Tu Ho Tro",
+      "soBnKhamDieuTri": "So Bn Kham Dieu Tri",
+      "soBnPhauThuat": "So Bn Phau Thuat",
+      "soCanBoChuyenGiao": "So Can Bo Chuyen Giao",
+      "danhGiaKQCongTac": "Danh Gia KQ Cong Tac",
+      "chiDaoTuyen": "Chi Dao Tuyen"
+    }
+  }
+}

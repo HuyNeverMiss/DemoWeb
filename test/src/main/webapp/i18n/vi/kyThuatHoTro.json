@@ -1,0 +1,27 @@
+{
+  "testApp": {
+    "kyThuatHoTro": {
+      "home": {
+        "title": "Ky Thuat Ho Tros",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Ky Thuat Ho Tro",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Ky Thuat Ho Tro",
+        "notFound": "No Ky Thuat Ho Tros found"
+      },
+      "created": "Một Ky Thuat Ho Tro mới được tạo với định danh {{ param }}",
+      "updated": "Một Ky Thuat Ho Tro cập nhật với định danh {{ param }}",
+      "deleted": "Một Ky Thuat Ho Tro đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Ky Thuat Ho Tro {{ id }}?"
+      },
+      "detail": {
+        "title": "Ky Thuat Ho Tro"
+      },
+      "id": "ID",
+      "maKyThuat": "Ma Ky Thuat",
+      "tenKyThuat": "Ten Ky Thuat",
+      "thuTuSX": "Thu Tu SX",
+      "hoTro": "Ho Tro"
+    }
+  }
+}
