@@ -87,6 +87,296 @@ Microservices là các dịch vụ nhỏ, tách biệt đại diện cho 1 phầ
 * Tự động cấu hình Spring khi cần thiết
 * Không sinh code cấu hình và không yêu cầu phải cấu hình bằng XML …
 
+<h2>BÁO CÁO THỰC TẬP TUẦN 2</h2>
 
+**Đề tài:** Hệ thống quản lý chỉ đạo tuyến và NCKH.
 
+***Nội dung công việc tuần 2:***
+* Phân tích hệ thống.
+* Vẽ sơ đồ chức năng (use case diagram), sơ đồ lớp(class diagram), sơ đồ tuần tự (sequence diagram).
 
+**1. Phân tích hệ thống:**
+
+-   Hệ thống "Quản lý chỉ đạo tuyến và NCKH" bao gồm 4 chức năng chính:
+
+> \+ Quản lý lý do công tác: *quản lý lý do công tác của bác sĩ.*
+>
+> \+ Quản lý kết quả công tác: *quản lý kết quả công tác của bác sĩ.*
+>
+> \+ Quản lý kỹ thuật hỗ trợ: *quản lý kỹ thuật mà bác sĩ được hỗ trợ.*
+>
+> \+ Quản lý nơi đến công tác: *quản lý địa điểm mà bác sĩ được điều đi
+> công tác.*
+>
+> \+ Quản lý vật tư hỗ trợ: *quản lý máy móc bác sĩ được hỗ trợ để trị
+> bệnh.*
+
+**2. Các sơ đồ của hệ thống:**
+
+***2.1. Sơ đồ Class:***
+> Bao gồm các thực thể: ChiDaoTuyen, LyDoCongTac, KetQuaCongTac,
+> KyThuatHoTro, VatTuHoTro, NoiDungHoTro, NhanVienTiepNhan,
+> BaoCaoTaiChinh, NoiDenCongTac, NoiDungCdt, DeTai, ChuyenMuc.
+
+<img src="https://user-images.githubusercontent.com/89766191/172789217-43e09164-1e4b-477f-874a-2a2659267962.jpg">
+*Sơ đồ Class của hệ thống "Quản lý chỉ đạo tuyến và NCKH*
+
+***2.2. Sơ đồ UseCase:***
+
+**Use Case Diagram** được hiểu là sơ đồ tính năng của hệ thống. Bản vẽ
+này sẽ cho người dùng hiểu được sản phẩm này cung cấp những tính năng gì
+cho người dùng, hoặc người dùng có thể làm được gì với nó.
+
+<img src="https://user-images.githubusercontent.com/89766191/172792629-f4b8aa2d-a872-4c1e-a7f8-0d615b89fac0.jpg">
+*Sơ đồ Usecase của các chức năng Quản lý chỉ đạo tuyến và nghiên cứu khoa học*
+
+-   Chức năng quản lý lý do công tác:
+
+> \+ Actor: Cán bộ quản lý
+>
+> \+ Usecase: Đăng nhập, danh mục, quản lý chỉ đạo tuyến, quản lý lý do
+> công tác, thêm lý do công tác, sửa lý do công tác, xóa lý do công tác.
+
+-   Chức năng quản lý kết quả công tác:
+
+> \+ Actor: Cán bộ quản lý
+> \+Usecase: Đăng nhập, danh mục, quản lý chỉ đạo tuyến, quản lý kết quả
+    > công tác, thêm kết quả công tác, sửa kết quả công tác, xóa kết quả
+    > công tác.
+
+-   Chức năng quản lý nơi đến công tác:
+
+> \+ Actor: Cán bộ quản lý
+>
+> \+ Usecase: Đăng nhập, danh mục, quản lý chỉ đạo tuyến, quản lý nơi đến công tác, thêm nơi đến công tác, sửa nơi đến công tác, xóa nơi đến công tác.
+> 
+
+-   Chức năng quản lý kỹ thuật hỗ trợ:
+
+> \+ Actor: Cán bộ quản lý
+>
+> \+ Usecase: Đăng nhập, danh mục, quản lý chỉ đạo tuyến, quản lý kỹ
+> thuật hỗ trợ, thêm kỹ thuật hỗ trợ, sửa kỹ thuật hỗ trợ, xóa kỹ thuật
+> hỗ trợ.
+
+-   Chức năng quản lý vật tư hỗ trợ:
+
+> \+ Actor: Cán bộ quản lý
+>
+> \+ Usecase: Đăng nhập, danh mục, quản lý chỉ đạo tuyến, quản lý vật tư
+> hỗ trợ, thêm vật tư hỗ trợ, sửa vật tư hỗ trợ, xóa vật tư hỗ trợ.
+
+-   Chức năng quản lý đề tài:
+
+> \+ Actor: Cán bộ quản lý
+>
+> \+ Usecase: Đăng nhập, danh mục, quản lý nghiên cứu khoa học, quản lý
+> đề tài, thêm đề tài, sửa đề tài, xóa đề tài.
+
+-   Chức năng quản lý chuyên mục:
+
+> \+ Actor: Cán bộ quản lý
+>
+> \+ Usecase: Đăng nhập, danh mục, quản lý nghiên cứu khoa học, quản lý
+> chuyên mục, thêm chuyên mục, sửa chuyên mục, xóa chuyên mục.
+
+### \* Ứng dụng
+
+-   Thiết kế hệ thống.
+
+-   Làm cơ sở cho việc phát triển, kiểm tra các bản vẽ như Class
+    Diagram, Activity Diagram, Sequence Diagram, Component Diagram.
+
+-   Làm cơ sở để giao tiếp với khách hàng.
+
+-   Hỗ trợ việc kiểm thử tính năng, chất lượng,....
+
+***2.3. Sơ đồ tuần tự:***
+
+Dùng để xác định các trình tự diễn ra sự kiện của một nhóm đối tượng. Nó
+miêu tả chi tiết các thông điệp được gửi và nhận giữa các đối tượng đồng
+thời cũng chú trọng đến việc trình tự về mặt thời gian gửi và nhận của
+thông điệp đó.
+
+<img src="https://user-images.githubusercontent.com/89766191/172797332-7b47cb8e-c8c4-45da-a8a7-6ea0202cbfb6.jpg">
+
+*Sơ đồ tuần tự của chức năng "Quản lý lý do công tác"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của lý do công tác như: Mã lý do công tác, Thứ tự SX, tên
+lý do công tác, sau đó hệ thống sẽ kiểm tra thông tin rồi sẽ cập nhật
+trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn mục cần chỉnh sửa, sau đó nhấn vào nút sửa, sửa
+thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn lý do công tác cần xóa, sau đó nhấn vào nút xóa,
+lý do công tác sẽ bị xóa khỏi CSDL.
+
+<img src="https://user-images.githubusercontent.com/89766191/172797424-a81062c9-4873-4580-b6c0-a6963ce82459.jpg">
+
+*Sơ đồ tuần tự chức năng "Quản lý kết quả công tác"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của kết quả công tác như: Mã kết quả công tác, Thứ tự SX,
+tên kết quả công tác, sau đó hệ thống sẽ kiểm tra thông tin rồi sẽ cập
+nhật trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn dữ liệu cần chỉnh sửa, sau đó nhấn vào nút sửa,
+sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn kết quả công tác cần xóa, sau đó nhấn vào nút
+xóa, kết quả công tác sẽ bị xóa khỏi CSDL.
+
+<img src="https://user-images.githubusercontent.com/89766191/172797595-ed8e6ee6-d528-4410-9c1a-13b600f4b7b3.jpg">
+
+*Sơ đồ tuần tự chức năng "Quản lý vật tư hỗ trợ"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của vật tư hỗ trợ như: Mã vật tư hỗ trợ, Thứ tự SX, tên
+vật tư hỗ trợ, sau đó hệ thống sẽ kiểm tra thông tin rồi sẽ cập nhật
+trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn dữ liệu cần chỉnh sửa, sau đó nhấn vào nút sửa,
+sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn vật tư hỗ trợ cần xóa, sau đó nhấn vào nút xóa,
+vật tư hỗ trợ sẽ bị xóa khỏi CSDL.
+
+<img src="https://user-images.githubusercontent.com/89766191/172797504-23609823-afa5-4851-9e22-cf6f9675ef84.jpg">
+
+*Sơ đồ tuần tự chức năng "Quản lý nơi đến công tác"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của nơi đến công tác như: Mã nơi đến công tác, Thứ tự SX,
+tên nơi đến công tác, sau đó hệ thống sẽ kiểm tra thông tin rồi sẽ cập
+nhật trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn dữ liệu cần chỉnh sửa, sau đó nhấn vào nút sửa,
+sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn nơi đến công tác cần xóa, sau đó nhấn vào nút
+xóa, nơi đến công tác sẽ bị xóa khỏi CSDL.
+
+<img src="https://user-images.githubusercontent.com/89766191/172798021-17813b7f-6537-4cee-9908-96e0eb41d990.jpg">
+
+*Sơ đồ tuần tự chức năng "Quản lý kỹ thuật hỗ trợ"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của kết quả công tác như: Mã kỹ thuật hỗ trợ, Thứ tự SX,
+tên kỹ thuật hỗ trợ, sau đó hệ thống sẽ kiểm tra thông tin rồi sẽ cập
+nhật trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn dữ liệu cần chỉnh sửa, sau đó nhấn vào nút sửa,
+sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn kỹ thuật hỗ trợ cần xóa, sau đó nhấn vào nút xóa,
+kỹ thuật hỗ trợ sẽ bị xóa khỏi CSDL.
+
+<img src="https://user-images.githubusercontent.com/89766191/172798102-42c3e7e3-a24a-4072-b947-b2dc99f9908b.jpg">
+
+*Sơ đồ tuần tự "Chỉ đạo tuyến"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của chỉ đạo tuyến như: Số quyết định, ngày quyết định, nội
+dung sau đó hệ thống sẽ kiểm tra thông tin rồi sẽ cập nhật trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn dữ liệu cần chỉnh sửa, sau đó nhấn vào nút sửa,
+sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn chỉ đạo tuyến cần xóa, sau đó nhấn vào nút xóa,
+chỉ đạo tuyến sẽ bị xóa khỏi CSDL.
+
+<img src="https://user-images.githubusercontent.com/89766191/172798141-7f501df0-f895-454c-8850-f3480627ca83.jpg">
+
+*Sơ đồ tuần tự chức năng "Quản lý chuyên mục"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của chuyên mục như: Tên chuyên mục, Số TT, sau đó hệ thống
+sẽ kiểm tra thông tin rồi sẽ cập nhật trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn dữ liệu cần chỉnh sửa, sau đó nhấn vào nút sửa,
+sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn chuyên mục cần xóa, sau đó nhấn vào nút xóa,
+chuyên mục sẽ bị xóa khỏi CSDL.
+
+<img src="https://user-images.githubusercontent.com/89766191/172798392-bde926a1-9ebd-4e9e-90a9-5d07876d13eb.jpg">
+
+*Sơ đồ tuần tự chức năng "quản lý đề tài"*
+
+**Mô tả:**
+
+***Chức năng thêm:***
+
+Sau khi Cán bộ quản lý đăng nhập vào hệ thống, cán bộ quản lý sẽ nhập
+các thông tin của đề tài như:Chuyên mục, Số thứ tự, Tên đề tài, ngày bắt
+đầu, ngày kết thúc, ngày duyệt, nghiệm thu, hiện trạng, xuất bản, cấp
+quản lý, kinh phí, nguồn kinh phí sau đó hệ thống sẽ kiểm tra thông tin
+rồi sẽ cập nhật trong CSDL.
+
+***Chức năng sửa:***
+
+Cán bộ quản lý sẽ chọn dữ liệu cần chỉnh sửa, sau đó nhấn vào nút sửa,
+sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL.
+
+***Chức năng xóa:***
+
+Cán bộ quản lý sẽ chọn đề tài cần xóa, sau đó nhấn vào nút xóa, đề tài
+sẽ bị xóa khỏi CSDL.
