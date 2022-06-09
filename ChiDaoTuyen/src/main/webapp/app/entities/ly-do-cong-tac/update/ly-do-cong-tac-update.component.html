@@ -19,7 +19,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.lyDoCongTac.maLyDo" for="field_maLyDo">Ma Ly Do</label>
-          <input type="number" class="form-control" name="maLyDo" id="field_maLyDo" data-cy="maLyDo" formControlName="maLyDo" />
+          <input type="text" class="form-control" name="maLyDo" id="field_maLyDo" data-cy="maLyDo" formControlName="maLyDo" />
         </div>
 
         <div class="row mb-3">
@@ -29,7 +29,22 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.lyDoCongTac.thuTuSX" for="field_thuTuSX">Thu Tu SX</label>
-          <input type="number" class="form-control" name="thuTuSX" id="field_thuTuSX" data-cy="thuTuSX" formControlName="thuTuSX" />
+          <input type="text" class="form-control" name="thuTuSX" id="field_thuTuSX" data-cy="thuTuSX" formControlName="thuTuSX" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.lyDoCongTac.chiDaoTuyen" for="field_chiDaoTuyen">Chi Dao Tuyen</label>
+          <select class="form-control" id="field_chiDaoTuyen" data-cy="chiDaoTuyen" name="chiDaoTuyen" formControlName="chiDaoTuyen">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                chiDaoTuyenOption.id === editForm.get('chiDaoTuyen')!.value?.id ? editForm.get('chiDaoTuyen')!.value : chiDaoTuyenOption
+              "
+              *ngFor="let chiDaoTuyenOption of chiDaoTuyensCollection; trackBy: trackChiDaoTuyenById"
+            >
+              {{ chiDaoTuyenOption.id }}
+            </option>
+          </select>
         </div>
       </div>
 

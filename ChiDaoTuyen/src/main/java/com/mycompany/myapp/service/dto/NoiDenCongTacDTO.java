@@ -10,11 +10,11 @@ public class NoiDenCongTacDTO implements Serializable {
 
     private Long id;
 
-    private Integer maNoiDen;
+    private String maNoiDen;
 
     private String tenNoiDen;
 
-    private Integer thuTuSX;
+    private String thuTuSX;
 
     private ChiDaoTuyenDTO chiDaoTuyen;
 
@@ -26,11 +26,11 @@ public class NoiDenCongTacDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaNoiDen() {
+    public String getMaNoiDen() {
         return maNoiDen;
     }
 
-    public void setMaNoiDen(Integer maNoiDen) {
+    public void setMaNoiDen(String maNoiDen) {
         this.maNoiDen = maNoiDen;
     }
 
@@ -42,11 +42,11 @@ public class NoiDenCongTacDTO implements Serializable {
         this.tenNoiDen = tenNoiDen;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return thuTuSX;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
@@ -84,9 +84,9 @@ public class NoiDenCongTacDTO implements Serializable {
     public String toString() {
         return "NoiDenCongTacDTO{" +
             "id=" + getId() +
-            ", maNoiDen=" + getMaNoiDen() +
+            ", maNoiDen='" + getMaNoiDen() + "'" +
             ", tenNoiDen='" + getTenNoiDen() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
             ", chiDaoTuyen=" + getChiDaoTuyen() +
             "}";
     }

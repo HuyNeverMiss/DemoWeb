@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -23,18 +22,17 @@ public class VatTuHoTro implements Serializable {
     private Long id;
 
     @Column(name = "ma_vat_tu")
-    private Integer maVatTu;
+    private String maVatTu;
 
     @Column(name = "ten_vat_tu")
     private String tenVatTu;
 
     @Column(name = "thu_tu_sx")
-    private Integer thuTuSX;
+    private String thuTuSX;
 
-    @JsonIgnoreProperties(value = { "chiDaoTuyen" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private HoTro hoTro;
+    private ChiDaoTuyen chiDaoTuyen;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -51,16 +49,16 @@ public class VatTuHoTro implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaVatTu() {
+    public String getMaVatTu() {
         return this.maVatTu;
     }
 
-    public VatTuHoTro maVatTu(Integer maVatTu) {
+    public VatTuHoTro maVatTu(String maVatTu) {
         this.setMaVatTu(maVatTu);
         return this;
     }
 
-    public void setMaVatTu(Integer maVatTu) {
+    public void setMaVatTu(String maVatTu) {
         this.maVatTu = maVatTu;
     }
 
@@ -77,29 +75,29 @@ public class VatTuHoTro implements Serializable {
         this.tenVatTu = tenVatTu;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return this.thuTuSX;
     }
 
-    public VatTuHoTro thuTuSX(Integer thuTuSX) {
+    public VatTuHoTro thuTuSX(String thuTuSX) {
         this.setThuTuSX(thuTuSX);
         return this;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
-    public HoTro getHoTro() {
-        return this.hoTro;
+    public ChiDaoTuyen getChiDaoTuyen() {
+        return this.chiDaoTuyen;
     }
 
-    public void setHoTro(HoTro hoTro) {
-        this.hoTro = hoTro;
+    public void setChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyen = chiDaoTuyen;
     }
 
-    public VatTuHoTro hoTro(HoTro hoTro) {
-        this.setHoTro(hoTro);
+    public VatTuHoTro chiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.setChiDaoTuyen(chiDaoTuyen);
         return this;
     }
 
@@ -127,9 +125,9 @@ public class VatTuHoTro implements Serializable {
     public String toString() {
         return "VatTuHoTro{" +
             "id=" + getId() +
-            ", maVatTu=" + getMaVatTu() +
+            ", maVatTu='" + getMaVatTu() + "'" +
             ", tenVatTu='" + getTenVatTu() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
             "}";
     }
 }

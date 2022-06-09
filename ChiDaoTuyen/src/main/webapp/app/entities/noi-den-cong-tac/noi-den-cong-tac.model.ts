@@ -2,18 +2,18 @@ import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
 
 export interface INoiDenCongTac {
   id?: number;
-  maNoiDen?: number | null;
+  maNoiDen?: string | null;
   tenNoiDen?: string | null;
-  thuTuSX?: number | null;
+  thuTuSX?: string | null;
   chiDaoTuyen?: IChiDaoTuyen | null;
 }
 
 export class NoiDenCongTac implements INoiDenCongTac {
   constructor(
     public id?: number,
-    public maNoiDen?: number | null,
+    public maNoiDen?: string | null,
     public tenNoiDen?: string | null,
-    public thuTuSX?: number | null,
+    public thuTuSX?: string | null,
     public chiDaoTuyen?: IChiDaoTuyen | null
   ) {}
 }

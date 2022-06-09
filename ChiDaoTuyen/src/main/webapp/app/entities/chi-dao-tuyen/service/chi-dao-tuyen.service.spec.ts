@@ -25,10 +25,9 @@ describe('ChiDaoTuyen Service', () => {
 
     elemDefault = {
       id: 0,
-      maCdt: 0,
-      soQuyetDinh: 0,
+      soQuyetDinh: 'AAAAAAA',
       ngayQuyetDinh: currentDate,
-      soHD: 0,
+      soHD: 'AAAAAAA',
       ngayHD: currentDate,
       lyDoCT: 'AAAAAAA',
       noiDung: 'AAAAAAA',
@@ -36,8 +35,21 @@ describe('ChiDaoTuyen Service', () => {
       ngayBatDau: currentDate,
       ngayKetThuc: currentDate,
       ghiChu: 'AAAAAAA',
-      noiDungHoTro: 0,
-      baoCaoTaiChinh: 0,
+      ngayTao: currentDate,
+      nhanVien: 'AAAAAAA',
+      kyThuatHoTro: 'AAAAAAA',
+      vatTuHoTro: 'AAAAAAA',
+      soBnKhamDieuTri: 'AAAAAAA',
+      soBnPhauThuat: 'AAAAAAA',
+      soCanBoChuyenGiao: 'AAAAAAA',
+      ketQuaCongTac: 'AAAAAAA',
+      luuTru: 'AAAAAAA',
+      tienAn: 'AAAAAAA',
+      tienO: 'AAAAAAA',
+      tienDiLai: 'AAAAAAA',
+      taiLieu: 'AAAAAAA',
+      giangDay: 'AAAAAAA',
+      khac: 'AAAAAAA',
     };
   });
 
@@ -49,6 +61,7 @@ describe('ChiDaoTuyen Service', () => {
           ngayHD: currentDate.format(DATE_TIME_FORMAT),
           ngayBatDau: currentDate.format(DATE_TIME_FORMAT),
           ngayKetThuc: currentDate.format(DATE_TIME_FORMAT),
+          ngayTao: currentDate.format(DATE_TIME_FORMAT),
         },
         elemDefault
       );
@@ -68,6 +81,7 @@ describe('ChiDaoTuyen Service', () => {
           ngayHD: currentDate.format(DATE_TIME_FORMAT),
           ngayBatDau: currentDate.format(DATE_TIME_FORMAT),
           ngayKetThuc: currentDate.format(DATE_TIME_FORMAT),
+          ngayTao: currentDate.format(DATE_TIME_FORMAT),
         },
         elemDefault
       );
@@ -78,6 +92,7 @@ describe('ChiDaoTuyen Service', () => {
           ngayHD: currentDate,
           ngayBatDau: currentDate,
           ngayKetThuc: currentDate,
+          ngayTao: currentDate,
         },
         returnedFromService
       );
@@ -93,10 +108,9 @@ describe('ChiDaoTuyen Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maCdt: 1,
-          soQuyetDinh: 1,
+          soQuyetDinh: 'BBBBBB',
           ngayQuyetDinh: currentDate.format(DATE_TIME_FORMAT),
-          soHD: 1,
+          soHD: 'BBBBBB',
           ngayHD: currentDate.format(DATE_TIME_FORMAT),
           lyDoCT: 'BBBBBB',
           noiDung: 'BBBBBB',
@@ -104,8 +118,21 @@ describe('ChiDaoTuyen Service', () => {
           ngayBatDau: currentDate.format(DATE_TIME_FORMAT),
           ngayKetThuc: currentDate.format(DATE_TIME_FORMAT),
           ghiChu: 'BBBBBB',
-          noiDungHoTro: 1,
-          baoCaoTaiChinh: 1,
+          ngayTao: currentDate.format(DATE_TIME_FORMAT),
+          nhanVien: 'BBBBBB',
+          kyThuatHoTro: 'BBBBBB',
+          vatTuHoTro: 'BBBBBB',
+          soBnKhamDieuTri: 'BBBBBB',
+          soBnPhauThuat: 'BBBBBB',
+          soCanBoChuyenGiao: 'BBBBBB',
+          ketQuaCongTac: 'BBBBBB',
+          luuTru: 'BBBBBB',
+          tienAn: 'BBBBBB',
+          tienO: 'BBBBBB',
+          tienDiLai: 'BBBBBB',
+          taiLieu: 'BBBBBB',
+          giangDay: 'BBBBBB',
+          khac: 'BBBBBB',
         },
         elemDefault
       );
@@ -116,6 +143,7 @@ describe('ChiDaoTuyen Service', () => {
           ngayHD: currentDate,
           ngayBatDau: currentDate,
           ngayKetThuc: currentDate,
+          ngayTao: currentDate,
         },
         returnedFromService
       );
@@ -130,13 +158,19 @@ describe('ChiDaoTuyen Service', () => {
     it('should partial update a ChiDaoTuyen', () => {
       const patchObject = Object.assign(
         {
-          soQuyetDinh: 1,
-          ngayHD: currentDate.format(DATE_TIME_FORMAT),
+          ngayQuyetDinh: currentDate.format(DATE_TIME_FORMAT),
           lyDoCT: 'BBBBBB',
           noiDung: 'BBBBBB',
-          ngayBatDau: currentDate.format(DATE_TIME_FORMAT),
+          noiCongTac: 'BBBBBB',
           ngayKetThuc: currentDate.format(DATE_TIME_FORMAT),
-          baoCaoTaiChinh: 1,
+          ghiChu: 'BBBBBB',
+          kyThuatHoTro: 'BBBBBB',
+          vatTuHoTro: 'BBBBBB',
+          soBnPhauThuat: 'BBBBBB',
+          ketQuaCongTac: 'BBBBBB',
+          tienAn: 'BBBBBB',
+          taiLieu: 'BBBBBB',
+          giangDay: 'BBBBBB',
         },
         new ChiDaoTuyen()
       );
@@ -149,6 +183,7 @@ describe('ChiDaoTuyen Service', () => {
           ngayHD: currentDate,
           ngayBatDau: currentDate,
           ngayKetThuc: currentDate,
+          ngayTao: currentDate,
         },
         returnedFromService
       );
@@ -164,10 +199,9 @@ describe('ChiDaoTuyen Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maCdt: 1,
-          soQuyetDinh: 1,
+          soQuyetDinh: 'BBBBBB',
           ngayQuyetDinh: currentDate.format(DATE_TIME_FORMAT),
-          soHD: 1,
+          soHD: 'BBBBBB',
           ngayHD: currentDate.format(DATE_TIME_FORMAT),
           lyDoCT: 'BBBBBB',
           noiDung: 'BBBBBB',
@@ -175,8 +209,21 @@ describe('ChiDaoTuyen Service', () => {
           ngayBatDau: currentDate.format(DATE_TIME_FORMAT),
           ngayKetThuc: currentDate.format(DATE_TIME_FORMAT),
           ghiChu: 'BBBBBB',
-          noiDungHoTro: 1,
-          baoCaoTaiChinh: 1,
+          ngayTao: currentDate.format(DATE_TIME_FORMAT),
+          nhanVien: 'BBBBBB',
+          kyThuatHoTro: 'BBBBBB',
+          vatTuHoTro: 'BBBBBB',
+          soBnKhamDieuTri: 'BBBBBB',
+          soBnPhauThuat: 'BBBBBB',
+          soCanBoChuyenGiao: 'BBBBBB',
+          ketQuaCongTac: 'BBBBBB',
+          luuTru: 'BBBBBB',
+          tienAn: 'BBBBBB',
+          tienO: 'BBBBBB',
+          tienDiLai: 'BBBBBB',
+          taiLieu: 'BBBBBB',
+          giangDay: 'BBBBBB',
+          khac: 'BBBBBB',
         },
         elemDefault
       );
@@ -187,6 +234,7 @@ describe('ChiDaoTuyen Service', () => {
           ngayHD: currentDate,
           ngayBatDau: currentDate,
           ngayKetThuc: currentDate,
+          ngayTao: currentDate,
         },
         returnedFromService
       );
@@ -236,7 +284,7 @@ describe('ChiDaoTuyen Service', () => {
       });
 
       it('should add only unique ChiDaoTuyen to an array', () => {
-        const chiDaoTuyenArray: IChiDaoTuyen[] = [{ id: 123 }, { id: 456 }, { id: 73909 }];
+        const chiDaoTuyenArray: IChiDaoTuyen[] = [{ id: 123 }, { id: 456 }, { id: 5422 }];
         const chiDaoTuyenCollection: IChiDaoTuyen[] = [{ id: 123 }];
         expectedResult = service.addChiDaoTuyenToCollectionIfMissing(chiDaoTuyenCollection, ...chiDaoTuyenArray);
         expect(expectedResult).toHaveLength(3);

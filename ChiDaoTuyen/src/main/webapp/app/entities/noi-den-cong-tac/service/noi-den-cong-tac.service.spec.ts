@@ -21,9 +21,9 @@ describe('NoiDenCongTac Service', () => {
 
     elemDefault = {
       id: 0,
-      maNoiDen: 0,
+      maNoiDen: 'AAAAAAA',
       tenNoiDen: 'AAAAAAA',
-      thuTuSX: 0,
+      thuTuSX: 'AAAAAAA',
     };
   });
 
@@ -59,9 +59,9 @@ describe('NoiDenCongTac Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maNoiDen: 1,
+          maNoiDen: 'BBBBBB',
           tenNoiDen: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );
@@ -78,9 +78,9 @@ describe('NoiDenCongTac Service', () => {
     it('should partial update a NoiDenCongTac', () => {
       const patchObject = Object.assign(
         {
-          maNoiDen: 1,
+          maNoiDen: 'BBBBBB',
           tenNoiDen: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         new NoiDenCongTac()
       );
@@ -100,9 +100,9 @@ describe('NoiDenCongTac Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maNoiDen: 1,
+          maNoiDen: 'BBBBBB',
           tenNoiDen: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );

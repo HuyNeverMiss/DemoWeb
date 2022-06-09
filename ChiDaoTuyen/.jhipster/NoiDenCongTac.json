@@ -1,13 +1,13 @@
 {
   "applications": "*",
-  "changelogDate": "20220608033711",
+  "changelogDate": "20220609044054",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "noi_den_cong_tac",
   "fields": [
     {
       "fieldName": "maNoiDen",
-      "fieldType": "Integer"
+      "fieldType": "String"
     },
     {
       "fieldName": "tenNoiDen",
@@ -15,7 +15,7 @@
     },
     {
       "fieldName": "thuTuSX",
-      "fieldType": "Integer"
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,

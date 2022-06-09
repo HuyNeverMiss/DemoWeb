@@ -7,8 +7,8 @@ import { finalize, map } from 'rxjs/operators';
 
 import { IKetQuaCongTac, KetQuaCongTac } from '../ket-qua-cong-tac.model';
 import { KetQuaCongTacService } from '../service/ket-qua-cong-tac.service';
-import { IHoTro } from 'app/entities/ho-tro/ho-tro.model';
-import { HoTroService } from 'app/entities/ho-tro/service/ho-tro.service';
+import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
+import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-tuyen.service';
 
 @Component({
   selector: 'jhi-ket-qua-cong-tac-update',
@@ -17,19 +17,19 @@ import { HoTroService } from 'app/entities/ho-tro/service/ho-tro.service';
 export class KetQuaCongTacUpdateComponent implements OnInit {
   isSaving = false;
 
-  hoTrosCollection: IHoTro[] = [];
+  chiDaoTuyensCollection: IChiDaoTuyen[] = [];
 
   editForm = this.fb.group({
     id: [],
     maKetQua: [],
     tenKetQua: [],
     thuTuSX: [],
-    hoTro: [],
+    chiDaoTuyen: [],
   });
 
   constructor(
     protected ketQuaCongTacService: KetQuaCongTacService,
-    protected hoTroService: HoTroService,
+    protected chiDaoTuyenService: ChiDaoTuyenService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -56,7 +56,7 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
     }
   }
 
-  trackHoTroById(_index: number, item: IHoTro): number {
+  trackChiDaoTuyenById(_index: number, item: IChiDaoTuyen): number {
     return item.id!;
   }
 
@@ -85,18 +85,25 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
       maKetQua: ketQuaCongTac.maKetQua,
       tenKetQua: ketQuaCongTac.tenKetQua,
       thuTuSX: ketQuaCongTac.thuTuSX,
-      hoTro: ketQuaCongTac.hoTro,
+      chiDaoTuyen: ketQuaCongTac.chiDaoTuyen,
     });
 
-    this.hoTrosCollection = this.hoTroService.addHoTroToCollectionIfMissing(this.hoTrosCollection, ketQuaCongTac.hoTro);
+    this.chiDaoTuyensCollection = this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(
+      this.chiDaoTuyensCollection,
+      ketQuaCongTac.chiDaoTuyen
+    );
   }
 
   protected loadRelationshipsOptions(): void {
-    this.hoTroService
+    this.chiDaoTuyenService
       .query({ filter: 'ketquacongtac-is-null' })
-      .pipe(map((res: HttpResponse<IHoTro[]>) => res.body ?? []))
-      .pipe(map((hoTros: IHoTro[]) => this.hoTroService.addHoTroToCollectionIfMissing(hoTros, this.editForm.get('hoTro')!.value)))
-      .subscribe((hoTros: IHoTro[]) => (this.hoTrosCollection = hoTros));
+      .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
+      .pipe(
+        map((chiDaoTuyens: IChiDaoTuyen[]) =>
+          this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(chiDaoTuyens, this.editForm.get('chiDaoTuyen')!.value)
+        )
+      )
+      .subscribe((chiDaoTuyens: IChiDaoTuyen[]) => (this.chiDaoTuyensCollection = chiDaoTuyens));
   }
 
   protected createFromForm(): IKetQuaCongTac {
@@ -106,7 +113,7 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
       maKetQua: this.editForm.get(['maKetQua'])!.value,
       tenKetQua: this.editForm.get(['tenKetQua'])!.value,
       thuTuSX: this.editForm.get(['thuTuSX'])!.value,
-      hoTro: this.editForm.get(['hoTro'])!.value,
+      chiDaoTuyen: this.editForm.get(['chiDaoTuyen'])!.value,
     };
   }
 }

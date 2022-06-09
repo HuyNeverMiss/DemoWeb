@@ -21,9 +21,9 @@ describe('VatTuHoTro Service', () => {
 
     elemDefault = {
       id: 0,
-      maVatTu: 0,
+      maVatTu: 'AAAAAAA',
       tenVatTu: 'AAAAAAA',
-      thuTuSX: 0,
+      thuTuSX: 'AAAAAAA',
     };
   });
 
@@ -59,9 +59,9 @@ describe('VatTuHoTro Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maVatTu: 1,
+          maVatTu: 'BBBBBB',
           tenVatTu: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );
@@ -93,9 +93,9 @@ describe('VatTuHoTro Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maVatTu: 1,
+          maVatTu: 'BBBBBB',
           tenVatTu: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );

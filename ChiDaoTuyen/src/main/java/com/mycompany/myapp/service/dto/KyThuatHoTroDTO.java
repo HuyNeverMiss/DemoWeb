@@ -10,13 +10,13 @@ public class KyThuatHoTroDTO implements Serializable {
 
     private Long id;
 
-    private Integer maKyThuat;
+    private String maKyThuat;
 
     private String tenKyThuat;
 
-    private Integer thuTuSX;
+    private String thuTuSX;
 
-    private HoTroDTO hoTro;
+    private ChiDaoTuyenDTO chiDaoTuyen;
 
     public Long getId() {
         return id;
@@ -26,11 +26,11 @@ public class KyThuatHoTroDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaKyThuat() {
+    public String getMaKyThuat() {
         return maKyThuat;
     }
 
-    public void setMaKyThuat(Integer maKyThuat) {
+    public void setMaKyThuat(String maKyThuat) {
         this.maKyThuat = maKyThuat;
     }
 
@@ -42,20 +42,20 @@ public class KyThuatHoTroDTO implements Serializable {
         this.tenKyThuat = tenKyThuat;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return thuTuSX;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
-    public HoTroDTO getHoTro() {
-        return hoTro;
+    public ChiDaoTuyenDTO getChiDaoTuyen() {
+        return chiDaoTuyen;
     }
 
-    public void setHoTro(HoTroDTO hoTro) {
-        this.hoTro = hoTro;
+    public void setChiDaoTuyen(ChiDaoTuyenDTO chiDaoTuyen) {
+        this.chiDaoTuyen = chiDaoTuyen;
     }
 
     @Override
@@ -84,10 +84,10 @@ public class KyThuatHoTroDTO implements Serializable {
     public String toString() {
         return "KyThuatHoTroDTO{" +
             "id=" + getId() +
-            ", maKyThuat=" + getMaKyThuat() +
+            ", maKyThuat='" + getMaKyThuat() + "'" +
             ", tenKyThuat='" + getTenKyThuat() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
-            ", hoTro=" + getHoTro() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
+            ", chiDaoTuyen=" + getChiDaoTuyen() +
             "}";
     }
 }

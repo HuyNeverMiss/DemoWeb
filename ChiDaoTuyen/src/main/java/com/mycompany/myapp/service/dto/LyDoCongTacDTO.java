@@ -10,11 +10,13 @@ public class LyDoCongTacDTO implements Serializable {
 
     private Long id;
 
-    private Integer maLyDo;
+    private String maLyDo;
 
     private String tenLyDo;
 
-    private Integer thuTuSX;
+    private String thuTuSX;
+
+    private ChiDaoTuyenDTO chiDaoTuyen;
 
     public Long getId() {
         return id;
@@ -24,11 +26,11 @@ public class LyDoCongTacDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaLyDo() {
+    public String getMaLyDo() {
         return maLyDo;
     }
 
-    public void setMaLyDo(Integer maLyDo) {
+    public void setMaLyDo(String maLyDo) {
         this.maLyDo = maLyDo;
     }
 
@@ -40,12 +42,20 @@ public class LyDoCongTacDTO implements Serializable {
         this.tenLyDo = tenLyDo;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return thuTuSX;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
+    }
+
+    public ChiDaoTuyenDTO getChiDaoTuyen() {
+        return chiDaoTuyen;
+    }
+
+    public void setChiDaoTuyen(ChiDaoTuyenDTO chiDaoTuyen) {
+        this.chiDaoTuyen = chiDaoTuyen;
     }
 
     @Override
@@ -74,9 +84,10 @@ public class LyDoCongTacDTO implements Serializable {
     public String toString() {
         return "LyDoCongTacDTO{" +
             "id=" + getId() +
-            ", maLyDo=" + getMaLyDo() +
+            ", maLyDo='" + getMaLyDo() + "'" +
             ", tenLyDo='" + getTenLyDo() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
+            ", chiDaoTuyen=" + getChiDaoTuyen() +
             "}";
     }
 }

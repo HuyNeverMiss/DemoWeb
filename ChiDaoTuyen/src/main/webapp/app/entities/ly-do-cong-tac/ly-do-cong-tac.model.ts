@@ -2,19 +2,19 @@ import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
 
 export interface ILyDoCongTac {
   id?: number;
-  maLyDo?: number | null;
+  maLyDo?: string | null;
   tenLyDo?: string | null;
-  thuTuSX?: number | null;
-  chiDaoTuyens?: IChiDaoTuyen[] | null;
+  thuTuSX?: string | null;
+  chiDaoTuyen?: IChiDaoTuyen | null;
 }
 
 export class LyDoCongTac implements ILyDoCongTac {
   constructor(
     public id?: number,
-    public maLyDo?: number | null,
+    public maLyDo?: string | null,
     public tenLyDo?: string | null,
-    public thuTuSX?: number | null,
-    public chiDaoTuyens?: IChiDaoTuyen[] | null
+    public thuTuSX?: string | null,
+    public chiDaoTuyen?: IChiDaoTuyen | null
   ) {}
 }
 

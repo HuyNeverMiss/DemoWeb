@@ -7,8 +7,8 @@ import { finalize, map } from 'rxjs/operators';
 
 import { IKyThuatHoTro, KyThuatHoTro } from '../ky-thuat-ho-tro.model';
 import { KyThuatHoTroService } from '../service/ky-thuat-ho-tro.service';
-import { IHoTro } from 'app/entities/ho-tro/ho-tro.model';
-import { HoTroService } from 'app/entities/ho-tro/service/ho-tro.service';
+import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
+import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-tuyen.service';
 
 @Component({
   selector: 'jhi-ky-thuat-ho-tro-update',
@@ -17,19 +17,19 @@ import { HoTroService } from 'app/entities/ho-tro/service/ho-tro.service';
 export class KyThuatHoTroUpdateComponent implements OnInit {
   isSaving = false;
 
-  hoTrosCollection: IHoTro[] = [];
+  chiDaoTuyensCollection: IChiDaoTuyen[] = [];
 
   editForm = this.fb.group({
     id: [],
     maKyThuat: [],
     tenKyThuat: [],
     thuTuSX: [],
-    hoTro: [],
+    chiDaoTuyen: [],
   });
 
   constructor(
     protected kyThuatHoTroService: KyThuatHoTroService,
-    protected hoTroService: HoTroService,
+    protected chiDaoTuyenService: ChiDaoTuyenService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -56,7 +56,7 @@ export class KyThuatHoTroUpdateComponent implements OnInit {
     }
   }
 
-  trackHoTroById(_index: number, item: IHoTro): number {
+  trackChiDaoTuyenById(_index: number, item: IChiDaoTuyen): number {
     return item.id!;
   }
 
@@ -85,18 +85,25 @@ export class KyThuatHoTroUpdateComponent implements OnInit {
       maKyThuat: kyThuatHoTro.maKyThuat,
       tenKyThuat: kyThuatHoTro.tenKyThuat,
       thuTuSX: kyThuatHoTro.thuTuSX,
-      hoTro: kyThuatHoTro.hoTro,
+      chiDaoTuyen: kyThuatHoTro.chiDaoTuyen,
     });
 
-    this.hoTrosCollection = this.hoTroService.addHoTroToCollectionIfMissing(this.hoTrosCollection, kyThuatHoTro.hoTro);
+    this.chiDaoTuyensCollection = this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(
+      this.chiDaoTuyensCollection,
+      kyThuatHoTro.chiDaoTuyen
+    );
   }
 
   protected loadRelationshipsOptions(): void {
-    this.hoTroService
+    this.chiDaoTuyenService
       .query({ filter: 'kythuathotro-is-null' })
-      .pipe(map((res: HttpResponse<IHoTro[]>) => res.body ?? []))
-      .pipe(map((hoTros: IHoTro[]) => this.hoTroService.addHoTroToCollectionIfMissing(hoTros, this.editForm.get('hoTro')!.value)))
-      .subscribe((hoTros: IHoTro[]) => (this.hoTrosCollection = hoTros));
+      .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
+      .pipe(
+        map((chiDaoTuyens: IChiDaoTuyen[]) =>
+          this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(chiDaoTuyens, this.editForm.get('chiDaoTuyen')!.value)
+        )
+      )
+      .subscribe((chiDaoTuyens: IChiDaoTuyen[]) => (this.chiDaoTuyensCollection = chiDaoTuyens));
   }
 
   protected createFromForm(): IKyThuatHoTro {
@@ -106,7 +113,7 @@ export class KyThuatHoTroUpdateComponent implements OnInit {
       maKyThuat: this.editForm.get(['maKyThuat'])!.value,
       tenKyThuat: this.editForm.get(['tenKyThuat'])!.value,
       thuTuSX: this.editForm.get(['thuTuSX'])!.value,
-      hoTro: this.editForm.get(['hoTro'])!.value,
+      chiDaoTuyen: this.editForm.get(['chiDaoTuyen'])!.value,
     };
   }
 }

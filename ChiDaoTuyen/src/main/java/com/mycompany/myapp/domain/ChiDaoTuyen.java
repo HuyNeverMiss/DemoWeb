@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
@@ -23,17 +22,14 @@ public class ChiDaoTuyen implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "ma_cdt")
-    private Integer maCdt;
-
     @Column(name = "so_quyet_dinh")
-    private Integer soQuyetDinh;
+    private String soQuyetDinh;
 
     @Column(name = "ngay_quyet_dinh")
     private ZonedDateTime ngayQuyetDinh;
 
     @Column(name = "so_hd")
-    private Integer soHD;
+    private String soHD;
 
     @Column(name = "ngay_hd")
     private ZonedDateTime ngayHD;
@@ -56,19 +52,50 @@ public class ChiDaoTuyen implements Serializable {
     @Column(name = "ghi_chu")
     private String ghiChu;
 
-    @Column(name = "noi_dung_ho_tro")
-    private Integer noiDungHoTro;
+    @Column(name = "ngay_tao")
+    private ZonedDateTime ngayTao;
 
-    @Column(name = "bao_cao_tai_chinh")
-    private Integer baoCaoTaiChinh;
+    @Column(name = "nhan_vien")
+    private String nhanVien;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
-    private LyDoCongTac lyDoCongTac;
+    @Column(name = "ky_thuat_ho_tro")
+    private String kyThuatHoTro;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
-    private NhanVienTiepNhan nhanVienTiepNhan;
+    @Column(name = "vat_tu_ho_tro")
+    private String vatTuHoTro;
+
+    @Column(name = "so_bn_kham_dieu_tri")
+    private String soBnKhamDieuTri;
+
+    @Column(name = "so_bn_phau_thuat")
+    private String soBnPhauThuat;
+
+    @Column(name = "so_can_bo_chuyen_giao")
+    private String soCanBoChuyenGiao;
+
+    @Column(name = "ket_qua_cong_tac")
+    private String ketQuaCongTac;
+
+    @Column(name = "luu_tru")
+    private String luuTru;
+
+    @Column(name = "tien_an")
+    private String tienAn;
+
+    @Column(name = "tien_o")
+    private String tienO;
+
+    @Column(name = "tien_di_lai")
+    private String tienDiLai;
+
+    @Column(name = "tai_lieu")
+    private String taiLieu;
+
+    @Column(name = "giang_day")
+    private String giangDay;
+
+    @Column(name = "khac")
+    private String khac;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -85,29 +112,16 @@ public class ChiDaoTuyen implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaCdt() {
-        return this.maCdt;
-    }
-
-    public ChiDaoTuyen maCdt(Integer maCdt) {
-        this.setMaCdt(maCdt);
-        return this;
-    }
-
-    public void setMaCdt(Integer maCdt) {
-        this.maCdt = maCdt;
-    }
-
-    public Integer getSoQuyetDinh() {
+    public String getSoQuyetDinh() {
         return this.soQuyetDinh;
     }
 
-    public ChiDaoTuyen soQuyetDinh(Integer soQuyetDinh) {
+    public ChiDaoTuyen soQuyetDinh(String soQuyetDinh) {
         this.setSoQuyetDinh(soQuyetDinh);
         return this;
     }
 
-    public void setSoQuyetDinh(Integer soQuyetDinh) {
+    public void setSoQuyetDinh(String soQuyetDinh) {
         this.soQuyetDinh = soQuyetDinh;
     }
 
@@ -124,16 +138,16 @@ public class ChiDaoTuyen implements Serializable {
         this.ngayQuyetDinh = ngayQuyetDinh;
     }
 
-    public Integer getSoHD() {
+    public String getSoHD() {
         return this.soHD;
     }
 
-    public ChiDaoTuyen soHD(Integer soHD) {
+    public ChiDaoTuyen soHD(String soHD) {
         this.setSoHD(soHD);
         return this;
     }
 
-    public void setSoHD(Integer soHD) {
+    public void setSoHD(String soHD) {
         this.soHD = soHD;
     }
 
@@ -228,56 +242,199 @@ public class ChiDaoTuyen implements Serializable {
         this.ghiChu = ghiChu;
     }
 
-    public Integer getNoiDungHoTro() {
-        return this.noiDungHoTro;
+    public ZonedDateTime getNgayTao() {
+        return this.ngayTao;
     }
 
-    public ChiDaoTuyen noiDungHoTro(Integer noiDungHoTro) {
-        this.setNoiDungHoTro(noiDungHoTro);
+    public ChiDaoTuyen ngayTao(ZonedDateTime ngayTao) {
+        this.setNgayTao(ngayTao);
         return this;
     }
 
-    public void setNoiDungHoTro(Integer noiDungHoTro) {
-        this.noiDungHoTro = noiDungHoTro;
+    public void setNgayTao(ZonedDateTime ngayTao) {
+        this.ngayTao = ngayTao;
     }
 
-    public Integer getBaoCaoTaiChinh() {
-        return this.baoCaoTaiChinh;
+    public String getNhanVien() {
+        return this.nhanVien;
     }
 
-    public ChiDaoTuyen baoCaoTaiChinh(Integer baoCaoTaiChinh) {
-        this.setBaoCaoTaiChinh(baoCaoTaiChinh);
+    public ChiDaoTuyen nhanVien(String nhanVien) {
+        this.setNhanVien(nhanVien);
         return this;
     }
 
-    public void setBaoCaoTaiChinh(Integer baoCaoTaiChinh) {
-        this.baoCaoTaiChinh = baoCaoTaiChinh;
+    public void setNhanVien(String nhanVien) {
+        this.nhanVien = nhanVien;
     }
 
-    public LyDoCongTac getLyDoCongTac() {
-        return this.lyDoCongTac;
+    public String getKyThuatHoTro() {
+        return this.kyThuatHoTro;
     }
 
-    public void setLyDoCongTac(LyDoCongTac lyDoCongTac) {
-        this.lyDoCongTac = lyDoCongTac;
-    }
-
-    public ChiDaoTuyen lyDoCongTac(LyDoCongTac lyDoCongTac) {
-        this.setLyDoCongTac(lyDoCongTac);
+    public ChiDaoTuyen kyThuatHoTro(String kyThuatHoTro) {
+        this.setKyThuatHoTro(kyThuatHoTro);
         return this;
     }
 
-    public NhanVienTiepNhan getNhanVienTiepNhan() {
-        return this.nhanVienTiepNhan;
+    public void setKyThuatHoTro(String kyThuatHoTro) {
+        this.kyThuatHoTro = kyThuatHoTro;
     }
 
-    public void setNhanVienTiepNhan(NhanVienTiepNhan nhanVienTiepNhan) {
-        this.nhanVienTiepNhan = nhanVienTiepNhan;
+    public String getVatTuHoTro() {
+        return this.vatTuHoTro;
     }
 
-    public ChiDaoTuyen nhanVienTiepNhan(NhanVienTiepNhan nhanVienTiepNhan) {
-        this.setNhanVienTiepNhan(nhanVienTiepNhan);
+    public ChiDaoTuyen vatTuHoTro(String vatTuHoTro) {
+        this.setVatTuHoTro(vatTuHoTro);
         return this;
+    }
+
+    public void setVatTuHoTro(String vatTuHoTro) {
+        this.vatTuHoTro = vatTuHoTro;
+    }
+
+    public String getSoBnKhamDieuTri() {
+        return this.soBnKhamDieuTri;
+    }
+
+    public ChiDaoTuyen soBnKhamDieuTri(String soBnKhamDieuTri) {
+        this.setSoBnKhamDieuTri(soBnKhamDieuTri);
+        return this;
+    }
+
+    public void setSoBnKhamDieuTri(String soBnKhamDieuTri) {
+        this.soBnKhamDieuTri = soBnKhamDieuTri;
+    }
+
+    public String getSoBnPhauThuat() {
+        return this.soBnPhauThuat;
+    }
+
+    public ChiDaoTuyen soBnPhauThuat(String soBnPhauThuat) {
+        this.setSoBnPhauThuat(soBnPhauThuat);
+        return this;
+    }
+
+    public void setSoBnPhauThuat(String soBnPhauThuat) {
+        this.soBnPhauThuat = soBnPhauThuat;
+    }
+
+    public String getSoCanBoChuyenGiao() {
+        return this.soCanBoChuyenGiao;
+    }
+
+    public ChiDaoTuyen soCanBoChuyenGiao(String soCanBoChuyenGiao) {
+        this.setSoCanBoChuyenGiao(soCanBoChuyenGiao);
+        return this;
+    }
+
+    public void setSoCanBoChuyenGiao(String soCanBoChuyenGiao) {
+        this.soCanBoChuyenGiao = soCanBoChuyenGiao;
+    }
+
+    public String getKetQuaCongTac() {
+        return this.ketQuaCongTac;
+    }
+
+    public ChiDaoTuyen ketQuaCongTac(String ketQuaCongTac) {
+        this.setKetQuaCongTac(ketQuaCongTac);
+        return this;
+    }
+
+    public void setKetQuaCongTac(String ketQuaCongTac) {
+        this.ketQuaCongTac = ketQuaCongTac;
+    }
+
+    public String getLuuTru() {
+        return this.luuTru;
+    }
+
+    public ChiDaoTuyen luuTru(String luuTru) {
+        this.setLuuTru(luuTru);
+        return this;
+    }
+
+    public void setLuuTru(String luuTru) {
+        this.luuTru = luuTru;
+    }
+
+    public String getTienAn() {
+        return this.tienAn;
+    }
+
+    public ChiDaoTuyen tienAn(String tienAn) {
+        this.setTienAn(tienAn);
+        return this;
+    }
+
+    public void setTienAn(String tienAn) {
+        this.tienAn = tienAn;
+    }
+
+    public String getTienO() {
+        return this.tienO;
+    }
+
+    public ChiDaoTuyen tienO(String tienO) {
+        this.setTienO(tienO);
+        return this;
+    }
+
+    public void setTienO(String tienO) {
+        this.tienO = tienO;
+    }
+
+    public String getTienDiLai() {
+        return this.tienDiLai;
+    }
+
+    public ChiDaoTuyen tienDiLai(String tienDiLai) {
+        this.setTienDiLai(tienDiLai);
+        return this;
+    }
+
+    public void setTienDiLai(String tienDiLai) {
+        this.tienDiLai = tienDiLai;
+    }
+
+    public String getTaiLieu() {
+        return this.taiLieu;
+    }
+
+    public ChiDaoTuyen taiLieu(String taiLieu) {
+        this.setTaiLieu(taiLieu);
+        return this;
+    }
+
+    public void setTaiLieu(String taiLieu) {
+        this.taiLieu = taiLieu;
+    }
+
+    public String getGiangDay() {
+        return this.giangDay;
+    }
+
+    public ChiDaoTuyen giangDay(String giangDay) {
+        this.setGiangDay(giangDay);
+        return this;
+    }
+
+    public void setGiangDay(String giangDay) {
+        this.giangDay = giangDay;
+    }
+
+    public String getKhac() {
+        return this.khac;
+    }
+
+    public ChiDaoTuyen khac(String khac) {
+        this.setKhac(khac);
+        return this;
+    }
+
+    public void setKhac(String khac) {
+        this.khac = khac;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -304,10 +461,9 @@ public class ChiDaoTuyen implements Serializable {
     public String toString() {
         return "ChiDaoTuyen{" +
             "id=" + getId() +
-            ", maCdt=" + getMaCdt() +
-            ", soQuyetDinh=" + getSoQuyetDinh() +
+            ", soQuyetDinh='" + getSoQuyetDinh() + "'" +
             ", ngayQuyetDinh='" + getNgayQuyetDinh() + "'" +
-            ", soHD=" + getSoHD() +
+            ", soHD='" + getSoHD() + "'" +
             ", ngayHD='" + getNgayHD() + "'" +
             ", lyDoCT='" + getLyDoCT() + "'" +
             ", noiDung='" + getNoiDung() + "'" +
@@ -315,8 +471,21 @@ public class ChiDaoTuyen implements Serializable {
             ", ngayBatDau='" + getNgayBatDau() + "'" +
             ", ngayKetThuc='" + getNgayKetThuc() + "'" +
             ", ghiChu='" + getGhiChu() + "'" +
-            ", noiDungHoTro=" + getNoiDungHoTro() +
-            ", baoCaoTaiChinh=" + getBaoCaoTaiChinh() +
+            ", ngayTao='" + getNgayTao() + "'" +
+            ", nhanVien='" + getNhanVien() + "'" +
+            ", kyThuatHoTro='" + getKyThuatHoTro() + "'" +
+            ", vatTuHoTro='" + getVatTuHoTro() + "'" +
+            ", soBnKhamDieuTri='" + getSoBnKhamDieuTri() + "'" +
+            ", soBnPhauThuat='" + getSoBnPhauThuat() + "'" +
+            ", soCanBoChuyenGiao='" + getSoCanBoChuyenGiao() + "'" +
+            ", ketQuaCongTac='" + getKetQuaCongTac() + "'" +
+            ", luuTru='" + getLuuTru() + "'" +
+            ", tienAn='" + getTienAn() + "'" +
+            ", tienO='" + getTienO() + "'" +
+            ", tienDiLai='" + getTienDiLai() + "'" +
+            ", taiLieu='" + getTaiLieu() + "'" +
+            ", giangDay='" + getGiangDay() + "'" +
+            ", khac='" + getKhac() + "'" +
             "}";
     }
 }

@@ -11,13 +11,11 @@ public class ChiDaoTuyenDTO implements Serializable {
 
     private Long id;
 
-    private Integer maCdt;
-
-    private Integer soQuyetDinh;
+    private String soQuyetDinh;
 
     private ZonedDateTime ngayQuyetDinh;
 
-    private Integer soHD;
+    private String soHD;
 
     private ZonedDateTime ngayHD;
 
@@ -33,13 +31,35 @@ public class ChiDaoTuyenDTO implements Serializable {
 
     private String ghiChu;
 
-    private Integer noiDungHoTro;
+    private ZonedDateTime ngayTao;
 
-    private Integer baoCaoTaiChinh;
+    private String nhanVien;
 
-    private LyDoCongTacDTO lyDoCongTac;
+    private String kyThuatHoTro;
 
-    private NhanVienTiepNhanDTO nhanVienTiepNhan;
+    private String vatTuHoTro;
+
+    private String soBnKhamDieuTri;
+
+    private String soBnPhauThuat;
+
+    private String soCanBoChuyenGiao;
+
+    private String ketQuaCongTac;
+
+    private String luuTru;
+
+    private String tienAn;
+
+    private String tienO;
+
+    private String tienDiLai;
+
+    private String taiLieu;
+
+    private String giangDay;
+
+    private String khac;
 
     public Long getId() {
         return id;
@@ -49,19 +69,11 @@ public class ChiDaoTuyenDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaCdt() {
-        return maCdt;
-    }
-
-    public void setMaCdt(Integer maCdt) {
-        this.maCdt = maCdt;
-    }
-
-    public Integer getSoQuyetDinh() {
+    public String getSoQuyetDinh() {
         return soQuyetDinh;
     }
 
-    public void setSoQuyetDinh(Integer soQuyetDinh) {
+    public void setSoQuyetDinh(String soQuyetDinh) {
         this.soQuyetDinh = soQuyetDinh;
     }
 
@@ -73,11 +85,11 @@ public class ChiDaoTuyenDTO implements Serializable {
         this.ngayQuyetDinh = ngayQuyetDinh;
     }
 
-    public Integer getSoHD() {
+    public String getSoHD() {
         return soHD;
     }
 
-    public void setSoHD(Integer soHD) {
+    public void setSoHD(String soHD) {
         this.soHD = soHD;
     }
 
@@ -137,36 +149,124 @@ public class ChiDaoTuyenDTO implements Serializable {
         this.ghiChu = ghiChu;
     }
 
-    public Integer getNoiDungHoTro() {
-        return noiDungHoTro;
+    public ZonedDateTime getNgayTao() {
+        return ngayTao;
     }
 
-    public void setNoiDungHoTro(Integer noiDungHoTro) {
-        this.noiDungHoTro = noiDungHoTro;
+    public void setNgayTao(ZonedDateTime ngayTao) {
+        this.ngayTao = ngayTao;
     }
 
-    public Integer getBaoCaoTaiChinh() {
-        return baoCaoTaiChinh;
+    public String getNhanVien() {
+        return nhanVien;
     }
 
-    public void setBaoCaoTaiChinh(Integer baoCaoTaiChinh) {
-        this.baoCaoTaiChinh = baoCaoTaiChinh;
+    public void setNhanVien(String nhanVien) {
+        this.nhanVien = nhanVien;
     }
 
-    public LyDoCongTacDTO getLyDoCongTac() {
-        return lyDoCongTac;
+    public String getKyThuatHoTro() {
+        return kyThuatHoTro;
     }
 
-    public void setLyDoCongTac(LyDoCongTacDTO lyDoCongTac) {
-        this.lyDoCongTac = lyDoCongTac;
+    public void setKyThuatHoTro(String kyThuatHoTro) {
+        this.kyThuatHoTro = kyThuatHoTro;
     }
 
-    public NhanVienTiepNhanDTO getNhanVienTiepNhan() {
-        return nhanVienTiepNhan;
+    public String getVatTuHoTro() {
+        return vatTuHoTro;
     }
 
-    public void setNhanVienTiepNhan(NhanVienTiepNhanDTO nhanVienTiepNhan) {
-        this.nhanVienTiepNhan = nhanVienTiepNhan;
+    public void setVatTuHoTro(String vatTuHoTro) {
+        this.vatTuHoTro = vatTuHoTro;
+    }
+
+    public String getSoBnKhamDieuTri() {
+        return soBnKhamDieuTri;
+    }
+
+    public void setSoBnKhamDieuTri(String soBnKhamDieuTri) {
+        this.soBnKhamDieuTri = soBnKhamDieuTri;
+    }
+
+    public String getSoBnPhauThuat() {
+        return soBnPhauThuat;
+    }
+
+    public void setSoBnPhauThuat(String soBnPhauThuat) {
+        this.soBnPhauThuat = soBnPhauThuat;
+    }
+
+    public String getSoCanBoChuyenGiao() {
+        return soCanBoChuyenGiao;
+    }
+
+    public void setSoCanBoChuyenGiao(String soCanBoChuyenGiao) {
+        this.soCanBoChuyenGiao = soCanBoChuyenGiao;
+    }
+
+    public String getKetQuaCongTac() {
+        return ketQuaCongTac;
+    }
+
+    public void setKetQuaCongTac(String ketQuaCongTac) {
+        this.ketQuaCongTac = ketQuaCongTac;
+    }
+
+    public String getLuuTru() {
+        return luuTru;
+    }
+
+    public void setLuuTru(String luuTru) {
+        this.luuTru = luuTru;
+    }
+
+    public String getTienAn() {
+        return tienAn;
+    }
+
+    public void setTienAn(String tienAn) {
+        this.tienAn = tienAn;
+    }
+
+    public String getTienO() {
+        return tienO;
+    }
+
+    public void setTienO(String tienO) {
+        this.tienO = tienO;
+    }
+
+    public String getTienDiLai() {
+        return tienDiLai;
+    }
+
+    public void setTienDiLai(String tienDiLai) {
+        this.tienDiLai = tienDiLai;
+    }
+
+    public String getTaiLieu() {
+        return taiLieu;
+    }
+
+    public void setTaiLieu(String taiLieu) {
+        this.taiLieu = taiLieu;
+    }
+
+    public String getGiangDay() {
+        return giangDay;
+    }
+
+    public void setGiangDay(String giangDay) {
+        this.giangDay = giangDay;
+    }
+
+    public String getKhac() {
+        return khac;
+    }
+
+    public void setKhac(String khac) {
+        this.khac = khac;
     }
 
     @Override
@@ -195,10 +295,9 @@ public class ChiDaoTuyenDTO implements Serializable {
     public String toString() {
         return "ChiDaoTuyenDTO{" +
             "id=" + getId() +
-            ", maCdt=" + getMaCdt() +
-            ", soQuyetDinh=" + getSoQuyetDinh() +
+            ", soQuyetDinh='" + getSoQuyetDinh() + "'" +
             ", ngayQuyetDinh='" + getNgayQuyetDinh() + "'" +
-            ", soHD=" + getSoHD() +
+            ", soHD='" + getSoHD() + "'" +
             ", ngayHD='" + getNgayHD() + "'" +
             ", lyDoCT='" + getLyDoCT() + "'" +
             ", noiDung='" + getNoiDung() + "'" +
@@ -206,10 +305,21 @@ public class ChiDaoTuyenDTO implements Serializable {
             ", ngayBatDau='" + getNgayBatDau() + "'" +
             ", ngayKetThuc='" + getNgayKetThuc() + "'" +
             ", ghiChu='" + getGhiChu() + "'" +
-            ", noiDungHoTro=" + getNoiDungHoTro() +
-            ", baoCaoTaiChinh=" + getBaoCaoTaiChinh() +
-            ", lyDoCongTac=" + getLyDoCongTac() +
-            ", nhanVienTiepNhan=" + getNhanVienTiepNhan() +
+            ", ngayTao='" + getNgayTao() + "'" +
+            ", nhanVien='" + getNhanVien() + "'" +
+            ", kyThuatHoTro='" + getKyThuatHoTro() + "'" +
+            ", vatTuHoTro='" + getVatTuHoTro() + "'" +
+            ", soBnKhamDieuTri='" + getSoBnKhamDieuTri() + "'" +
+            ", soBnPhauThuat='" + getSoBnPhauThuat() + "'" +
+            ", soCanBoChuyenGiao='" + getSoCanBoChuyenGiao() + "'" +
+            ", ketQuaCongTac='" + getKetQuaCongTac() + "'" +
+            ", luuTru='" + getLuuTru() + "'" +
+            ", tienAn='" + getTienAn() + "'" +
+            ", tienO='" + getTienO() + "'" +
+            ", tienDiLai='" + getTienDiLai() + "'" +
+            ", taiLieu='" + getTaiLieu() + "'" +
+            ", giangDay='" + getGiangDay() + "'" +
+            ", khac='" + getKhac() + "'" +
             "}";
     }
 }

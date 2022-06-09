@@ -32,14 +32,14 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class KetQuaCongTacResourceIT {
 
-    private static final Integer DEFAULT_MA_KET_QUA = 1;
-    private static final Integer UPDATED_MA_KET_QUA = 2;
+    private static final String DEFAULT_MA_KET_QUA = "AAAAAAAAAA";
+    private static final String UPDATED_MA_KET_QUA = "BBBBBBBBBB";
 
     private static final String DEFAULT_TEN_KET_QUA = "AAAAAAAAAA";
     private static final String UPDATED_TEN_KET_QUA = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_THU_TU_SX = 1;
-    private static final Integer UPDATED_THU_TU_SX = 2;
+    private static final String DEFAULT_THU_TU_SX = "AAAAAAAAAA";
+    private static final String UPDATED_THU_TU_SX = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/ket-qua-cong-tacs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

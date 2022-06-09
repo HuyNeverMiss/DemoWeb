@@ -3,10 +3,12 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import { ILyDoCongTac, LyDoCongTac } from '../ly-do-cong-tac.model';
 import { LyDoCongTacService } from '../service/ly-do-cong-tac.service';
+import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
+import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-tuyen.service';
 
 @Component({
   selector: 'jhi-ly-do-cong-tac-update',
@@ -15,18 +17,28 @@ import { LyDoCongTacService } from '../service/ly-do-cong-tac.service';
 export class LyDoCongTacUpdateComponent implements OnInit {
   isSaving = false;
 
+  chiDaoTuyensCollection: IChiDaoTuyen[] = [];
+
   editForm = this.fb.group({
     id: [],
     maLyDo: [],
     tenLyDo: [],
     thuTuSX: [],
+    chiDaoTuyen: [],
   });
 
-  constructor(protected lyDoCongTacService: LyDoCongTacService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected lyDoCongTacService: LyDoCongTacService,
+    protected chiDaoTuyenService: ChiDaoTuyenService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ lyDoCongTac }) => {
       this.updateForm(lyDoCongTac);
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -42,6 +54,10 @@ export class LyDoCongTacUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.lyDoCongTacService.create(lyDoCongTac));
     }
+  }
+
+  trackChiDaoTuyenById(_index: number, item: IChiDaoTuyen): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ILyDoCongTac>>): void {
@@ -69,7 +85,25 @@ export class LyDoCongTacUpdateComponent implements OnInit {
       maLyDo: lyDoCongTac.maLyDo,
       tenLyDo: lyDoCongTac.tenLyDo,
       thuTuSX: lyDoCongTac.thuTuSX,
+      chiDaoTuyen: lyDoCongTac.chiDaoTuyen,
     });
+
+    this.chiDaoTuyensCollection = this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(
+      this.chiDaoTuyensCollection,
+      lyDoCongTac.chiDaoTuyen
+    );
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.chiDaoTuyenService
+      .query({ filter: 'lydocongtac-is-null' })
+      .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
+      .pipe(
+        map((chiDaoTuyens: IChiDaoTuyen[]) =>
+          this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(chiDaoTuyens, this.editForm.get('chiDaoTuyen')!.value)
+        )
+      )
+      .subscribe((chiDaoTuyens: IChiDaoTuyen[]) => (this.chiDaoTuyensCollection = chiDaoTuyens));
   }
 
   protected createFromForm(): ILyDoCongTac {
@@ -79,6 +113,7 @@ export class LyDoCongTacUpdateComponent implements OnInit {
       maLyDo: this.editForm.get(['maLyDo'])!.value,
       tenLyDo: this.editForm.get(['tenLyDo'])!.value,
       thuTuSX: this.editForm.get(['thuTuSX'])!.value,
+      chiDaoTuyen: this.editForm.get(['chiDaoTuyen'])!.value,
     };
   }
 }

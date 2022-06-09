@@ -21,9 +21,9 @@ describe('KetQuaCongTac Service', () => {
 
     elemDefault = {
       id: 0,
-      maKetQua: 0,
+      maKetQua: 'AAAAAAA',
       tenKetQua: 'AAAAAAA',
-      thuTuSX: 0,
+      thuTuSX: 'AAAAAAA',
     };
   });
 
@@ -59,9 +59,9 @@ describe('KetQuaCongTac Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maKetQua: 1,
+          maKetQua: 'BBBBBB',
           tenKetQua: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );
@@ -98,9 +98,9 @@ describe('KetQuaCongTac Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maKetQua: 1,
+          maKetQua: 'BBBBBB',
           tenKetQua: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );

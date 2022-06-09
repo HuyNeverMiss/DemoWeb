@@ -1,17 +1,13 @@
 {
   "applications": "*",
-  "changelogDate": "20220608033713",
+  "changelogDate": "20220609044056",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "chi_dao_tuyen",
   "fields": [
     {
-      "fieldName": "maCdt",
-      "fieldType": "Integer"
-    },
-    {
       "fieldName": "soQuyetDinh",
-      "fieldType": "Integer"
+      "fieldType": "String"
     },
     {
       "fieldName": "ngayQuyetDinh",
@@ -19,7 +15,7 @@
     },
     {
       "fieldName": "soHD",
-      "fieldType": "Integer"
+      "fieldType": "String"
     },
     {
       "fieldName": "ngayHD",
@@ -50,12 +46,64 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "noiDungHoTro",
-      "fieldType": "Integer"
+      "fieldName": "ngayTao",
+      "fieldType": "ZonedDateTime"
     },
     {
-      "fieldName": "baoCaoTaiChinh",
-      "fieldType": "Integer"
+      "fieldName": "nhanVien",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "kyThuatHoTro",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "vatTuHoTro",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "soBnKhamDieuTri",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "soBnPhauThuat",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "soCanBoChuyenGiao",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ketQuaCongTac",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "luuTru",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tienAn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tienO",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tienDiLai",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "taiLieu",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "giangDay",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "khac",
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,
@@ -63,19 +111,6 @@
   "name": "ChiDaoTuyen",
   "pagination": "pagination",
   "readOnly": false,
-  "relationships": [
-    {
-      "otherEntityName": "lyDoCongTac",
-      "otherEntityRelationshipName": "chiDaoTuyen",
-      "relationshipName": "lyDoCongTac",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "nhanVienTiepNhan",
-      "otherEntityRelationshipName": "chiDaoTuyen",
-      "relationshipName": "nhanVienTiepNhan",
-      "relationshipType": "many-to-one"
-    }
-  ],
+  "relationships": [],
   "service": "serviceImpl"
 }

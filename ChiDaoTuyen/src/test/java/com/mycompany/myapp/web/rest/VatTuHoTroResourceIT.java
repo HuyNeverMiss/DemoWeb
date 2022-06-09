@@ -32,14 +32,14 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class VatTuHoTroResourceIT {
 
-    private static final Integer DEFAULT_MA_VAT_TU = 1;
-    private static final Integer UPDATED_MA_VAT_TU = 2;
+    private static final String DEFAULT_MA_VAT_TU = "AAAAAAAAAA";
+    private static final String UPDATED_MA_VAT_TU = "BBBBBBBBBB";
 
     private static final String DEFAULT_TEN_VAT_TU = "AAAAAAAAAA";
     private static final String UPDATED_TEN_VAT_TU = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_THU_TU_SX = 1;
-    private static final Integer UPDATED_THU_TU_SX = 2;
+    private static final String DEFAULT_THU_TU_SX = "AAAAAAAAAA";
+    private static final String UPDATED_THU_TU_SX = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/vat-tu-ho-tros";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

@@ -1,13 +1,13 @@
 {
   "applications": "*",
-  "changelogDate": "20220608033712",
+  "changelogDate": "20220609044055",
   "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "vat_tu_ho_tro",
   "fields": [
     {
       "fieldName": "maVatTu",
-      "fieldType": "Integer"
+      "fieldType": "String"
     },
     {
       "fieldName": "tenVatTu",
@@ -15,7 +15,7 @@
     },
     {
       "fieldName": "thuTuSX",
-      "fieldType": "Integer"
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,
@@ -25,10 +25,10 @@
   "readOnly": false,
   "relationships": [
     {
-      "otherEntityName": "hoTro",
+      "otherEntityName": "chiDaoTuyen",
       "otherEntityRelationshipName": "vatTuHoTro",
       "ownerSide": true,
-      "relationshipName": "hoTro",
+      "relationshipName": "chiDaoTuyen",
       "relationshipType": "one-to-one"
     }
   ],

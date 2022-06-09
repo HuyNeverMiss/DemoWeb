@@ -21,9 +21,9 @@ describe('LyDoCongTac Service', () => {
 
     elemDefault = {
       id: 0,
-      maLyDo: 0,
+      maLyDo: 'AAAAAAA',
       tenLyDo: 'AAAAAAA',
-      thuTuSX: 0,
+      thuTuSX: 'AAAAAAA',
     };
   });
 
@@ -59,9 +59,9 @@ describe('LyDoCongTac Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maLyDo: 1,
+          maLyDo: 'BBBBBB',
           tenLyDo: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );
@@ -98,9 +98,9 @@ describe('LyDoCongTac Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maLyDo: 1,
+          maLyDo: 'BBBBBB',
           tenLyDo: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );

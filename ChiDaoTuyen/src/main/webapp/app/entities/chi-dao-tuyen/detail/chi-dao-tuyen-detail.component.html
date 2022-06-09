@@ -14,10 +14,6 @@
         <dd>
           <span>{{ chiDaoTuyen.id }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.maCdt">Ma Cdt</span></dt>
-        <dd>
-          <span>{{ chiDaoTuyen.maCdt }}</span>
-        </dd>
         <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soQuyetDinh">So Quyet Dinh</span></dt>
         <dd>
           <span>{{ chiDaoTuyen.soQuyetDinh }}</span>
@@ -58,25 +54,65 @@
         <dd>
           <span>{{ chiDaoTuyen.ghiChu }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDungHoTro">Noi Dung Ho Tro</span></dt>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayTao">Ngay Tao</span></dt>
         <dd>
-          <span>{{ chiDaoTuyen.noiDungHoTro }}</span>
+          <span>{{ chiDaoTuyen.ngayTao | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.baoCaoTaiChinh">Bao Cao Tai Chinh</span></dt>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien">Nhan Vien</span></dt>
         <dd>
-          <span>{{ chiDaoTuyen.baoCaoTaiChinh }}</span>
+          <span>{{ chiDaoTuyen.nhanVien }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac">Ly Do Cong Tac</span></dt>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro">Ky Thuat Ho Tro</span></dt>
         <dd>
-          <div *ngIf="chiDaoTuyen.lyDoCongTac">
-            <a [routerLink]="['/ly-do-cong-tac', chiDaoTuyen.lyDoCongTac?.id, 'view']">{{ chiDaoTuyen.lyDoCongTac?.id }}</a>
-          </div>
+          <span>{{ chiDaoTuyen.kyThuatHoTro }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVienTiepNhan">Nhan Vien Tiep Nhan</span></dt>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro">Vat Tu Ho Tro</span></dt>
         <dd>
-          <div *ngIf="chiDaoTuyen.nhanVienTiepNhan">
-            <a [routerLink]="['/nhan-vien-tiep-nhan', chiDaoTuyen.nhanVienTiepNhan?.id, 'view']">{{ chiDaoTuyen.nhanVienTiepNhan?.id }}</a>
-          </div>
+          <span>{{ chiDaoTuyen.vatTuHoTro }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnKhamDieuTri">So Bn Kham Dieu Tri</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soBnKhamDieuTri }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnPhauThuat">So Bn Phau Thuat</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soBnPhauThuat }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soCanBoChuyenGiao">So Can Bo Chuyen Giao</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soCanBoChuyenGiao }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac">Ket Qua Cong Tac</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ketQuaCongTac }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.luuTru">Luu Tru</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.luuTru }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienAn">Tien An</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.tienAn }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienO">Tien O</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.tienO }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienDiLai">Tien Di Lai</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.tienDiLai }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.taiLieu">Tai Lieu</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.taiLieu }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.giangDay">Giang Day</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.giangDay }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.khac">Khac</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.khac }}</span>
         </dd>
       </dl>
 

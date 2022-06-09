@@ -8,8 +8,8 @@ import { of, Subject, from } from 'rxjs';
 
 import { KyThuatHoTroService } from '../service/ky-thuat-ho-tro.service';
 import { IKyThuatHoTro, KyThuatHoTro } from '../ky-thuat-ho-tro.model';
-import { IHoTro } from 'app/entities/ho-tro/ho-tro.model';
-import { HoTroService } from 'app/entities/ho-tro/service/ho-tro.service';
+import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
+import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-tuyen.service';
 
 import { KyThuatHoTroUpdateComponent } from './ky-thuat-ho-tro-update.component';
 
@@ -18,7 +18,7 @@ describe('KyThuatHoTro Management Update Component', () => {
   let fixture: ComponentFixture<KyThuatHoTroUpdateComponent>;
   let activatedRoute: ActivatedRoute;
   let kyThuatHoTroService: KyThuatHoTroService;
-  let hoTroService: HoTroService;
+  let chiDaoTuyenService: ChiDaoTuyenService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -40,40 +40,40 @@ describe('KyThuatHoTro Management Update Component', () => {
     fixture = TestBed.createComponent(KyThuatHoTroUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);
     kyThuatHoTroService = TestBed.inject(KyThuatHoTroService);
-    hoTroService = TestBed.inject(HoTroService);
+    chiDaoTuyenService = TestBed.inject(ChiDaoTuyenService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call hoTro query and add missing value', () => {
+    it('Should call chiDaoTuyen query and add missing value', () => {
       const kyThuatHoTro: IKyThuatHoTro = { id: 456 };
-      const hoTro: IHoTro = { id: 82671 };
-      kyThuatHoTro.hoTro = hoTro;
+      const chiDaoTuyen: IChiDaoTuyen = { id: 53257 };
+      kyThuatHoTro.chiDaoTuyen = chiDaoTuyen;
 
-      const hoTroCollection: IHoTro[] = [{ id: 93848 }];
-      jest.spyOn(hoTroService, 'query').mockReturnValue(of(new HttpResponse({ body: hoTroCollection })));
-      const expectedCollection: IHoTro[] = [hoTro, ...hoTroCollection];
-      jest.spyOn(hoTroService, 'addHoTroToCollectionIfMissing').mockReturnValue(expectedCollection);
+      const chiDaoTuyenCollection: IChiDaoTuyen[] = [{ id: 9396 }];
+      jest.spyOn(chiDaoTuyenService, 'query').mockReturnValue(of(new HttpResponse({ body: chiDaoTuyenCollection })));
+      const expectedCollection: IChiDaoTuyen[] = [chiDaoTuyen, ...chiDaoTuyenCollection];
+      jest.spyOn(chiDaoTuyenService, 'addChiDaoTuyenToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ kyThuatHoTro });
       comp.ngOnInit();
 
-      expect(hoTroService.query).toHaveBeenCalled();
-      expect(hoTroService.addHoTroToCollectionIfMissing).toHaveBeenCalledWith(hoTroCollection, hoTro);
-      expect(comp.hoTrosCollection).toEqual(expectedCollection);
+      expect(chiDaoTuyenService.query).toHaveBeenCalled();
+      expect(chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing).toHaveBeenCalledWith(chiDaoTuyenCollection, chiDaoTuyen);
+      expect(comp.chiDaoTuyensCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const kyThuatHoTro: IKyThuatHoTro = { id: 456 };
-      const hoTro: IHoTro = { id: 10564 };
-      kyThuatHoTro.hoTro = hoTro;
+      const chiDaoTuyen: IChiDaoTuyen = { id: 3060 };
+      kyThuatHoTro.chiDaoTuyen = chiDaoTuyen;
 
       activatedRoute.data = of({ kyThuatHoTro });
       comp.ngOnInit();
 
       expect(comp.editForm.value).toEqual(expect.objectContaining(kyThuatHoTro));
-      expect(comp.hoTrosCollection).toContain(hoTro);
+      expect(comp.chiDaoTuyensCollection).toContain(chiDaoTuyen);
     });
   });
 
@@ -142,10 +142,10 @@ describe('KyThuatHoTro Management Update Component', () => {
   });
 
   describe('Tracking relationships identifiers', () => {
-    describe('trackHoTroById', () => {
-      it('Should return tracked HoTro primary key', () => {
+    describe('trackChiDaoTuyenById', () => {
+      it('Should return tracked ChiDaoTuyen primary key', () => {
         const entity = { id: 123 };
-        const trackResult = comp.trackHoTroById(0, entity);
+        const trackResult = comp.trackChiDaoTuyenById(0, entity);
         expect(trackResult).toEqual(entity.id);
       });
     });

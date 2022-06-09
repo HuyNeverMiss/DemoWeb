@@ -21,9 +21,9 @@ describe('KyThuatHoTro Service', () => {
 
     elemDefault = {
       id: 0,
-      maKyThuat: 0,
+      maKyThuat: 'AAAAAAA',
       tenKyThuat: 'AAAAAAA',
-      thuTuSX: 0,
+      thuTuSX: 'AAAAAAA',
     };
   });
 
@@ -59,9 +59,9 @@ describe('KyThuatHoTro Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maKyThuat: 1,
+          maKyThuat: 'BBBBBB',
           tenKyThuat: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );
@@ -78,7 +78,7 @@ describe('KyThuatHoTro Service', () => {
     it('should partial update a KyThuatHoTro', () => {
       const patchObject = Object.assign(
         {
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         new KyThuatHoTro()
       );
@@ -98,9 +98,9 @@ describe('KyThuatHoTro Service', () => {
       const returnedFromService = Object.assign(
         {
           id: 1,
-          maKyThuat: 1,
+          maKyThuat: 'BBBBBB',
           tenKyThuat: 'BBBBBB',
-          thuTuSX: 1,
+          thuTuSX: 'BBBBBB',
         },
         elemDefault
       );

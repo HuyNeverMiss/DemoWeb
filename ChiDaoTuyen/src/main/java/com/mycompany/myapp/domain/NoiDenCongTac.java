@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -23,15 +22,14 @@ public class NoiDenCongTac implements Serializable {
     private Long id;
 
     @Column(name = "ma_noi_den")
-    private Integer maNoiDen;
+    private String maNoiDen;
 
     @Column(name = "ten_noi_den")
     private String tenNoiDen;
 
     @Column(name = "thu_tu_sx")
-    private Integer thuTuSX;
+    private String thuTuSX;
 
-    @JsonIgnoreProperties(value = { "lyDoCongTac", "nhanVienTiepNhan" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
     private ChiDaoTuyen chiDaoTuyen;
@@ -51,16 +49,16 @@ public class NoiDenCongTac implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaNoiDen() {
+    public String getMaNoiDen() {
         return this.maNoiDen;
     }
 
-    public NoiDenCongTac maNoiDen(Integer maNoiDen) {
+    public NoiDenCongTac maNoiDen(String maNoiDen) {
         this.setMaNoiDen(maNoiDen);
         return this;
     }
 
-    public void setMaNoiDen(Integer maNoiDen) {
+    public void setMaNoiDen(String maNoiDen) {
         this.maNoiDen = maNoiDen;
     }
 
@@ -77,16 +75,16 @@ public class NoiDenCongTac implements Serializable {
         this.tenNoiDen = tenNoiDen;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return this.thuTuSX;
     }
 
-    public NoiDenCongTac thuTuSX(Integer thuTuSX) {
+    public NoiDenCongTac thuTuSX(String thuTuSX) {
         this.setThuTuSX(thuTuSX);
         return this;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
@@ -127,9 +125,9 @@ public class NoiDenCongTac implements Serializable {
     public String toString() {
         return "NoiDenCongTac{" +
             "id=" + getId() +
-            ", maNoiDen=" + getMaNoiDen() +
+            ", maNoiDen='" + getMaNoiDen() + "'" +
             ", tenNoiDen='" + getTenNoiDen() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
             "}";
     }
 }

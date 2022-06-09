@@ -1,8 +1,8 @@
 package com.mycompany.myapp.service.mapper;
 
-import com.mycompany.myapp.domain.HoTro;
+import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.KetQuaCongTac;
-import com.mycompany.myapp.service.dto.HoTroDTO;
+import com.mycompany.myapp.service.dto.ChiDaoTuyenDTO;
 import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
 import org.mapstruct.*;
 
@@ -11,11 +11,11 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface KetQuaCongTacMapper extends EntityMapper<KetQuaCongTacDTO, KetQuaCongTac> {
-    @Mapping(target = "hoTro", source = "hoTro", qualifiedByName = "hoTroId")
+    @Mapping(target = "chiDaoTuyen", source = "chiDaoTuyen", qualifiedByName = "chiDaoTuyenId")
     KetQuaCongTacDTO toDto(KetQuaCongTac s);
 
-    @Named("hoTroId")
+    @Named("chiDaoTuyenId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    HoTroDTO toDtoHoTroId(HoTro hoTro);
+    ChiDaoTuyenDTO toDtoChiDaoTuyenId(ChiDaoTuyen chiDaoTuyen);
 }

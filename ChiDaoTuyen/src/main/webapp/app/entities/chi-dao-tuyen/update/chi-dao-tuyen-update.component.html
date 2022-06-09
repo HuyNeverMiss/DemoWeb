@@ -18,14 +18,9 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.maCdt" for="field_maCdt">Ma Cdt</label>
-          <input type="number" class="form-control" name="maCdt" id="field_maCdt" data-cy="maCdt" formControlName="maCdt" />
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soQuyetDinh" for="field_soQuyetDinh">So Quyet Dinh</label>
           <input
-            type="number"
+            type="text"
             class="form-control"
             name="soQuyetDinh"
             id="field_soQuyetDinh"
@@ -53,7 +48,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soHD" for="field_soHD">So HD</label>
-          <input type="number" class="form-control" name="soHD" id="field_soHD" data-cy="soHD" formControlName="soHD" />
+          <input type="text" class="form-control" name="soHD" id="field_soHD" data-cy="soHD" formControlName="soHD" />
         </div>
 
         <div class="row mb-3">
@@ -129,69 +124,138 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDungHoTro" for="field_noiDungHoTro">Noi Dung Ho Tro</label>
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayTao" for="field_ngayTao">Ngay Tao</label>
+          <div class="d-flex">
+            <input
+              id="field_ngayTao"
+              data-cy="ngayTao"
+              type="datetime-local"
+              class="form-control"
+              name="ngayTao"
+              formControlName="ngayTao"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien" for="field_nhanVien">Nhan Vien</label>
+          <input type="text" class="form-control" name="nhanVien" id="field_nhanVien" data-cy="nhanVien" formControlName="nhanVien" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro" for="field_kyThuatHoTro">Ky Thuat Ho Tro</label>
           <input
-            type="number"
+            type="text"
             class="form-control"
-            name="noiDungHoTro"
-            id="field_noiDungHoTro"
-            data-cy="noiDungHoTro"
-            formControlName="noiDungHoTro"
+            name="kyThuatHoTro"
+            id="field_kyThuatHoTro"
+            data-cy="kyThuatHoTro"
+            formControlName="kyThuatHoTro"
           />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.baoCaoTaiChinh" for="field_baoCaoTaiChinh"
-            >Bao Cao Tai Chinh</label
-          >
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro" for="field_vatTuHoTro">Vat Tu Ho Tro</label>
           <input
-            type="number"
+            type="text"
             class="form-control"
-            name="baoCaoTaiChinh"
-            id="field_baoCaoTaiChinh"
-            data-cy="baoCaoTaiChinh"
-            formControlName="baoCaoTaiChinh"
+            name="vatTuHoTro"
+            id="field_vatTuHoTro"
+            data-cy="vatTuHoTro"
+            formControlName="vatTuHoTro"
           />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac" for="field_lyDoCongTac">Ly Do Cong Tac</label>
-          <select class="form-control" id="field_lyDoCongTac" data-cy="lyDoCongTac" name="lyDoCongTac" formControlName="lyDoCongTac">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                lyDoCongTacOption.id === editForm.get('lyDoCongTac')!.value?.id ? editForm.get('lyDoCongTac')!.value : lyDoCongTacOption
-              "
-              *ngFor="let lyDoCongTacOption of lyDoCongTacsSharedCollection; trackBy: trackLyDoCongTacById"
-            >
-              {{ lyDoCongTacOption.id }}
-            </option>
-          </select>
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnKhamDieuTri" for="field_soBnKhamDieuTri"
+            >So Bn Kham Dieu Tri</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="soBnKhamDieuTri"
+            id="field_soBnKhamDieuTri"
+            data-cy="soBnKhamDieuTri"
+            formControlName="soBnKhamDieuTri"
+          />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVienTiepNhan" for="field_nhanVienTiepNhan"
-            >Nhan Vien Tiep Nhan</label
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnPhauThuat" for="field_soBnPhauThuat"
+            >So Bn Phau Thuat</label
           >
-          <select
+          <input
+            type="text"
             class="form-control"
-            id="field_nhanVienTiepNhan"
-            data-cy="nhanVienTiepNhan"
-            name="nhanVienTiepNhan"
-            formControlName="nhanVienTiepNhan"
+            name="soBnPhauThuat"
+            id="field_soBnPhauThuat"
+            data-cy="soBnPhauThuat"
+            formControlName="soBnPhauThuat"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soCanBoChuyenGiao" for="field_soCanBoChuyenGiao"
+            >So Can Bo Chuyen Giao</label
           >
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                nhanVienTiepNhanOption.id === editForm.get('nhanVienTiepNhan')!.value?.id
-                  ? editForm.get('nhanVienTiepNhan')!.value
-                  : nhanVienTiepNhanOption
-              "
-              *ngFor="let nhanVienTiepNhanOption of nhanVienTiepNhansSharedCollection; trackBy: trackNhanVienTiepNhanById"
-            >
-              {{ nhanVienTiepNhanOption.id }}
-            </option>
-          </select>
+          <input
+            type="text"
+            class="form-control"
+            name="soCanBoChuyenGiao"
+            id="field_soCanBoChuyenGiao"
+            data-cy="soCanBoChuyenGiao"
+            formControlName="soCanBoChuyenGiao"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac" for="field_ketQuaCongTac"
+            >Ket Qua Cong Tac</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="ketQuaCongTac"
+            id="field_ketQuaCongTac"
+            data-cy="ketQuaCongTac"
+            formControlName="ketQuaCongTac"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.luuTru" for="field_luuTru">Luu Tru</label>
+          <input type="text" class="form-control" name="luuTru" id="field_luuTru" data-cy="luuTru" formControlName="luuTru" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienAn" for="field_tienAn">Tien An</label>
+          <input type="text" class="form-control" name="tienAn" id="field_tienAn" data-cy="tienAn" formControlName="tienAn" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienO" for="field_tienO">Tien O</label>
+          <input type="text" class="form-control" name="tienO" id="field_tienO" data-cy="tienO" formControlName="tienO" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienDiLai" for="field_tienDiLai">Tien Di Lai</label>
+          <input type="text" class="form-control" name="tienDiLai" id="field_tienDiLai" data-cy="tienDiLai" formControlName="tienDiLai" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.taiLieu" for="field_taiLieu">Tai Lieu</label>
+          <input type="text" class="form-control" name="taiLieu" id="field_taiLieu" data-cy="taiLieu" formControlName="taiLieu" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.giangDay" for="field_giangDay">Giang Day</label>
+          <input type="text" class="form-control" name="giangDay" id="field_giangDay" data-cy="giangDay" formControlName="giangDay" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.khac" for="field_khac">Khac</label>
+          <input type="text" class="form-control" name="khac" id="field_khac" data-cy="khac" formControlName="khac" />
         </div>
       </div>
 

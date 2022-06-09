@@ -82,6 +82,7 @@ export class ChiDaoTuyenService {
       ngayHD: chiDaoTuyen.ngayHD?.isValid() ? chiDaoTuyen.ngayHD.toJSON() : undefined,
       ngayBatDau: chiDaoTuyen.ngayBatDau?.isValid() ? chiDaoTuyen.ngayBatDau.toJSON() : undefined,
       ngayKetThuc: chiDaoTuyen.ngayKetThuc?.isValid() ? chiDaoTuyen.ngayKetThuc.toJSON() : undefined,
+      ngayTao: chiDaoTuyen.ngayTao?.isValid() ? chiDaoTuyen.ngayTao.toJSON() : undefined,
     });
   }
 
@@ -91,6 +92,7 @@ export class ChiDaoTuyenService {
       res.body.ngayHD = res.body.ngayHD ? dayjs(res.body.ngayHD) : undefined;
       res.body.ngayBatDau = res.body.ngayBatDau ? dayjs(res.body.ngayBatDau) : undefined;
       res.body.ngayKetThuc = res.body.ngayKetThuc ? dayjs(res.body.ngayKetThuc) : undefined;
+      res.body.ngayTao = res.body.ngayTao ? dayjs(res.body.ngayTao) : undefined;
     }
     return res;
   }
@@ -102,6 +104,7 @@ export class ChiDaoTuyenService {
         chiDaoTuyen.ngayHD = chiDaoTuyen.ngayHD ? dayjs(chiDaoTuyen.ngayHD) : undefined;
         chiDaoTuyen.ngayBatDau = chiDaoTuyen.ngayBatDau ? dayjs(chiDaoTuyen.ngayBatDau) : undefined;
         chiDaoTuyen.ngayKetThuc = chiDaoTuyen.ngayKetThuc ? dayjs(chiDaoTuyen.ngayKetThuc) : undefined;
+        chiDaoTuyen.ngayTao = chiDaoTuyen.ngayTao ? dayjs(chiDaoTuyen.ngayTao) : undefined;
       });
     }
     return res;

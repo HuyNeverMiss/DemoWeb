@@ -1,20 +1,20 @@
-import { IHoTro } from 'app/entities/ho-tro/ho-tro.model';
+import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
 
 export interface IKetQuaCongTac {
   id?: number;
-  maKetQua?: number | null;
+  maKetQua?: string | null;
   tenKetQua?: string | null;
-  thuTuSX?: number | null;
-  hoTro?: IHoTro | null;
+  thuTuSX?: string | null;
+  chiDaoTuyen?: IChiDaoTuyen | null;
 }
 
 export class KetQuaCongTac implements IKetQuaCongTac {
   constructor(
     public id?: number,
-    public maKetQua?: number | null,
+    public maKetQua?: string | null,
     public tenKetQua?: string | null,
-    public thuTuSX?: number | null,
-    public hoTro?: IHoTro | null
+    public thuTuSX?: string | null,
+    public chiDaoTuyen?: IChiDaoTuyen | null
   ) {}
 }
 

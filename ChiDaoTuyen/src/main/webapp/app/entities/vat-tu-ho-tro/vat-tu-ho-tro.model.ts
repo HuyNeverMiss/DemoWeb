@@ -1,20 +1,20 @@
-import { IHoTro } from 'app/entities/ho-tro/ho-tro.model';
+import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
 
 export interface IVatTuHoTro {
   id?: number;
-  maVatTu?: number | null;
+  maVatTu?: string | null;
   tenVatTu?: string | null;
-  thuTuSX?: number | null;
-  hoTro?: IHoTro | null;
+  thuTuSX?: string | null;
+  chiDaoTuyen?: IChiDaoTuyen | null;
 }
 
 export class VatTuHoTro implements IVatTuHoTro {
   constructor(
     public id?: number,
-    public maVatTu?: number | null,
+    public maVatTu?: string | null,
     public tenVatTu?: string | null,
-    public thuTuSX?: number | null,
-    public hoTro?: IHoTro | null
+    public thuTuSX?: string | null,
+    public chiDaoTuyen?: IChiDaoTuyen | null
   ) {}
 }
 

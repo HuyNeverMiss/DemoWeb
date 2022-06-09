@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -23,18 +22,17 @@ public class KyThuatHoTro implements Serializable {
     private Long id;
 
     @Column(name = "ma_ky_thuat")
-    private Integer maKyThuat;
+    private String maKyThuat;
 
     @Column(name = "ten_ky_thuat")
     private String tenKyThuat;
 
     @Column(name = "thu_tu_sx")
-    private Integer thuTuSX;
+    private String thuTuSX;
 
-    @JsonIgnoreProperties(value = { "chiDaoTuyen" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private HoTro hoTro;
+    private ChiDaoTuyen chiDaoTuyen;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -51,16 +49,16 @@ public class KyThuatHoTro implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaKyThuat() {
+    public String getMaKyThuat() {
         return this.maKyThuat;
     }
 
-    public KyThuatHoTro maKyThuat(Integer maKyThuat) {
+    public KyThuatHoTro maKyThuat(String maKyThuat) {
         this.setMaKyThuat(maKyThuat);
         return this;
     }
 
-    public void setMaKyThuat(Integer maKyThuat) {
+    public void setMaKyThuat(String maKyThuat) {
         this.maKyThuat = maKyThuat;
     }
 
@@ -77,29 +75,29 @@ public class KyThuatHoTro implements Serializable {
         this.tenKyThuat = tenKyThuat;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return this.thuTuSX;
     }
 
-    public KyThuatHoTro thuTuSX(Integer thuTuSX) {
+    public KyThuatHoTro thuTuSX(String thuTuSX) {
         this.setThuTuSX(thuTuSX);
         return this;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
-    public HoTro getHoTro() {
-        return this.hoTro;
+    public ChiDaoTuyen getChiDaoTuyen() {
+        return this.chiDaoTuyen;
     }
 
-    public void setHoTro(HoTro hoTro) {
-        this.hoTro = hoTro;
+    public void setChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyen = chiDaoTuyen;
     }
 
-    public KyThuatHoTro hoTro(HoTro hoTro) {
-        this.setHoTro(hoTro);
+    public KyThuatHoTro chiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.setChiDaoTuyen(chiDaoTuyen);
         return this;
     }
 
@@ -127,9 +125,9 @@ public class KyThuatHoTro implements Serializable {
     public String toString() {
         return "KyThuatHoTro{" +
             "id=" + getId() +
-            ", maKyThuat=" + getMaKyThuat() +
+            ", maKyThuat='" + getMaKyThuat() + "'" +
             ", tenKyThuat='" + getTenKyThuat() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
             "}";
     }
 }

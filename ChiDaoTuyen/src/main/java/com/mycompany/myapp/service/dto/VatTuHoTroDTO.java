@@ -10,13 +10,13 @@ public class VatTuHoTroDTO implements Serializable {
 
     private Long id;
 
-    private Integer maVatTu;
+    private String maVatTu;
 
     private String tenVatTu;
 
-    private Integer thuTuSX;
+    private String thuTuSX;
 
-    private HoTroDTO hoTro;
+    private ChiDaoTuyenDTO chiDaoTuyen;
 
     public Long getId() {
         return id;
@@ -26,11 +26,11 @@ public class VatTuHoTroDTO implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaVatTu() {
+    public String getMaVatTu() {
         return maVatTu;
     }
 
-    public void setMaVatTu(Integer maVatTu) {
+    public void setMaVatTu(String maVatTu) {
         this.maVatTu = maVatTu;
     }
 
@@ -42,20 +42,20 @@ public class VatTuHoTroDTO implements Serializable {
         this.tenVatTu = tenVatTu;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return thuTuSX;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
-    public HoTroDTO getHoTro() {
-        return hoTro;
+    public ChiDaoTuyenDTO getChiDaoTuyen() {
+        return chiDaoTuyen;
     }
 
-    public void setHoTro(HoTroDTO hoTro) {
-        this.hoTro = hoTro;
+    public void setChiDaoTuyen(ChiDaoTuyenDTO chiDaoTuyen) {
+        this.chiDaoTuyen = chiDaoTuyen;
     }
 
     @Override
@@ -84,10 +84,10 @@ public class VatTuHoTroDTO implements Serializable {
     public String toString() {
         return "VatTuHoTroDTO{" +
             "id=" + getId() +
-            ", maVatTu=" + getMaVatTu() +
+            ", maVatTu='" + getMaVatTu() + "'" +
             ", tenVatTu='" + getTenVatTu() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
-            ", hoTro=" + getHoTro() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
+            ", chiDaoTuyen=" + getChiDaoTuyen() +
             "}";
     }
 }

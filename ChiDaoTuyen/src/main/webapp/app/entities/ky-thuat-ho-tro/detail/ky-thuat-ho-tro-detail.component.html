@@ -26,10 +26,10 @@
         <dd>
           <span>{{ kyThuatHoTro.thuTuSX }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.hoTro">Ho Tro</span></dt>
+        <dt><span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.chiDaoTuyen">Chi Dao Tuyen</span></dt>
         <dd>
-          <div *ngIf="kyThuatHoTro.hoTro">
-            <a [routerLink]="['/ho-tro', kyThuatHoTro.hoTro?.id, 'view']">{{ kyThuatHoTro.hoTro?.id }}</a>
+          <div *ngIf="kyThuatHoTro.chiDaoTuyen">
+            <a [routerLink]="['/chi-dao-tuyen', kyThuatHoTro.chiDaoTuyen?.id, 'view']">{{ kyThuatHoTro.chiDaoTuyen?.id }}</a>
           </div>
         </dd>
       </dl>

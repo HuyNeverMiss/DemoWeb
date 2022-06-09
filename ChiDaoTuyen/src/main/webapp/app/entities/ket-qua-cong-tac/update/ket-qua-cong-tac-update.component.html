@@ -19,7 +19,7 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.ketQuaCongTac.maKetQua" for="field_maKetQua">Ma Ket Qua</label>
-          <input type="number" class="form-control" name="maKetQua" id="field_maKetQua" data-cy="maKetQua" formControlName="maKetQua" />
+          <input type="text" class="form-control" name="maKetQua" id="field_maKetQua" data-cy="maKetQua" formControlName="maKetQua" />
         </div>
 
         <div class="row mb-3">
@@ -29,18 +29,20 @@
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.ketQuaCongTac.thuTuSX" for="field_thuTuSX">Thu Tu SX</label>
-          <input type="number" class="form-control" name="thuTuSX" id="field_thuTuSX" data-cy="thuTuSX" formControlName="thuTuSX" />
+          <input type="text" class="form-control" name="thuTuSX" id="field_thuTuSX" data-cy="thuTuSX" formControlName="thuTuSX" />
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.ketQuaCongTac.hoTro" for="field_hoTro">Ho Tro</label>
-          <select class="form-control" id="field_hoTro" data-cy="hoTro" name="hoTro" formControlName="hoTro">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.ketQuaCongTac.chiDaoTuyen" for="field_chiDaoTuyen">Chi Dao Tuyen</label>
+          <select class="form-control" id="field_chiDaoTuyen" data-cy="chiDaoTuyen" name="chiDaoTuyen" formControlName="chiDaoTuyen">
             <option [ngValue]="null"></option>
             <option
-              [ngValue]="hoTroOption.id === editForm.get('hoTro')!.value?.id ? editForm.get('hoTro')!.value : hoTroOption"
-              *ngFor="let hoTroOption of hoTrosCollection; trackBy: trackHoTroById"
+              [ngValue]="
+                chiDaoTuyenOption.id === editForm.get('chiDaoTuyen')!.value?.id ? editForm.get('chiDaoTuyen')!.value : chiDaoTuyenOption
+              "
+              *ngFor="let chiDaoTuyenOption of chiDaoTuyensCollection; trackBy: trackChiDaoTuyenById"
             >
-              {{ hoTroOption.id }}
+              {{ chiDaoTuyenOption.id }}
             </option>
           </select>
         </div>

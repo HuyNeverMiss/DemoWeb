@@ -1,9 +1,6 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -25,18 +22,17 @@ public class LyDoCongTac implements Serializable {
     private Long id;
 
     @Column(name = "ma_ly_do")
-    private Integer maLyDo;
+    private String maLyDo;
 
     @Column(name = "ten_ly_do")
     private String tenLyDo;
 
     @Column(name = "thu_tu_sx")
-    private Integer thuTuSX;
+    private String thuTuSX;
 
-    @OneToMany(mappedBy = "lyDoCongTac")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "lyDoCongTac", "nhanVienTiepNhan" }, allowSetters = true)
-    private Set<ChiDaoTuyen> chiDaoTuyens = new HashSet<>();
+    @OneToOne
+    @JoinColumn(unique = true)
+    private ChiDaoTuyen chiDaoTuyen;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -53,16 +49,16 @@ public class LyDoCongTac implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaLyDo() {
+    public String getMaLyDo() {
         return this.maLyDo;
     }
 
-    public LyDoCongTac maLyDo(Integer maLyDo) {
+    public LyDoCongTac maLyDo(String maLyDo) {
         this.setMaLyDo(maLyDo);
         return this;
     }
 
-    public void setMaLyDo(Integer maLyDo) {
+    public void setMaLyDo(String maLyDo) {
         this.maLyDo = maLyDo;
     }
 
@@ -79,47 +75,29 @@ public class LyDoCongTac implements Serializable {
         this.tenLyDo = tenLyDo;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return this.thuTuSX;
     }
 
-    public LyDoCongTac thuTuSX(Integer thuTuSX) {
+    public LyDoCongTac thuTuSX(String thuTuSX) {
         this.setThuTuSX(thuTuSX);
         return this;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
-    public Set<ChiDaoTuyen> getChiDaoTuyens() {
-        return this.chiDaoTuyens;
+    public ChiDaoTuyen getChiDaoTuyen() {
+        return this.chiDaoTuyen;
     }
 
-    public void setChiDaoTuyens(Set<ChiDaoTuyen> chiDaoTuyens) {
-        if (this.chiDaoTuyens != null) {
-            this.chiDaoTuyens.forEach(i -> i.setLyDoCongTac(null));
-        }
-        if (chiDaoTuyens != null) {
-            chiDaoTuyens.forEach(i -> i.setLyDoCongTac(this));
-        }
-        this.chiDaoTuyens = chiDaoTuyens;
+    public void setChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyen = chiDaoTuyen;
     }
 
-    public LyDoCongTac chiDaoTuyens(Set<ChiDaoTuyen> chiDaoTuyens) {
-        this.setChiDaoTuyens(chiDaoTuyens);
-        return this;
-    }
-
-    public LyDoCongTac addChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
-        this.chiDaoTuyens.add(chiDaoTuyen);
-        chiDaoTuyen.setLyDoCongTac(this);
-        return this;
-    }
-
-    public LyDoCongTac removeChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
-        this.chiDaoTuyens.remove(chiDaoTuyen);
-        chiDaoTuyen.setLyDoCongTac(null);
+    public LyDoCongTac chiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.setChiDaoTuyen(chiDaoTuyen);
         return this;
     }
 
@@ -147,9 +125,9 @@ public class LyDoCongTac implements Serializable {
     public String toString() {
         return "LyDoCongTac{" +
             "id=" + getId() +
-            ", maLyDo=" + getMaLyDo() +
+            ", maLyDo='" + getMaLyDo() + "'" +
             ", tenLyDo='" + getTenLyDo() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
             "}";
     }
 }

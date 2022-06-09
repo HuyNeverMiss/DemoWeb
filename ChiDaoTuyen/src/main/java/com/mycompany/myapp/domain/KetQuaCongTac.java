@@ -1,6 +1,5 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
@@ -23,18 +22,17 @@ public class KetQuaCongTac implements Serializable {
     private Long id;
 
     @Column(name = "ma_ket_qua")
-    private Integer maKetQua;
+    private String maKetQua;
 
     @Column(name = "ten_ket_qua")
     private String tenKetQua;
 
     @Column(name = "thu_tu_sx")
-    private Integer thuTuSX;
+    private String thuTuSX;
 
-    @JsonIgnoreProperties(value = { "chiDaoTuyen" }, allowSetters = true)
     @OneToOne
     @JoinColumn(unique = true)
-    private HoTro hoTro;
+    private ChiDaoTuyen chiDaoTuyen;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -51,16 +49,16 @@ public class KetQuaCongTac implements Serializable {
         this.id = id;
     }
 
-    public Integer getMaKetQua() {
+    public String getMaKetQua() {
         return this.maKetQua;
     }
 
-    public KetQuaCongTac maKetQua(Integer maKetQua) {
+    public KetQuaCongTac maKetQua(String maKetQua) {
         this.setMaKetQua(maKetQua);
         return this;
     }
 
-    public void setMaKetQua(Integer maKetQua) {
+    public void setMaKetQua(String maKetQua) {
         this.maKetQua = maKetQua;
     }
 
@@ -77,29 +75,29 @@ public class KetQuaCongTac implements Serializable {
         this.tenKetQua = tenKetQua;
     }
 
-    public Integer getThuTuSX() {
+    public String getThuTuSX() {
         return this.thuTuSX;
     }
 
-    public KetQuaCongTac thuTuSX(Integer thuTuSX) {
+    public KetQuaCongTac thuTuSX(String thuTuSX) {
         this.setThuTuSX(thuTuSX);
         return this;
     }
 
-    public void setThuTuSX(Integer thuTuSX) {
+    public void setThuTuSX(String thuTuSX) {
         this.thuTuSX = thuTuSX;
     }
 
-    public HoTro getHoTro() {
-        return this.hoTro;
+    public ChiDaoTuyen getChiDaoTuyen() {
+        return this.chiDaoTuyen;
     }
 
-    public void setHoTro(HoTro hoTro) {
-        this.hoTro = hoTro;
+    public void setChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyen = chiDaoTuyen;
     }
 
-    public KetQuaCongTac hoTro(HoTro hoTro) {
-        this.setHoTro(hoTro);
+    public KetQuaCongTac chiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.setChiDaoTuyen(chiDaoTuyen);
         return this;
     }
 
@@ -127,9 +125,9 @@ public class KetQuaCongTac implements Serializable {
     public String toString() {
         return "KetQuaCongTac{" +
             "id=" + getId() +
-            ", maKetQua=" + getMaKetQua() +
+            ", maKetQua='" + getMaKetQua() + "'" +
             ", tenKetQua='" + getTenKetQua() + "'" +
-            ", thuTuSX=" + getThuTuSX() +
+            ", thuTuSX='" + getThuTuSX() + "'" +
             "}";
     }
 }
