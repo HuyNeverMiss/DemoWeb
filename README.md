@@ -91,6 +91,8 @@ Microservices là các dịch vụ nhỏ, tách biệt đại diện cho 1 phầ
 ***Diệp Thanh Huy & Cao Thanh Tuấn***
 <h1>BÁO CÁO THỰC TẬP TUẦN 2</h1>
 
+<img src="https://octodex.github.com/images/mona-the-rivetertocat.png" width="30%"><img src="https://octodex.github.com/images/manufacturetocat.png" width="30%">
+
 **Đề tài:** Hệ thống quản lý chỉ đạo tuyến và NCKH.
 
 ***Nội dung công việc tuần 2:***
