@@ -387,7 +387,7 @@ sẽ bị xóa khỏi CSDL.
 
 ***Diệp Thanh Huy & Cao Thanh Tuấn***
 <h1>Báo cáo thực tập tuần 3</h1>
-<img src="https://octodex.github.com/images/NUX_Octodex.gif" width="30%"><img src="https://octodex.github.com/images/hula_loop_octodex03.gif" width="30%">
+<img src="https://octodex.github.com/images/NUX_Octodex.gif" width="30%"> <img src="https://octodex.github.com/images/hula_loop_octodex03.gif" width="30%">
 
 **Jhipster là gì?**
 
