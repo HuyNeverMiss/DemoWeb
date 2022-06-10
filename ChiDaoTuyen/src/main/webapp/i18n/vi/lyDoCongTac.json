@@ -2,26 +2,26 @@
   "chiDaoTuyenApp": {
     "lyDoCongTac": {
       "home": {
-        "title": "Ly Do Cong Tacs",
-        "refreshListLabel": "Refresh list",
-        "createLabel": "Thêm mới một Ly Do Cong Tac",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Ly Do Cong Tac",
-        "notFound": "No Ly Do Cong Tacs found"
+        "title": "Lý Do Công Tác",
+        "refreshListLabel": "Cập nhật lại danh sách",
+        "createLabel": "Thêm mới một Lý Do Công Tác",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Lý Do Công Tác",
+        "notFound": "Không tìm thấy Lý Do Công Tác"
       },
-      "created": "Một Ly Do Cong Tac mới được tạo với định danh {{ param }}",
-      "updated": "Một Ly Do Cong Tac cập nhật với định danh {{ param }}",
-      "deleted": "Một Ly Do Cong Tac đã xóa với định danh {{ param }}",
+      "created": "Một Lý Do Công Tác mới được tạo với định danh {{ param }}",
+      "updated": "Một Lý Do Công Tác cập nhật với định danh {{ param }}",
+      "deleted": "Một Lý Do Công Tác đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Ly Do Cong Tac {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Lý Do Công Tác {{ id }}?"
       },
       "detail": {
-        "title": "Ly Do Cong Tac"
+        "title": "Lý Do Công Tác"
       },
       "id": "ID",
-      "maLyDo": "Ma Ly Do",
-      "tenLyDo": "Ten Ly Do",
-      "thuTuSX": "Thu Tu SX",
-      "chiDaoTuyen": "Chi Dao Tuyen"
+      "maLyDo": "Mã Lý Do",
+      "tenLyDo": "Tên Lý Do",
+      "thuTuSX": "Thứ Tự SX",
+      "chiDaoTuyen": "Chỉ Đạo Tuyến"
     }
   }
 }
