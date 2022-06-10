@@ -77,7 +77,7 @@ Microservices là các dịch vụ nhỏ, tách biệt đại diện cho 1 phầ
 * Chạy ngay trong IDE, hoặc build thành file JAR để chạy được ngay, không cần cấu hình server
 
 ***Tính năng:***
-* Tạo các ứng dụng Spring độc lậ
+* Tạo các ứng dụng Spring độc lập
 * Nhúng trực tiếp Tomcat, Jetty hoặc Undertow (không cần phải deploy ra file WAR)
 * Các starter dependency giúp việc cấu hình Maven đơn giản hơn
 * Tự động cấu hình Spring khi cần thiết
