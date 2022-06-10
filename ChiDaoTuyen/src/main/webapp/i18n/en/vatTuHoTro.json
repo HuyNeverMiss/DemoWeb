@@ -2,11 +2,11 @@
   "chiDaoTuyenApp": {
     "vatTuHoTro": {
       "home": {
-        "title": "Vat Tu Ho Tros",
+        "title": "Vat Tu Ho Tro",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Vat Tu Ho Tro",
         "createOrEditLabel": "Create or edit a Vat Tu Ho Tro",
-        "notFound": "No Vat Tu Ho Tros found"
+        "notFound": "No Vat Tu Ho Tro found"
       },
       "created": "A new Vat Tu Ho Tro is created with identifier {{ param }}",
       "updated": "A Vat Tu Ho Tro is updated with identifier {{ param }}",

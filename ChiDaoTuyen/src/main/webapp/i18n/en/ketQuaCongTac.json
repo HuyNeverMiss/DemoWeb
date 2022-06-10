@@ -2,11 +2,11 @@
   "chiDaoTuyenApp": {
     "ketQuaCongTac": {
       "home": {
-        "title": "Ket Qua Cong Tacs",
+        "title": "Ket Qua Cong Tac",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Ket Qua Cong Tac",
         "createOrEditLabel": "Create or edit a Ket Qua Cong Tac",
-        "notFound": "No Ket Qua Cong Tacs found"
+        "notFound": "No Ket Qua Cong Tac found"
       },
       "created": "A new Ket Qua Cong Tac is created with identifier {{ param }}",
       "updated": "A Ket Qua Cong Tac is updated with identifier {{ param }}",
