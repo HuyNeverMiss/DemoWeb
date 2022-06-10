@@ -1,7 +1,7 @@
 ***Diệp Thanh Huy & Cao Thanh Tuấn***
 <h1>Báo cáo thực tập tuần 1</h1> 
 
-![Minion](https://octodex.github.com/images/minion.png) 
+<img src="https://octodex.github.com/images/daftpunktocat-thomas.gif" width="50%"><img src="https://octodex.github.com/images/daftpunktocat-guy.gif" width="50%">
 
 **Câu 1: Cơ sở dữ liệu phân tán là gì?**
 
