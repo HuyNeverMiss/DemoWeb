@@ -1,4 +1,5 @@
-<h1>Báo cáo thực tập tuần 1 (Diệp Thanh Huy)</h1> 
+***Diệp Thanh Huy & Cao Thanh Tuấn***
+<h1>Báo cáo thực tập tuần 1</h1> 
 
 ![Minion](https://octodex.github.com/images/minion.png) 
 
@@ -87,7 +88,8 @@ Microservices là các dịch vụ nhỏ, tách biệt đại diện cho 1 phầ
 * Tự động cấu hình Spring khi cần thiết
 * Không sinh code cấu hình và không yêu cầu phải cấu hình bằng XML …
 
-<h2>BÁO CÁO THỰC TẬP TUẦN 2</h2>
+***Diệp Thanh Huy & Cao Thanh Tuấn***
+<h1>BÁO CÁO THỰC TẬP TUẦN 2</h1>
 
 **Đề tài:** Hệ thống quản lý chỉ đạo tuyến và NCKH.
 
