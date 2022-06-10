@@ -380,3 +380,54 @@ sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL
 
 Cán bộ quản lý sẽ chọn đề tài cần xóa, sau đó nhấn vào nút xóa, đề tài
 sẽ bị xóa khỏi CSDL.
+
+***Diệp Thanh Huy & Cao Thanh Tuấn***
+<h1>Báo cáo thực tập tuần 3</h1>
+
+**Jhipster là gì?**
+
+***Jhipster(viết tắt của Java Hipster)*** là cách đơn giản để chúng tạo ra project xung quanh những công nghệ được ưa thích nhất với Spring technologies và Angular/React. Jhipster hỗ trợ rất nhiều công nghệ khác nhau. 
+>* Phía Backend, chúng ta có thể dùng các công gnheej như Spring boot, Spring Sercurity, Maven, Grandle... 
+>* Phía Frontend, các framework chúng ta có thể sử dụng như React, Angular, VueJs,... 
+>* Chúng ta có thể sử dụng nhiều loại cư sở dữ liệu khác nhau cả về Sql hoặc NoSql như MySql, Cassandra, MongoDB, PostgreSql... 
+>* Sau khi generate chúng ta có thể đưa code của mình lên server, Jhipster hỗ trợ nhiều cách khác nhau như: Docker, Aws, Heroku,... 
+
+**Yêu cầu hệ thống**
+>* Cài đặt đầy đủ các thư viện cho Jhipster bao gồm:
+>* Cài đặt cấu hình Java 11 trên máy tính.
+>* Cài đặt NodeJs từ trang chủ.
+>* Cài đặt Gradle.
+
+**Khởi tạo dự án**
+> \- Tất cả câu lệnh đều nhập thủ công trên command prompt của máy tính. Để tạo dự án Jhipster, thực hiện:
+>* Tạo 1 thư mục trống chứa dự án bằng lệnh: mkdir "Tên dự án".
+>* Chuyển đến thư mục vừa tạo bằng lệnh: cd "tên dự án".
+>* Tạo tự động ứng dụng JHipster bằng lệnh: jhipster.
+>* Sau đó, lựa chọn những thứ phù hợp với dự án của người dùng.
+
+> \- Bây giờ người dùng đã có dự án với:
+>* Backend: Spring boot
+>* Frontend : Angular, Bootstrap.
+>* Database: PostgreSql (production), H2 with disk-based (development).
+
+> \- Chạy ứng dung Spring boot bằng lệnh: gradlew -x webapp.
+
+> \- Sau đó dùng lệnh: npm start để khởi chạy trang web
+
+**Angular trong các project Jhipster**
+
+>* Angular được sử dụng để xây dựng giao diện người dụng trong dự án Jhipster
+>* Thư viện ng-jhipster chứa các chức năng tiện ích và các thành phần phổ biến.
+>	
+>	\+ Validation directives
+>	
+>	\+ Internationalization components
+>	
+>	\+ Commonly-used pipes like capitalization, ordering and word truncation
+>	
+>	\+ Base64, date and pagination handling services
+>	
+>	\+ A notification system (see below)
+>* Angular CLI là một công cụ để phát triển, xây dựng và duy trì các ứng dụng Angular.
+>* Cấu trúc dự án được sử dụng theo kiểu Angular.
+>* Sử dụng bộ định tuyến Angular để tổ chức các phần khác nhau của ứng dụng khách.
