@@ -55,12 +55,7 @@ Microservices là các dịch vụ nhỏ, tách biệt đại diện cho 1 phầ
 - Việc triển khai hệ thống microservice phức tạp hơn nhiều so với việc triển khai hệ thống nguyên khối.
 - Cần tính toán kích cỡ của một microservice. Nếu một microservice quá lớn, bản thân nó trở thành một ứng dụng theo kiến trúc nguyên khối.
 
-<style>
-  .ok{font-size: 30px; text-align: center; font-family: Arial;}
-</style>
-<div class="ok">
-  Đôi nét về Spring Boot
-</div>
+<h2>Đôi nét về Spring Boot</h2>
 
 **Spring Boot** là một dự án phát triển bởi JAV (ngôn ngữ java) trong hệ sinh thái Spring framework. Nó giúp cho các lập trình viên chúng ta đơn giản hóa quá trình lập trình một ứng dụng với Spring, chỉ tập trung vào việc phát triển business cho ứng dụng.
 
@@ -82,7 +77,7 @@ Microservices là các dịch vụ nhỏ, tách biệt đại diện cho 1 phầ
 * Chạy ngay trong IDE, hoặc build thành file JAR để chạy được ngay, không cần cấu hình server
 
 ***Tính năng:***
-* Tạo các ứng dụng Spring độc lậ
+* Tạo các ứng dụng Spring độc lập
 * Nhúng trực tiếp Tomcat, Jetty hoặc Undertow (không cần phải deploy ra file WAR)
 * Các starter dependency giúp việc cấu hình Maven đơn giản hơn
 * Tự động cấu hình Spring khi cần thiết
