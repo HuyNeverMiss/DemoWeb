@@ -487,24 +487,29 @@ sẽ bị xóa khỏi CSDL.
 > * LyDoCongTac.java:
 > 
 > <img src="https://scontent.fsgn8-1.fna.fbcdn.net/v/t1.15752-9/287131358_411137110937186_8985633758402898099_n.png?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_ohc=H_btShD5QngAX-E3DsG&_nc_ht=scontent.fsgn8-1.fna&oh=03_AVICgeW31cLJjakvsBT9eayMeT2-GSZ8lbavdF7Lrd2cpQ&oe=62CEA693">
+> 
 > File này dùng để xác định 1 lý do công tác đã sẵn sàng để lưu trong cơ sở dữ liệu với các biến id, ma_ly_do, ten_ly_do, thu_tu_sx
 >
 > * LyDoCongTacMapper.java:
 > 
 > <img src="https://scontent.fsgn8-2.fna.fbcdn.net/v/t1.15752-9/287004568_356027339934819_6365761728075412296_n.png?_nc_cat=111&ccb=1-7&_nc_sid=ae9488&_nc_ohc=mehDle7qQ0wAX-TKipM&_nc_ht=scontent.fsgn8-2.fna&oh=03_AVI4gdPXSvYjX6jvL9e5LRVUl7GGbSo0JNmv710HRdoyKw&oe=62D09A46">
+> 
 >  Giao diện EntityMapper của nó để thực hiện ánh xạ giữa các đối tượng miền LyDoCongTac và DTO.
 >
 > * LyDoCongTacDTO.java:
 > 
 > <img src="https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.15752-9/286615668_703086684108234_6040935629804751782_n.png?_nc_cat=106&ccb=1-7&_nc_sid=ae9488&_nc_ohc=aEHU19ElFOEAX_-lwy-&_nc_ht=scontent.fsgn13-2.fna&oh=03_AVJy0g-7mjNat7gOc6ZzWtsgk5OXdHsE-DsfxrEiWAAqTQ&oe=62D0E60A">
+> 
 > File này dùng để chuyển đội các đối tượng thành chuỗi byte để trao đổi giữa các module được viết bằng java.
 >
 > * LyDoCongTacService.java:
 > 
 > <img src="https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.15752-9/287685580_482582366971049_1101915831464305505_n.png?_nc_cat=108&ccb=1-7&_nc_sid=ae9488&_nc_ohc=ntkoNAzBKdUAX_gt9ho&tn=SV6hVh2R4Cm3ZCu0&_nc_ht=scontent.fsgn13-2.fna&oh=03_AVLQm3anXBJKJc4iorHF3znfkUCjExjn0l9eEksEdyv7UA&oe=62CFC6C8">
+> 
 > File này là giao diện quản lý các dịch vụ phục vụ các logic nghiệp vụ thêm, sữa, xóa, tìm kiếm theo id hoặc tìm tất cả.
 >
 > * LyDoCongTacServicelmpl.java:
 > 
 > <img src="https://scontent.fsgn3-1.fna.fbcdn.net/v/t1.15752-9/287059320_982233159120262_5101214496782636012_n.png?_nc_cat=104&ccb=1-7&_nc_sid=ae9488&_nc_ohc=R7QGACQ58GQAX9RnzOQ&_nc_ht=scontent.fsgn3-1.fna&oh=03_AVJqJj6gzXODScg6cv2_3gzxHrz-xRNCBg4xPr6V7TH4Uw&oe=62CF9232">
+> 
 > File này sẽ thực hiện các nghiệp vụ thêm, sữa, xóa, tìm theo id hoặc tìm tất cả của file LyDoCongTacService.java.
