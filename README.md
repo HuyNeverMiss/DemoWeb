@@ -1,4 +1,4 @@
-***Diệp Thanh Huy & Cao Thanh Tuấn***
+***Diệp Thanh Huy***
 <h1>Báo cáo thực tập tuần 1</h1> 
 
 <img src="https://octodex.github.com/images/daftpunktocat-thomas.gif" width="50%"><img src="https://octodex.github.com/images/daftpunktocat-guy.gif" width="50%">
