@@ -83,6 +83,7 @@ Microservices là các dịch vụ nhỏ, tách biệt đại diện cho 1 phầ
 * Tự động cấu hình Spring khi cần thiết
 * Không sinh code cấu hình và không yêu cầu phải cấu hình bằng XML …
 
+***
 ***Diệp Thanh Huy & Cao Thanh Tuấn***
 <h1>BÁO CÁO THỰC TẬP TUẦN 2</h1>
 
@@ -380,6 +381,7 @@ sửa thông tin và lưu, trả về kết quả thay đổi và lưu vào CSDL
 Cán bộ quản lý sẽ chọn đề tài cần xóa, sau đó nhấn vào nút xóa, đề tài
 sẽ bị xóa khỏi CSDL.
 
+***
 ***Diệp Thanh Huy & Cao Thanh Tuấn***
 <h1>Báo cáo thực tập tuần 3</h1>
 <img src="https://octodex.github.com/images/NUX_Octodex.gif" width="30%"> <img src="https://octodex.github.com/images/hula_loop_octodex03.gif" width="30%">
@@ -431,3 +433,48 @@ sẽ bị xóa khỏi CSDL.
 >* Angular CLI là một công cụ để phát triển, xây dựng và duy trì các ứng dụng Angular.
 >* Cấu trúc dự án được sử dụng theo kiểu Angular.
 >* Sử dụng bộ định tuyến Angular để tổ chức các phần khác nhau của ứng dụng khách.
+
+***
+***Diệp Thanh Huy***
+<h1>Báo cáo thực tập tuần 4</h1> 
+
+<img src="https://octodex.github.com/images/jetpacktocat.png" width="50%"><img src="https://octodex.github.com/images/skatetocat.png" width="50%">
+
+***Nội dung tuần 3: Vẽ sơ đồ luồng chức năng mục lý do công tác, mô tả cấu trúc file java phía backend***
+
+***Các sơ đồ DFD:***
+<img src="https://user-images.githubusercontent.com/89766191/173972976-2425bd62-d51e-46dd-910a-756a7eaee546.jpg">
+*DFD View_LyDoCongTac*
+
+<img src="https://user-images.githubusercontent.com/89766191/173972844-7e008999-05bf-4503-a4fc-ecd877f11c71.jpg">
+*DFD Create_LyDoCongTac*
+
+<img src="https://user-images.githubusercontent.com/89766191/173972899-d577c973-7427-4f78-9575-5a75b8f0d61e.jpg">
+*DFD Edit_LyDoCongTac*
+
+<img src="https://user-images.githubusercontent.com/89766191/173972955-a83284e5-ca04-45b3-91e8-d9bef087b352.jpg">
+*DFD Delete_LyDoCongTac*
+
+***Cấu trúc và chức năng file java phía backend***
+> \* Mục Lý Do Công Tác : chức năng create lý do công tác
+>
+> * Gồm 3 file:
+> 
+>   \+ LyDoCongTacResource.java: xử lý viêc gọi API thực hiện tạo lý do công tác với hàm "createLyDoCongTac" 
+>   
+>   \+ LyDoCongTacRepository.java: tiếp nhận yêu cầu khởi tạo lý do công tác từ file "LyDoCongTacResource.java".
+>   
+>   \+ LyDoCongTac.java: thực hiện tạo lý do công tác với các biến ma_ly_do, ten_ly_do, thu_tu_sx theo lời gọi từ file "LyDoCongTacRepository.java".
+
+>
+> * LyDoCongTacResource.java:
+> 
+>  <img src="https://scontent.fsgn8-2.fna.fbcdn.net/v/t1.15752-9/285648346_544929460444432_4909397535736779253_n.png?_nc_cat=111&ccb=1-7&_nc_sid=ae9488&_nc_ohc=bLEImXkZgIUAX9Ob63s&_nc_oc=AQmE2ktnPM4wPLm4sKSSYxwOQJUTfevD67Fdg5gP8eeAwlTshDtyc4c_ZeY5FPxPXdc&_nc_ht=scontent.fsgn8-2.fna&oh=03_AVKZgO7xR4675wnz2M2al-alTc222T3XLDt_U6q3Xd1o5w&oe=62CF6DCA">
+> 
+> * LyDoCongTacRepository.java:
+> 
+> <img src="https://scontent.fsgn8-1.fna.fbcdn.net/v/t1.15752-9/285324745_1368678006939883_4745318130879299687_n.png?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_ohc=29Ru0xnT2SMAX83Udpg&tn=SV6hVh2R4Cm3ZCu0&_nc_ht=scontent.fsgn8-1.fna&oh=03_AVJSLsaorrqIlgdUfwPvRyFkfkdfK2xSVbOE7OFg5UA6MA&oe=62CE5F79">
+>
+> * LyDoCongTac.java:
+> 
+> <img src="https://scontent.fsgn3-1.fna.fbcdn.net/v/t1.15752-9/287047382_295374772722676_2311377902971176168_n.png?_nc_cat=104&ccb=1-7&_nc_sid=ae9488&_nc_ohc=ucARCC8rsHcAX-YLnNB&_nc_ht=scontent.fsgn3-1.fna&oh=03_AVI0H2LU9_K05Nqy5AxSyTaIcBGboKfxh6JLkCjom5k8AQ&oe=62D189C5">
