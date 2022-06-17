@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data SQL repository for the LyDoCongTac entity.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("unused")/*Vô hiệu hóa một số cảnh báo của trình biên dịch các biến cục bộ hoặc phương thức riêng không được sử dụng */
 @Repository
-public interface LyDoCongTacRepository extends JpaRepository<LyDoCongTac, Long> {}
+public interface LyDoCongTacRepository
+    extends
+        JpaRepository<LyDoCongTac, Long> {}/*Giao diện LyDoCongTacRepository: khai bao thư viện mở rộng JpaRepository với miền là LyDoCongTac và kiểu dử liệu của id là long */

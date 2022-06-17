@@ -5,6 +5,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+/*Xác định lý do công tác với các thuộc tính như id, ma_ly_do, ten_ly_do, thu_tu_sx */
 /**
  * A LyDoCongTac.
  */
