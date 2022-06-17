@@ -499,7 +499,7 @@ sẽ bị xóa khỏi CSDL.
 > 
 > <img src="https://scontent.fsgn8-2.fna.fbcdn.net/v/t1.15752-9/287004568_356027339934819_6365761728075412296_n.png?_nc_cat=111&ccb=1-7&_nc_sid=ae9488&_nc_ohc=mehDle7qQ0wAX-TKipM&_nc_ht=scontent.fsgn8-2.fna&oh=03_AVI4gdPXSvYjX6jvL9e5LRVUl7GGbSo0JNmv710HRdoyKw&oe=62D09A46">
 > 
->  Giao diện EntityMapper của nó để thực hiện ánh xạ giữa các đối tượng miền LyDoCongTac và DTO.
+>  Giao diện EntityMapper của nó để thực hiện ánh xạ giữa các đối tượng miền LyDoCongTac và DTO sử dụng mapstruct khi thêm @Mapping.
 >
 > * LyDoCongTacDTO.java:
 > 
