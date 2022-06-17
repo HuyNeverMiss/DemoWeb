@@ -440,7 +440,7 @@ sẽ bị xóa khỏi CSDL.
 
 <img src="https://octodex.github.com/images/jetpacktocat.png" width="50%"><img src="https://octodex.github.com/images/skatetocat.png" width="50%">
 
-***Nội dung tuần 3: Vẽ sơ đồ luồng chức năng mục lý do công tác, mô tả cấu trúc file java phía backend***
+***Nội dung tuần 4: Vẽ sơ đồ luồng chức năng mục lý do công tác, mô tả cấu trúc file java phía backend***
 
 ***Các sơ đồ DFD:***
 <img src="https://user-images.githubusercontent.com/89766191/173972976-2425bd62-d51e-46dd-910a-756a7eaee546.jpg">
@@ -470,9 +470,9 @@ sẽ bị xóa khỏi CSDL.
 >
 >   \+ LyDoCongTacDTO.java
 >
->	\+ LyDoCongTacService.java
+>	  \+ LyDoCongTacService.java
 >	
->	\+ LyDoCongTacServicelmpl.java
+> 	\+ LyDoCongTacServicelmpl.java
 >
 > * LyDoCongTacResource.java:
 > 
