@@ -1,9 +1,8 @@
 package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.mycompany.myapp.domain.KetQuaCongTac}.
@@ -36,10 +35,9 @@ public interface KetQuaCongTacService {
     /**
      * Get all the ketQuaCongTacs.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<KetQuaCongTacDTO> findAll(Pageable pageable);
+    List<KetQuaCongTacDTO> findAll();
 
     /**
      * Get the "id" ketQuaCongTac.

@@ -96,7 +96,7 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.chiDaoTuyenService
-      .query({ filter: 'ketquacongtac-is-null' })
+      .query({ 'ketQuaCongTacId.specified': 'false' })
       .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
       .pipe(
         map((chiDaoTuyens: IChiDaoTuyen[]) =>

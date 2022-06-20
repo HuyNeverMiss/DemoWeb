@@ -2,11 +2,11 @@
   "chiDaoTuyenApp": {
     "lyDoCongTac": {
       "home": {
-        "title": "Ly Do Cong Tac",
+        "title": "Ly Do Cong Tacs",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Ly Do Cong Tac",
         "createOrEditLabel": "Create or edit a Ly Do Cong Tac",
-        "notFound": "No Ly Do Cong Tac found"
+        "notFound": "No Ly Do Cong Tacs found"
       },
       "created": "A new Ly Do Cong Tac is created with identifier {{ param }}",
       "updated": "A Ly Do Cong Tac is updated with identifier {{ param }}",

@@ -5,11 +5,12 @@ import com.mycompany.myapp.repository.VatTuHoTroRepository;
 import com.mycompany.myapp.service.VatTuHoTroService;
 import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
 import com.mycompany.myapp.service.mapper.VatTuHoTroMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,9 @@ public class VatTuHoTroServiceImpl implements VatTuHoTroService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VatTuHoTroDTO> findAll(Pageable pageable) {
+    public List<VatTuHoTroDTO> findAll() {
         log.debug("Request to get all VatTuHoTros");
-        return vatTuHoTroRepository.findAll(pageable).map(vatTuHoTroMapper::toDto);
+        return vatTuHoTroRepository.findAll().stream().map(vatTuHoTroMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

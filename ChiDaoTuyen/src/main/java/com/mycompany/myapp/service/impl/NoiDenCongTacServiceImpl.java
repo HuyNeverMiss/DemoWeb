@@ -5,11 +5,12 @@ import com.mycompany.myapp.repository.NoiDenCongTacRepository;
 import com.mycompany.myapp.service.NoiDenCongTacService;
 import com.mycompany.myapp.service.dto.NoiDenCongTacDTO;
 import com.mycompany.myapp.service.mapper.NoiDenCongTacMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,9 @@ public class NoiDenCongTacServiceImpl implements NoiDenCongTacService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<NoiDenCongTacDTO> findAll(Pageable pageable) {
+    public List<NoiDenCongTacDTO> findAll() {
         log.debug("Request to get all NoiDenCongTacs");
-        return noiDenCongTacRepository.findAll(pageable).map(noiDenCongTacMapper::toDto);
+        return noiDenCongTacRepository.findAll().stream().map(noiDenCongTacMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

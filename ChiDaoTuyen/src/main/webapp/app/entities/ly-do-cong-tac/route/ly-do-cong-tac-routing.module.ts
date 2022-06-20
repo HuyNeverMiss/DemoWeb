@@ -11,9 +11,6 @@ const lyDoCongTacRoute: Routes = [
   {
     path: '',
     component: LyDoCongTacComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

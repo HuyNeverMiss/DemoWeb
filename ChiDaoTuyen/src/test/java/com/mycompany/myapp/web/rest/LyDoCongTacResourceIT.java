@@ -7,8 +7,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mycompany.myapp.IntegrationTest;
+import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.LyDoCongTac;
 import com.mycompany.myapp.repository.LyDoCongTacRepository;
+import com.mycompany.myapp.service.criteria.LyDoCongTacCriteria;
 import com.mycompany.myapp.service.dto.LyDoCongTacDTO;
 import com.mycompany.myapp.service.mapper.LyDoCongTacMapper;
 import java.util.List;
@@ -168,6 +170,324 @@ class LyDoCongTacResourceIT {
             .andExpect(jsonPath("$.maLyDo").value(DEFAULT_MA_LY_DO))
             .andExpect(jsonPath("$.tenLyDo").value(DEFAULT_TEN_LY_DO))
             .andExpect(jsonPath("$.thuTuSX").value(DEFAULT_THU_TU_SX));
+    }
+
+    @Test
+    @Transactional
+    void getLyDoCongTacsByIdFiltering() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        Long id = lyDoCongTac.getId();
+
+        defaultLyDoCongTacShouldBeFound("id.equals=" + id);
+        defaultLyDoCongTacShouldNotBeFound("id.notEquals=" + id);
+
+        defaultLyDoCongTacShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultLyDoCongTacShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultLyDoCongTacShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultLyDoCongTacShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByMaLyDoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where maLyDo equals to DEFAULT_MA_LY_DO
+        defaultLyDoCongTacShouldBeFound("maLyDo.equals=" + DEFAULT_MA_LY_DO);
+
+        // Get all the lyDoCongTacList where maLyDo equals to UPDATED_MA_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("maLyDo.equals=" + UPDATED_MA_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByMaLyDoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where maLyDo not equals to DEFAULT_MA_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("maLyDo.notEquals=" + DEFAULT_MA_LY_DO);
+
+        // Get all the lyDoCongTacList where maLyDo not equals to UPDATED_MA_LY_DO
+        defaultLyDoCongTacShouldBeFound("maLyDo.notEquals=" + UPDATED_MA_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByMaLyDoIsInShouldWork() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where maLyDo in DEFAULT_MA_LY_DO or UPDATED_MA_LY_DO
+        defaultLyDoCongTacShouldBeFound("maLyDo.in=" + DEFAULT_MA_LY_DO + "," + UPDATED_MA_LY_DO);
+
+        // Get all the lyDoCongTacList where maLyDo equals to UPDATED_MA_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("maLyDo.in=" + UPDATED_MA_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByMaLyDoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where maLyDo is not null
+        defaultLyDoCongTacShouldBeFound("maLyDo.specified=true");
+
+        // Get all the lyDoCongTacList where maLyDo is null
+        defaultLyDoCongTacShouldNotBeFound("maLyDo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByMaLyDoContainsSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where maLyDo contains DEFAULT_MA_LY_DO
+        defaultLyDoCongTacShouldBeFound("maLyDo.contains=" + DEFAULT_MA_LY_DO);
+
+        // Get all the lyDoCongTacList where maLyDo contains UPDATED_MA_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("maLyDo.contains=" + UPDATED_MA_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByMaLyDoNotContainsSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where maLyDo does not contain DEFAULT_MA_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("maLyDo.doesNotContain=" + DEFAULT_MA_LY_DO);
+
+        // Get all the lyDoCongTacList where maLyDo does not contain UPDATED_MA_LY_DO
+        defaultLyDoCongTacShouldBeFound("maLyDo.doesNotContain=" + UPDATED_MA_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByTenLyDoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where tenLyDo equals to DEFAULT_TEN_LY_DO
+        defaultLyDoCongTacShouldBeFound("tenLyDo.equals=" + DEFAULT_TEN_LY_DO);
+
+        // Get all the lyDoCongTacList where tenLyDo equals to UPDATED_TEN_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("tenLyDo.equals=" + UPDATED_TEN_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByTenLyDoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where tenLyDo not equals to DEFAULT_TEN_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("tenLyDo.notEquals=" + DEFAULT_TEN_LY_DO);
+
+        // Get all the lyDoCongTacList where tenLyDo not equals to UPDATED_TEN_LY_DO
+        defaultLyDoCongTacShouldBeFound("tenLyDo.notEquals=" + UPDATED_TEN_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByTenLyDoIsInShouldWork() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where tenLyDo in DEFAULT_TEN_LY_DO or UPDATED_TEN_LY_DO
+        defaultLyDoCongTacShouldBeFound("tenLyDo.in=" + DEFAULT_TEN_LY_DO + "," + UPDATED_TEN_LY_DO);
+
+        // Get all the lyDoCongTacList where tenLyDo equals to UPDATED_TEN_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("tenLyDo.in=" + UPDATED_TEN_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByTenLyDoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where tenLyDo is not null
+        defaultLyDoCongTacShouldBeFound("tenLyDo.specified=true");
+
+        // Get all the lyDoCongTacList where tenLyDo is null
+        defaultLyDoCongTacShouldNotBeFound("tenLyDo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByTenLyDoContainsSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where tenLyDo contains DEFAULT_TEN_LY_DO
+        defaultLyDoCongTacShouldBeFound("tenLyDo.contains=" + DEFAULT_TEN_LY_DO);
+
+        // Get all the lyDoCongTacList where tenLyDo contains UPDATED_TEN_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("tenLyDo.contains=" + UPDATED_TEN_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByTenLyDoNotContainsSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where tenLyDo does not contain DEFAULT_TEN_LY_DO
+        defaultLyDoCongTacShouldNotBeFound("tenLyDo.doesNotContain=" + DEFAULT_TEN_LY_DO);
+
+        // Get all the lyDoCongTacList where tenLyDo does not contain UPDATED_TEN_LY_DO
+        defaultLyDoCongTacShouldBeFound("tenLyDo.doesNotContain=" + UPDATED_TEN_LY_DO);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByThuTuSXIsEqualToSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where thuTuSX equals to DEFAULT_THU_TU_SX
+        defaultLyDoCongTacShouldBeFound("thuTuSX.equals=" + DEFAULT_THU_TU_SX);
+
+        // Get all the lyDoCongTacList where thuTuSX equals to UPDATED_THU_TU_SX
+        defaultLyDoCongTacShouldNotBeFound("thuTuSX.equals=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByThuTuSXIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where thuTuSX not equals to DEFAULT_THU_TU_SX
+        defaultLyDoCongTacShouldNotBeFound("thuTuSX.notEquals=" + DEFAULT_THU_TU_SX);
+
+        // Get all the lyDoCongTacList where thuTuSX not equals to UPDATED_THU_TU_SX
+        defaultLyDoCongTacShouldBeFound("thuTuSX.notEquals=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByThuTuSXIsInShouldWork() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where thuTuSX in DEFAULT_THU_TU_SX or UPDATED_THU_TU_SX
+        defaultLyDoCongTacShouldBeFound("thuTuSX.in=" + DEFAULT_THU_TU_SX + "," + UPDATED_THU_TU_SX);
+
+        // Get all the lyDoCongTacList where thuTuSX equals to UPDATED_THU_TU_SX
+        defaultLyDoCongTacShouldNotBeFound("thuTuSX.in=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByThuTuSXIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where thuTuSX is not null
+        defaultLyDoCongTacShouldBeFound("thuTuSX.specified=true");
+
+        // Get all the lyDoCongTacList where thuTuSX is null
+        defaultLyDoCongTacShouldNotBeFound("thuTuSX.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByThuTuSXContainsSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where thuTuSX contains DEFAULT_THU_TU_SX
+        defaultLyDoCongTacShouldBeFound("thuTuSX.contains=" + DEFAULT_THU_TU_SX);
+
+        // Get all the lyDoCongTacList where thuTuSX contains UPDATED_THU_TU_SX
+        defaultLyDoCongTacShouldNotBeFound("thuTuSX.contains=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByThuTuSXNotContainsSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+
+        // Get all the lyDoCongTacList where thuTuSX does not contain DEFAULT_THU_TU_SX
+        defaultLyDoCongTacShouldNotBeFound("thuTuSX.doesNotContain=" + DEFAULT_THU_TU_SX);
+
+        // Get all the lyDoCongTacList where thuTuSX does not contain UPDATED_THU_TU_SX
+        defaultLyDoCongTacShouldBeFound("thuTuSX.doesNotContain=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllLyDoCongTacsByChiDaoTuyenIsEqualToSomething() throws Exception {
+        // Initialize the database
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+        ChiDaoTuyen chiDaoTuyen;
+        if (TestUtil.findAll(em, ChiDaoTuyen.class).isEmpty()) {
+            chiDaoTuyen = ChiDaoTuyenResourceIT.createEntity(em);
+            em.persist(chiDaoTuyen);
+            em.flush();
+        } else {
+            chiDaoTuyen = TestUtil.findAll(em, ChiDaoTuyen.class).get(0);
+        }
+        em.persist(chiDaoTuyen);
+        em.flush();
+        lyDoCongTac.setChiDaoTuyen(chiDaoTuyen);
+        lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
+        Long chiDaoTuyenId = chiDaoTuyen.getId();
+
+        // Get all the lyDoCongTacList where chiDaoTuyen equals to chiDaoTuyenId
+        defaultLyDoCongTacShouldBeFound("chiDaoTuyenId.equals=" + chiDaoTuyenId);
+
+        // Get all the lyDoCongTacList where chiDaoTuyen equals to (chiDaoTuyenId + 1)
+        defaultLyDoCongTacShouldNotBeFound("chiDaoTuyenId.equals=" + (chiDaoTuyenId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultLyDoCongTacShouldBeFound(String filter) throws Exception {
+        restLyDoCongTacMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(lyDoCongTac.getId().intValue())))
+            .andExpect(jsonPath("$.[*].maLyDo").value(hasItem(DEFAULT_MA_LY_DO)))
+            .andExpect(jsonPath("$.[*].tenLyDo").value(hasItem(DEFAULT_TEN_LY_DO)))
+            .andExpect(jsonPath("$.[*].thuTuSX").value(hasItem(DEFAULT_THU_TU_SX)));
+
+        // Check, that the count call also returns 1
+        restLyDoCongTacMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultLyDoCongTacShouldNotBeFound(String filter) throws Exception {
+        restLyDoCongTacMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restLyDoCongTacMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

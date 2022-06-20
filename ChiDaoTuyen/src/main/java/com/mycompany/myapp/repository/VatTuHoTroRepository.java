@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface VatTuHoTroRepository extends JpaRepository<VatTuHoTro, Long> {}
+public interface VatTuHoTroRepository extends JpaRepository<VatTuHoTro, Long>, JpaSpecificationExecutor<VatTuHoTro> {}

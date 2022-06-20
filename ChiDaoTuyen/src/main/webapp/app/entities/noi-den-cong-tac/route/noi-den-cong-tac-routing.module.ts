@@ -11,9 +11,6 @@ const noiDenCongTacRoute: Routes = [
   {
     path: '',
     component: NoiDenCongTacComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

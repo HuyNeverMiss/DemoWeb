@@ -96,7 +96,7 @@ export class NoiDenCongTacUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.chiDaoTuyenService
-      .query({ filter: 'noidencongtac-is-null' })
+      .query({ 'noiDenCongTacId.specified': 'false' })
       .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
       .pipe(
         map((chiDaoTuyens: IChiDaoTuyen[]) =>

@@ -1,9 +1,8 @@
 package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.mycompany.myapp.domain.VatTuHoTro}.
@@ -36,10 +35,9 @@ public interface VatTuHoTroService {
     /**
      * Get all the vatTuHoTros.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<VatTuHoTroDTO> findAll(Pageable pageable);
+    List<VatTuHoTroDTO> findAll();
 
     /**
      * Get the "id" vatTuHoTro.

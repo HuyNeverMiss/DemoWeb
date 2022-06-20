@@ -2,47 +2,47 @@
   "chiDaoTuyenApp": {
     "chiDaoTuyen": {
       "home": {
-        "title": "Chỉ Đạo Tuyến",
-        "refreshListLabel": "Cập nhật lại danh sách",
-        "createLabel": "Thêm mới một Chỉ Đạo Tuyến",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Chỉ Đạo Tuyến",
-        "notFound": "Không tìm thấy Chỉ Đạo Tuyến"
+        "title": "Chi Dao Tuyens",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Chi Dao Tuyen",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Chi Dao Tuyen",
+        "notFound": "No Chi Dao Tuyens found"
       },
-      "created": "Một Chỉ Đạo Tuyến mới được tạo với định danh {{ param }}",
-      "updated": "Một Chỉ Đạo Tuyến cập nhật với định danh {{ param }}",
-      "deleted": "Một Chỉ Đạo Tuyến đã xóa với định danh {{ param }}",
+      "created": "Một Chi Dao Tuyen mới được tạo với định danh {{ param }}",
+      "updated": "Một Chi Dao Tuyen cập nhật với định danh {{ param }}",
+      "deleted": "Một Chi Dao Tuyen đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Chỉ Đạo Tuyến {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Chi Dao Tuyen {{ id }}?"
       },
       "detail": {
-        "title": "Chỉ Đạo Tuyến"
+        "title": "Chi Dao Tuyen"
       },
       "id": "ID",
-      "soQuyetDinh": "Số quyết định",
-      "ngayQuyetDinh": "Ngày quyết định",
-      "soHD": "Số HD",
-      "ngayHD": "Ngày HD",
-      "lyDoCT": "Lý do công tác",
-      "noiDung": "Nội dung",
-      "noiCongTac": "Nơi công tác",
-      "ngayBatDau": "Ngày bắt đầu",
-      "ngayKetThuc": "Ngày kết thúc",
-      "ghiChu": "Ghi chú",
-      "ngayTao": "Ngày tạo",
-      "nhanVien": "Nhân viên",
-      "kyThuatHoTro": "Kỹ thuật hỗ trợ",
-      "vatTuHoTro": "Vật tư hỗ trợ",
-      "soBnKhamDieuTri": "Số bệnh nhân khám điều trị",
-      "soBnPhauThuat": "Số bệnh nhân phẫu thuật",
-      "soCanBoChuyenGiao": "Số cán bộ chuyển giao",
-      "ketQuaCongTac": "Kết quả công tác",
-      "luuTru": "Lưu trú",
-      "tienAn": "Tiền ăn",
-      "tienO": "Tiền ở",
-      "tienDiLai": "Tiền đi lại",
-      "taiLieu": "Tài liệu",
-      "giangDay": "Giảng dạy",
-      "khac": "Khác"
+      "soQuyetDinh": "So Quyet Dinh",
+      "ngayQuyetDinh": "Ngay Quyet Dinh",
+      "soHD": "So HD",
+      "ngayHD": "Ngay HD",
+      "lyDoCT": "Ly Do CT",
+      "noiDung": "Noi Dung",
+      "noiCongTac": "Noi Cong Tac",
+      "ngayBatDau": "Ngay Bat Dau",
+      "ngayKetThuc": "Ngay Ket Thuc",
+      "ghiChu": "Ghi Chu",
+      "ngayTao": "Ngay Tao",
+      "nhanVien": "Nhan Vien",
+      "kyThuatHoTro": "Ky Thuat Ho Tro",
+      "vatTuHoTro": "Vat Tu Ho Tro",
+      "soBnKhamDieuTri": "So Bn Kham Dieu Tri",
+      "soBnPhauThuat": "So Bn Phau Thuat",
+      "soCanBoChuyenGiao": "So Can Bo Chuyen Giao",
+      "ketQuaCongTac": "Ket Qua Cong Tac",
+      "luuTru": "Luu Tru",
+      "tienAn": "Tien An",
+      "tienO": "Tien O",
+      "tienDiLai": "Tien Di Lai",
+      "taiLieu": "Tai Lieu",
+      "giangDay": "Giang Day",
+      "khac": "Khac"
     }
   }
 }

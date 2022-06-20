@@ -2,11 +2,11 @@
   "chiDaoTuyenApp": {
     "chiDaoTuyen": {
       "home": {
-        "title": "Chi Dao Tuyen",
+        "title": "Chi Dao Tuyens",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Chi Dao Tuyen",
         "createOrEditLabel": "Create or edit a Chi Dao Tuyen",
-        "notFound": "No Chi Dao Tuyen found"
+        "notFound": "No Chi Dao Tuyens found"
       },
       "created": "A new Chi Dao Tuyen is created with identifier {{ param }}",
       "updated": "A Chi Dao Tuyen is updated with identifier {{ param }}",

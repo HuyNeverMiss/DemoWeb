@@ -107,9 +107,9 @@
     }
   ],
   "fluentMethods": true,
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "name": "ChiDaoTuyen",
-  "pagination": "pagination",
+  "pagination": "no",
   "readOnly": false,
   "relationships": [],
   "service": "serviceImpl"

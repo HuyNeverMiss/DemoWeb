@@ -11,9 +11,6 @@ const chiDaoTuyenRoute: Routes = [
   {
     path: '',
     component: ChiDaoTuyenComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

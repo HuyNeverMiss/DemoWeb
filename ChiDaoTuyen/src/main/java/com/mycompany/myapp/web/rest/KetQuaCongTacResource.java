@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.KetQuaCongTacRepository;
+import com.mycompany.myapp.service.KetQuaCongTacQueryService;
 import com.mycompany.myapp.service.KetQuaCongTacService;
+import com.mycompany.myapp.service.criteria.KetQuaCongTacCriteria;
 import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -12,15 +14,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -41,9 +37,16 @@ public class KetQuaCongTacResource {
 
     private final KetQuaCongTacRepository ketQuaCongTacRepository;
 
-    public KetQuaCongTacResource(KetQuaCongTacService ketQuaCongTacService, KetQuaCongTacRepository ketQuaCongTacRepository) {
+    private final KetQuaCongTacQueryService ketQuaCongTacQueryService;
+
+    public KetQuaCongTacResource(
+        KetQuaCongTacService ketQuaCongTacService,
+        KetQuaCongTacRepository ketQuaCongTacRepository,
+        KetQuaCongTacQueryService ketQuaCongTacQueryService
+    ) {
         this.ketQuaCongTacService = ketQuaCongTacService;
         this.ketQuaCongTacRepository = ketQuaCongTacRepository;
+        this.ketQuaCongTacQueryService = ketQuaCongTacQueryService;
     }
 
     /**
@@ -139,15 +142,26 @@ public class KetQuaCongTacResource {
     /**
      * {@code GET  /ket-qua-cong-tacs} : get all the ketQuaCongTacs.
      *
-     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ketQuaCongTacs in body.
      */
     @GetMapping("/ket-qua-cong-tacs")
-    public ResponseEntity<List<KetQuaCongTacDTO>> getAllKetQuaCongTacs(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of KetQuaCongTacs");
-        Page<KetQuaCongTacDTO> page = ketQuaCongTacService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    public ResponseEntity<List<KetQuaCongTacDTO>> getAllKetQuaCongTacs(KetQuaCongTacCriteria criteria) {
+        log.debug("REST request to get KetQuaCongTacs by criteria: {}", criteria);
+        List<KetQuaCongTacDTO> entityList = ketQuaCongTacQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /ket-qua-cong-tacs/count} : count all the ketQuaCongTacs.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/ket-qua-cong-tacs/count")
+    public ResponseEntity<Long> countKetQuaCongTacs(KetQuaCongTacCriteria criteria) {
+        log.debug("REST request to count KetQuaCongTacs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(ketQuaCongTacQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -7,8 +7,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mycompany.myapp.IntegrationTest;
+import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.VatTuHoTro;
 import com.mycompany.myapp.repository.VatTuHoTroRepository;
+import com.mycompany.myapp.service.criteria.VatTuHoTroCriteria;
 import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
 import com.mycompany.myapp.service.mapper.VatTuHoTroMapper;
 import java.util.List;
@@ -168,6 +170,324 @@ class VatTuHoTroResourceIT {
             .andExpect(jsonPath("$.maVatTu").value(DEFAULT_MA_VAT_TU))
             .andExpect(jsonPath("$.tenVatTu").value(DEFAULT_TEN_VAT_TU))
             .andExpect(jsonPath("$.thuTuSX").value(DEFAULT_THU_TU_SX));
+    }
+
+    @Test
+    @Transactional
+    void getVatTuHoTrosByIdFiltering() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        Long id = vatTuHoTro.getId();
+
+        defaultVatTuHoTroShouldBeFound("id.equals=" + id);
+        defaultVatTuHoTroShouldNotBeFound("id.notEquals=" + id);
+
+        defaultVatTuHoTroShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultVatTuHoTroShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultVatTuHoTroShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultVatTuHoTroShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByMaVatTuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where maVatTu equals to DEFAULT_MA_VAT_TU
+        defaultVatTuHoTroShouldBeFound("maVatTu.equals=" + DEFAULT_MA_VAT_TU);
+
+        // Get all the vatTuHoTroList where maVatTu equals to UPDATED_MA_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("maVatTu.equals=" + UPDATED_MA_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByMaVatTuIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where maVatTu not equals to DEFAULT_MA_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("maVatTu.notEquals=" + DEFAULT_MA_VAT_TU);
+
+        // Get all the vatTuHoTroList where maVatTu not equals to UPDATED_MA_VAT_TU
+        defaultVatTuHoTroShouldBeFound("maVatTu.notEquals=" + UPDATED_MA_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByMaVatTuIsInShouldWork() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where maVatTu in DEFAULT_MA_VAT_TU or UPDATED_MA_VAT_TU
+        defaultVatTuHoTroShouldBeFound("maVatTu.in=" + DEFAULT_MA_VAT_TU + "," + UPDATED_MA_VAT_TU);
+
+        // Get all the vatTuHoTroList where maVatTu equals to UPDATED_MA_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("maVatTu.in=" + UPDATED_MA_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByMaVatTuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where maVatTu is not null
+        defaultVatTuHoTroShouldBeFound("maVatTu.specified=true");
+
+        // Get all the vatTuHoTroList where maVatTu is null
+        defaultVatTuHoTroShouldNotBeFound("maVatTu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByMaVatTuContainsSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where maVatTu contains DEFAULT_MA_VAT_TU
+        defaultVatTuHoTroShouldBeFound("maVatTu.contains=" + DEFAULT_MA_VAT_TU);
+
+        // Get all the vatTuHoTroList where maVatTu contains UPDATED_MA_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("maVatTu.contains=" + UPDATED_MA_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByMaVatTuNotContainsSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where maVatTu does not contain DEFAULT_MA_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("maVatTu.doesNotContain=" + DEFAULT_MA_VAT_TU);
+
+        // Get all the vatTuHoTroList where maVatTu does not contain UPDATED_MA_VAT_TU
+        defaultVatTuHoTroShouldBeFound("maVatTu.doesNotContain=" + UPDATED_MA_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByTenVatTuIsEqualToSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where tenVatTu equals to DEFAULT_TEN_VAT_TU
+        defaultVatTuHoTroShouldBeFound("tenVatTu.equals=" + DEFAULT_TEN_VAT_TU);
+
+        // Get all the vatTuHoTroList where tenVatTu equals to UPDATED_TEN_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("tenVatTu.equals=" + UPDATED_TEN_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByTenVatTuIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where tenVatTu not equals to DEFAULT_TEN_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("tenVatTu.notEquals=" + DEFAULT_TEN_VAT_TU);
+
+        // Get all the vatTuHoTroList where tenVatTu not equals to UPDATED_TEN_VAT_TU
+        defaultVatTuHoTroShouldBeFound("tenVatTu.notEquals=" + UPDATED_TEN_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByTenVatTuIsInShouldWork() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where tenVatTu in DEFAULT_TEN_VAT_TU or UPDATED_TEN_VAT_TU
+        defaultVatTuHoTroShouldBeFound("tenVatTu.in=" + DEFAULT_TEN_VAT_TU + "," + UPDATED_TEN_VAT_TU);
+
+        // Get all the vatTuHoTroList where tenVatTu equals to UPDATED_TEN_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("tenVatTu.in=" + UPDATED_TEN_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByTenVatTuIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where tenVatTu is not null
+        defaultVatTuHoTroShouldBeFound("tenVatTu.specified=true");
+
+        // Get all the vatTuHoTroList where tenVatTu is null
+        defaultVatTuHoTroShouldNotBeFound("tenVatTu.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByTenVatTuContainsSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where tenVatTu contains DEFAULT_TEN_VAT_TU
+        defaultVatTuHoTroShouldBeFound("tenVatTu.contains=" + DEFAULT_TEN_VAT_TU);
+
+        // Get all the vatTuHoTroList where tenVatTu contains UPDATED_TEN_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("tenVatTu.contains=" + UPDATED_TEN_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByTenVatTuNotContainsSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where tenVatTu does not contain DEFAULT_TEN_VAT_TU
+        defaultVatTuHoTroShouldNotBeFound("tenVatTu.doesNotContain=" + DEFAULT_TEN_VAT_TU);
+
+        // Get all the vatTuHoTroList where tenVatTu does not contain UPDATED_TEN_VAT_TU
+        defaultVatTuHoTroShouldBeFound("tenVatTu.doesNotContain=" + UPDATED_TEN_VAT_TU);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByThuTuSXIsEqualToSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where thuTuSX equals to DEFAULT_THU_TU_SX
+        defaultVatTuHoTroShouldBeFound("thuTuSX.equals=" + DEFAULT_THU_TU_SX);
+
+        // Get all the vatTuHoTroList where thuTuSX equals to UPDATED_THU_TU_SX
+        defaultVatTuHoTroShouldNotBeFound("thuTuSX.equals=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByThuTuSXIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where thuTuSX not equals to DEFAULT_THU_TU_SX
+        defaultVatTuHoTroShouldNotBeFound("thuTuSX.notEquals=" + DEFAULT_THU_TU_SX);
+
+        // Get all the vatTuHoTroList where thuTuSX not equals to UPDATED_THU_TU_SX
+        defaultVatTuHoTroShouldBeFound("thuTuSX.notEquals=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByThuTuSXIsInShouldWork() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where thuTuSX in DEFAULT_THU_TU_SX or UPDATED_THU_TU_SX
+        defaultVatTuHoTroShouldBeFound("thuTuSX.in=" + DEFAULT_THU_TU_SX + "," + UPDATED_THU_TU_SX);
+
+        // Get all the vatTuHoTroList where thuTuSX equals to UPDATED_THU_TU_SX
+        defaultVatTuHoTroShouldNotBeFound("thuTuSX.in=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByThuTuSXIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where thuTuSX is not null
+        defaultVatTuHoTroShouldBeFound("thuTuSX.specified=true");
+
+        // Get all the vatTuHoTroList where thuTuSX is null
+        defaultVatTuHoTroShouldNotBeFound("thuTuSX.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByThuTuSXContainsSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where thuTuSX contains DEFAULT_THU_TU_SX
+        defaultVatTuHoTroShouldBeFound("thuTuSX.contains=" + DEFAULT_THU_TU_SX);
+
+        // Get all the vatTuHoTroList where thuTuSX contains UPDATED_THU_TU_SX
+        defaultVatTuHoTroShouldNotBeFound("thuTuSX.contains=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByThuTuSXNotContainsSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+
+        // Get all the vatTuHoTroList where thuTuSX does not contain DEFAULT_THU_TU_SX
+        defaultVatTuHoTroShouldNotBeFound("thuTuSX.doesNotContain=" + DEFAULT_THU_TU_SX);
+
+        // Get all the vatTuHoTroList where thuTuSX does not contain UPDATED_THU_TU_SX
+        defaultVatTuHoTroShouldBeFound("thuTuSX.doesNotContain=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllVatTuHoTrosByChiDaoTuyenIsEqualToSomething() throws Exception {
+        // Initialize the database
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+        ChiDaoTuyen chiDaoTuyen;
+        if (TestUtil.findAll(em, ChiDaoTuyen.class).isEmpty()) {
+            chiDaoTuyen = ChiDaoTuyenResourceIT.createEntity(em);
+            em.persist(chiDaoTuyen);
+            em.flush();
+        } else {
+            chiDaoTuyen = TestUtil.findAll(em, ChiDaoTuyen.class).get(0);
+        }
+        em.persist(chiDaoTuyen);
+        em.flush();
+        vatTuHoTro.setChiDaoTuyen(chiDaoTuyen);
+        vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
+        Long chiDaoTuyenId = chiDaoTuyen.getId();
+
+        // Get all the vatTuHoTroList where chiDaoTuyen equals to chiDaoTuyenId
+        defaultVatTuHoTroShouldBeFound("chiDaoTuyenId.equals=" + chiDaoTuyenId);
+
+        // Get all the vatTuHoTroList where chiDaoTuyen equals to (chiDaoTuyenId + 1)
+        defaultVatTuHoTroShouldNotBeFound("chiDaoTuyenId.equals=" + (chiDaoTuyenId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultVatTuHoTroShouldBeFound(String filter) throws Exception {
+        restVatTuHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(vatTuHoTro.getId().intValue())))
+            .andExpect(jsonPath("$.[*].maVatTu").value(hasItem(DEFAULT_MA_VAT_TU)))
+            .andExpect(jsonPath("$.[*].tenVatTu").value(hasItem(DEFAULT_TEN_VAT_TU)))
+            .andExpect(jsonPath("$.[*].thuTuSX").value(hasItem(DEFAULT_THU_TU_SX)));
+
+        // Check, that the count call also returns 1
+        restVatTuHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultVatTuHoTroShouldNotBeFound(String filter) throws Exception {
+        restVatTuHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restVatTuHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

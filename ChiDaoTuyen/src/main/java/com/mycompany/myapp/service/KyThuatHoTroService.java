@@ -1,9 +1,8 @@
 package com.mycompany.myapp.service;
 
 import com.mycompany.myapp.service.dto.KyThuatHoTroDTO;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.mycompany.myapp.domain.KyThuatHoTro}.
@@ -36,10 +35,9 @@ public interface KyThuatHoTroService {
     /**
      * Get all the kyThuatHoTros.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<KyThuatHoTroDTO> findAll(Pageable pageable);
+    List<KyThuatHoTroDTO> findAll();
 
     /**
      * Get the "id" kyThuatHoTro.

@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.VatTuHoTroRepository;
+import com.mycompany.myapp.service.VatTuHoTroQueryService;
 import com.mycompany.myapp.service.VatTuHoTroService;
+import com.mycompany.myapp.service.criteria.VatTuHoTroCriteria;
 import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -12,15 +14,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -41,9 +37,16 @@ public class VatTuHoTroResource {
 
     private final VatTuHoTroRepository vatTuHoTroRepository;
 
-    public VatTuHoTroResource(VatTuHoTroService vatTuHoTroService, VatTuHoTroRepository vatTuHoTroRepository) {
+    private final VatTuHoTroQueryService vatTuHoTroQueryService;
+
+    public VatTuHoTroResource(
+        VatTuHoTroService vatTuHoTroService,
+        VatTuHoTroRepository vatTuHoTroRepository,
+        VatTuHoTroQueryService vatTuHoTroQueryService
+    ) {
         this.vatTuHoTroService = vatTuHoTroService;
         this.vatTuHoTroRepository = vatTuHoTroRepository;
+        this.vatTuHoTroQueryService = vatTuHoTroQueryService;
     }
 
     /**
@@ -139,15 +142,26 @@ public class VatTuHoTroResource {
     /**
      * {@code GET  /vat-tu-ho-tros} : get all the vatTuHoTros.
      *
-     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vatTuHoTros in body.
      */
     @GetMapping("/vat-tu-ho-tros")
-    public ResponseEntity<List<VatTuHoTroDTO>> getAllVatTuHoTros(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of VatTuHoTros");
-        Page<VatTuHoTroDTO> page = vatTuHoTroService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    public ResponseEntity<List<VatTuHoTroDTO>> getAllVatTuHoTros(VatTuHoTroCriteria criteria) {
+        log.debug("REST request to get VatTuHoTros by criteria: {}", criteria);
+        List<VatTuHoTroDTO> entityList = vatTuHoTroQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /vat-tu-ho-tros/count} : count all the vatTuHoTros.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/vat-tu-ho-tros/count")
+    public ResponseEntity<Long> countVatTuHoTros(VatTuHoTroCriteria criteria) {
+        log.debug("REST request to count VatTuHoTros by criteria: {}", criteria);
+        return ResponseEntity.ok().body(vatTuHoTroQueryService.countByCriteria(criteria));
     }
 
     /**

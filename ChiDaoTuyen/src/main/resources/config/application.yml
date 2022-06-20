@@ -186,7 +186,7 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: http://danquy.vnpthis.vn/auth/realms/bsgd
+            issuer-uri: https://danquy.vnpthis.vn/auth/realms/bsgd
         registration:
           oidc:
             client-id: web_app

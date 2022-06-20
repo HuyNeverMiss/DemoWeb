@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IChiDaoTuyen } from '../chi-dao-tuyen.model';
-
-import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { ChiDaoTuyenService } from '../service/chi-dao-tuyen.service';
 import { ChiDaoTuyenDeleteDialogComponent } from '../delete/chi-dao-tuyen-delete-dialog.component';
 
@@ -17,44 +13,25 @@ import { ChiDaoTuyenDeleteDialogComponent } from '../delete/chi-dao-tuyen-delete
 export class ChiDaoTuyenComponent implements OnInit {
   chiDaoTuyens?: IChiDaoTuyen[];
   isLoading = false;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page?: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
 
-  constructor(
-    protected chiDaoTuyenService: ChiDaoTuyenService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected modalService: NgbModal
-  ) {}
+  constructor(protected chiDaoTuyenService: ChiDaoTuyenService, protected modalService: NgbModal) {}
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
+  loadAll(): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.chiDaoTuyenService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe({
-        next: (res: HttpResponse<IChiDaoTuyen[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        error: () => {
-          this.isLoading = false;
-          this.onError();
-        },
-      });
+    this.chiDaoTuyenService.query().subscribe({
+      next: (res: HttpResponse<IChiDaoTuyen[]>) => {
+        this.isLoading = false;
+        this.chiDaoTuyens = res.body ?? [];
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
   }
 
   ngOnInit(): void {
-    this.handleNavigation();
+    this.loadAll();
   }
 
   trackId(_index: number, item: IChiDaoTuyen): number {
@@ -67,51 +44,8 @@ export class ChiDaoTuyenComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadPage();
+        this.loadAll();
       }
     });
-  }
-
-  protected sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? ASC : DESC)];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
-    return result;
-  }
-
-  protected handleNavigation(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      const page = params.get('page');
-      const pageNumber = +(page ?? 1);
-      const sort = (params.get(SORT) ?? data['defaultSort']).split(',');
-      const predicate = sort[0];
-      const ascending = sort[1] === ASC;
-      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
-        this.predicate = predicate;
-        this.ascending = ascending;
-        this.loadPage(pageNumber, true);
-      }
-    });
-  }
-
-  protected onSuccess(data: IChiDaoTuyen[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    if (navigate) {
-      this.router.navigate(['/chi-dao-tuyen'], {
-        queryParams: {
-          page: this.page,
-          size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? ASC : DESC),
-        },
-      });
-    }
-    this.chiDaoTuyens = data ?? [];
-    this.ngbPaginationPage = this.page;
-  }
-
-  protected onError(): void {
-    this.ngbPaginationPage = this.page ?? 1;
   }
 }

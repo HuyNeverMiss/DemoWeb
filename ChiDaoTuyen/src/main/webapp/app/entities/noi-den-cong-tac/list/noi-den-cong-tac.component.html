@@ -3,7 +3,7 @@
     <span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.home.title">Noi Den Cong Tacs</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.home.refreshListLabel">Refresh List</span>
       </button>
@@ -31,20 +31,12 @@
   <div class="table-responsive" id="entities" *ngIf="noiDenCongTacs && noiDenCongTacs.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="maNoiDen">
-            <span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.maNoiDen">Ma Noi Den</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="tenNoiDen">
-            <span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.tenNoiDen">Ten Noi Den</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="thuTuSX">
-            <span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.thuTuSX">Thu Tu SX</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="chiDaoTuyen.id">
-            <span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.chiDaoTuyen">Chi Dao Tuyen</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.maNoiDen">Ma Noi Den</span></th>
+          <th scope="col"><span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.tenNoiDen">Ten Noi Den</span></th>
+          <th scope="col"><span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.thuTuSX">Thu Tu SX</span></th>
+          <th scope="col"><span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.chiDaoTuyen">Chi Dao Tuyen</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -92,23 +84,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <div *ngIf="noiDenCongTacs && noiDenCongTacs.length > 0">
-    <div class="d-flex justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="d-flex justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
-    </div>
   </div>
 </div>

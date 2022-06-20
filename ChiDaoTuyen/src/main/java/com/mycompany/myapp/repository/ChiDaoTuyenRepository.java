@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ChiDaoTuyenRepository extends JpaRepository<ChiDaoTuyen, Long> {}
+public interface ChiDaoTuyenRepository extends JpaRepository<ChiDaoTuyen, Long>, JpaSpecificationExecutor<ChiDaoTuyen> {}

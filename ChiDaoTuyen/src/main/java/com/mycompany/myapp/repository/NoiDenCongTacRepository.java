@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface NoiDenCongTacRepository extends JpaRepository<NoiDenCongTac, Long> {}
+public interface NoiDenCongTacRepository extends JpaRepository<NoiDenCongTac, Long>, JpaSpecificationExecutor<NoiDenCongTac> {}

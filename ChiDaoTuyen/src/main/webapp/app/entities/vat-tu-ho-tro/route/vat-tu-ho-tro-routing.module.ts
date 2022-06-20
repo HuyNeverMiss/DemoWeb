@@ -11,9 +11,6 @@ const vatTuHoTroRoute: Routes = [
   {
     path: '',
     component: VatTuHoTroComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

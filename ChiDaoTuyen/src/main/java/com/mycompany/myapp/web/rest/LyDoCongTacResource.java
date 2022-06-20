@@ -1,7 +1,9 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.repository.LyDoCongTacRepository;
+import com.mycompany.myapp.service.LyDoCongTacQueryService;
 import com.mycompany.myapp.service.LyDoCongTacService;
+import com.mycompany.myapp.service.criteria.LyDoCongTacCriteria;
 import com.mycompany.myapp.service.dto.LyDoCongTacDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -12,15 +14,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
-import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -41,9 +37,16 @@ public class LyDoCongTacResource {
 
     private final LyDoCongTacRepository lyDoCongTacRepository;
 
-    public LyDoCongTacResource(LyDoCongTacService lyDoCongTacService, LyDoCongTacRepository lyDoCongTacRepository) {
+    private final LyDoCongTacQueryService lyDoCongTacQueryService;
+
+    public LyDoCongTacResource(
+        LyDoCongTacService lyDoCongTacService,
+        LyDoCongTacRepository lyDoCongTacRepository,
+        LyDoCongTacQueryService lyDoCongTacQueryService
+    ) {
         this.lyDoCongTacService = lyDoCongTacService;
         this.lyDoCongTacRepository = lyDoCongTacRepository;
+        this.lyDoCongTacQueryService = lyDoCongTacQueryService;
     }
 
     /**
@@ -139,15 +142,26 @@ public class LyDoCongTacResource {
     /**
      * {@code GET  /ly-do-cong-tacs} : get all the lyDoCongTacs.
      *
-     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of lyDoCongTacs in body.
      */
     @GetMapping("/ly-do-cong-tacs")
-    public ResponseEntity<List<LyDoCongTacDTO>> getAllLyDoCongTacs(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of LyDoCongTacs");
-        Page<LyDoCongTacDTO> page = lyDoCongTacService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    public ResponseEntity<List<LyDoCongTacDTO>> getAllLyDoCongTacs(LyDoCongTacCriteria criteria) {
+        log.debug("REST request to get LyDoCongTacs by criteria: {}", criteria);
+        List<LyDoCongTacDTO> entityList = lyDoCongTacQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(entityList);
+    }
+
+    /**
+     * {@code GET  /ly-do-cong-tacs/count} : count all the lyDoCongTacs.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/ly-do-cong-tacs/count")
+    public ResponseEntity<Long> countLyDoCongTacs(LyDoCongTacCriteria criteria) {
+        log.debug("REST request to count LyDoCongTacs by criteria: {}", criteria);
+        return ResponseEntity.ok().body(lyDoCongTacQueryService.countByCriteria(criteria));
     }
 
     /**

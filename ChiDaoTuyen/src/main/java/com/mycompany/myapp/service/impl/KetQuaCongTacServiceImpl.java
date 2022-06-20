@@ -5,11 +5,12 @@ import com.mycompany.myapp.repository.KetQuaCongTacRepository;
 import com.mycompany.myapp.service.KetQuaCongTacService;
 import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
 import com.mycompany.myapp.service.mapper.KetQuaCongTacMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,9 @@ public class KetQuaCongTacServiceImpl implements KetQuaCongTacService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<KetQuaCongTacDTO> findAll(Pageable pageable) {
+    public List<KetQuaCongTacDTO> findAll() {
         log.debug("Request to get all KetQuaCongTacs");
-        return ketQuaCongTacRepository.findAll(pageable).map(ketQuaCongTacMapper::toDto);
+        return ketQuaCongTacRepository.findAll().stream().map(ketQuaCongTacMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

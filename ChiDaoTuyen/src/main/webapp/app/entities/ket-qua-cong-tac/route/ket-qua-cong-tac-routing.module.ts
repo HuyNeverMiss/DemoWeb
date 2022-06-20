@@ -11,9 +11,6 @@ const ketQuaCongTacRoute: Routes = [
   {
     path: '',
     component: KetQuaCongTacComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

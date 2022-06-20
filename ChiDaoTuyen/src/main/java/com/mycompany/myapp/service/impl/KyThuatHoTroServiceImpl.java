@@ -5,11 +5,12 @@ import com.mycompany.myapp.repository.KyThuatHoTroRepository;
 import com.mycompany.myapp.service.KyThuatHoTroService;
 import com.mycompany.myapp.service.dto.KyThuatHoTroDTO;
 import com.mycompany.myapp.service.mapper.KyThuatHoTroMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,9 @@ public class KyThuatHoTroServiceImpl implements KyThuatHoTroService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<KyThuatHoTroDTO> findAll(Pageable pageable) {
+    public List<KyThuatHoTroDTO> findAll() {
         log.debug("Request to get all KyThuatHoTros");
-        return kyThuatHoTroRepository.findAll(pageable).map(kyThuatHoTroMapper::toDto);
+        return kyThuatHoTroRepository.findAll().stream().map(kyThuatHoTroMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

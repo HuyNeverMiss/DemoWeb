@@ -96,7 +96,7 @@ export class KyThuatHoTroUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.chiDaoTuyenService
-      .query({ filter: 'kythuathotro-is-null' })
+      .query({ 'kyThuatHoTroId.specified': 'false' })
       .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
       .pipe(
         map((chiDaoTuyens: IChiDaoTuyen[]) =>

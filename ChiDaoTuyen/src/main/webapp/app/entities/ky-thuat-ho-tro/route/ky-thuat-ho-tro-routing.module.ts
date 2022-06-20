@@ -11,9 +11,6 @@ const kyThuatHoTroRoute: Routes = [
   {
     path: '',
     component: KyThuatHoTroComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

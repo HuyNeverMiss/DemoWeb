@@ -96,7 +96,7 @@ export class VatTuHoTroUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.chiDaoTuyenService
-      .query({ filter: 'vattuhotro-is-null' })
+      .query({ 'vatTuHoTroId.specified': 'false' })
       .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
       .pipe(
         map((chiDaoTuyens: IChiDaoTuyen[]) =>

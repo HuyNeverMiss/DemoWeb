@@ -2,26 +2,26 @@
   "chiDaoTuyenApp": {
     "vatTuHoTro": {
       "home": {
-        "title": "Vật Tư Hỗ Trợ",
-        "refreshListLabel": "Cập nhật lại danh sách",
-        "createLabel": "Thêm mới một Vật Tư Hỗ Trợ",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Vật Tư Hỗ Trợ",
-        "notFound": "Không tìm thấy Vật Tư Hỗ Trợ"
+        "title": "Vat Tu Ho Tros",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Vat Tu Ho Tro",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Vat Tu Ho Tro",
+        "notFound": "No Vat Tu Ho Tros found"
       },
-      "created": "Một Vật Tư Hỗ Trợ mới được tạo với định danh {{ param }}",
-      "updated": "Một Vật Tư Hỗ Trợ cập nhật với định danh {{ param }}",
-      "deleted": "Một Vật Tư Hỗ Trợ đã xóa với định danh {{ param }}",
+      "created": "Một Vat Tu Ho Tro mới được tạo với định danh {{ param }}",
+      "updated": "Một Vat Tu Ho Tro cập nhật với định danh {{ param }}",
+      "deleted": "Một Vat Tu Ho Tro đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Vật Tư Hỗ Trợ {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Vat Tu Ho Tro {{ id }}?"
       },
       "detail": {
-        "title": "Vật Tư Hỗ Trợ"
+        "title": "Vat Tu Ho Tro"
       },
       "id": "ID",
-      "maVatTu": "Mã Vật Tư",
-      "tenVatTu": "Tên Vật Tư",
-      "thuTuSX": "Thứ Tự SX",
-      "chiDaoTuyen": "Chỉ Đạo Tuyến"
+      "maVatTu": "Ma Vat Tu",
+      "tenVatTu": "Ten Vat Tu",
+      "thuTuSX": "Thu Tu SX",
+      "chiDaoTuyen": "Chi Dao Tuyen"
     }
   }
 }

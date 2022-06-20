@@ -72,6 +72,5 @@ relationship OneToOne {
 	VatTuHoTro{ChiDaoTuyen} to ChiDaoTuyen
 }
 dto * with mapstruct
-paginate * with pagination
-
+filter *
 service all with serviceImpl

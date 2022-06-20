@@ -7,8 +7,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mycompany.myapp.IntegrationTest;
+import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.KyThuatHoTro;
 import com.mycompany.myapp.repository.KyThuatHoTroRepository;
+import com.mycompany.myapp.service.criteria.KyThuatHoTroCriteria;
 import com.mycompany.myapp.service.dto.KyThuatHoTroDTO;
 import com.mycompany.myapp.service.mapper.KyThuatHoTroMapper;
 import java.util.List;
@@ -174,6 +176,324 @@ class KyThuatHoTroResourceIT {
             .andExpect(jsonPath("$.maKyThuat").value(DEFAULT_MA_KY_THUAT))
             .andExpect(jsonPath("$.tenKyThuat").value(DEFAULT_TEN_KY_THUAT))
             .andExpect(jsonPath("$.thuTuSX").value(DEFAULT_THU_TU_SX));
+    }
+
+    @Test
+    @Transactional
+    void getKyThuatHoTrosByIdFiltering() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        Long id = kyThuatHoTro.getId();
+
+        defaultKyThuatHoTroShouldBeFound("id.equals=" + id);
+        defaultKyThuatHoTroShouldNotBeFound("id.notEquals=" + id);
+
+        defaultKyThuatHoTroShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultKyThuatHoTroShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultKyThuatHoTroShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultKyThuatHoTroShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByMaKyThuatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where maKyThuat equals to DEFAULT_MA_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("maKyThuat.equals=" + DEFAULT_MA_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where maKyThuat equals to UPDATED_MA_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("maKyThuat.equals=" + UPDATED_MA_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByMaKyThuatIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where maKyThuat not equals to DEFAULT_MA_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("maKyThuat.notEquals=" + DEFAULT_MA_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where maKyThuat not equals to UPDATED_MA_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("maKyThuat.notEquals=" + UPDATED_MA_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByMaKyThuatIsInShouldWork() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where maKyThuat in DEFAULT_MA_KY_THUAT or UPDATED_MA_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("maKyThuat.in=" + DEFAULT_MA_KY_THUAT + "," + UPDATED_MA_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where maKyThuat equals to UPDATED_MA_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("maKyThuat.in=" + UPDATED_MA_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByMaKyThuatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where maKyThuat is not null
+        defaultKyThuatHoTroShouldBeFound("maKyThuat.specified=true");
+
+        // Get all the kyThuatHoTroList where maKyThuat is null
+        defaultKyThuatHoTroShouldNotBeFound("maKyThuat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByMaKyThuatContainsSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where maKyThuat contains DEFAULT_MA_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("maKyThuat.contains=" + DEFAULT_MA_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where maKyThuat contains UPDATED_MA_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("maKyThuat.contains=" + UPDATED_MA_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByMaKyThuatNotContainsSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where maKyThuat does not contain DEFAULT_MA_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("maKyThuat.doesNotContain=" + DEFAULT_MA_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where maKyThuat does not contain UPDATED_MA_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("maKyThuat.doesNotContain=" + UPDATED_MA_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByTenKyThuatIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where tenKyThuat equals to DEFAULT_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("tenKyThuat.equals=" + DEFAULT_TEN_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where tenKyThuat equals to UPDATED_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("tenKyThuat.equals=" + UPDATED_TEN_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByTenKyThuatIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where tenKyThuat not equals to DEFAULT_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("tenKyThuat.notEquals=" + DEFAULT_TEN_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where tenKyThuat not equals to UPDATED_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("tenKyThuat.notEquals=" + UPDATED_TEN_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByTenKyThuatIsInShouldWork() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where tenKyThuat in DEFAULT_TEN_KY_THUAT or UPDATED_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("tenKyThuat.in=" + DEFAULT_TEN_KY_THUAT + "," + UPDATED_TEN_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where tenKyThuat equals to UPDATED_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("tenKyThuat.in=" + UPDATED_TEN_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByTenKyThuatIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where tenKyThuat is not null
+        defaultKyThuatHoTroShouldBeFound("tenKyThuat.specified=true");
+
+        // Get all the kyThuatHoTroList where tenKyThuat is null
+        defaultKyThuatHoTroShouldNotBeFound("tenKyThuat.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByTenKyThuatContainsSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where tenKyThuat contains DEFAULT_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("tenKyThuat.contains=" + DEFAULT_TEN_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where tenKyThuat contains UPDATED_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("tenKyThuat.contains=" + UPDATED_TEN_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByTenKyThuatNotContainsSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where tenKyThuat does not contain DEFAULT_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldNotBeFound("tenKyThuat.doesNotContain=" + DEFAULT_TEN_KY_THUAT);
+
+        // Get all the kyThuatHoTroList where tenKyThuat does not contain UPDATED_TEN_KY_THUAT
+        defaultKyThuatHoTroShouldBeFound("tenKyThuat.doesNotContain=" + UPDATED_TEN_KY_THUAT);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByThuTuSXIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where thuTuSX equals to DEFAULT_THU_TU_SX
+        defaultKyThuatHoTroShouldBeFound("thuTuSX.equals=" + DEFAULT_THU_TU_SX);
+
+        // Get all the kyThuatHoTroList where thuTuSX equals to UPDATED_THU_TU_SX
+        defaultKyThuatHoTroShouldNotBeFound("thuTuSX.equals=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByThuTuSXIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where thuTuSX not equals to DEFAULT_THU_TU_SX
+        defaultKyThuatHoTroShouldNotBeFound("thuTuSX.notEquals=" + DEFAULT_THU_TU_SX);
+
+        // Get all the kyThuatHoTroList where thuTuSX not equals to UPDATED_THU_TU_SX
+        defaultKyThuatHoTroShouldBeFound("thuTuSX.notEquals=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByThuTuSXIsInShouldWork() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where thuTuSX in DEFAULT_THU_TU_SX or UPDATED_THU_TU_SX
+        defaultKyThuatHoTroShouldBeFound("thuTuSX.in=" + DEFAULT_THU_TU_SX + "," + UPDATED_THU_TU_SX);
+
+        // Get all the kyThuatHoTroList where thuTuSX equals to UPDATED_THU_TU_SX
+        defaultKyThuatHoTroShouldNotBeFound("thuTuSX.in=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByThuTuSXIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where thuTuSX is not null
+        defaultKyThuatHoTroShouldBeFound("thuTuSX.specified=true");
+
+        // Get all the kyThuatHoTroList where thuTuSX is null
+        defaultKyThuatHoTroShouldNotBeFound("thuTuSX.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByThuTuSXContainsSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where thuTuSX contains DEFAULT_THU_TU_SX
+        defaultKyThuatHoTroShouldBeFound("thuTuSX.contains=" + DEFAULT_THU_TU_SX);
+
+        // Get all the kyThuatHoTroList where thuTuSX contains UPDATED_THU_TU_SX
+        defaultKyThuatHoTroShouldNotBeFound("thuTuSX.contains=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByThuTuSXNotContainsSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+
+        // Get all the kyThuatHoTroList where thuTuSX does not contain DEFAULT_THU_TU_SX
+        defaultKyThuatHoTroShouldNotBeFound("thuTuSX.doesNotContain=" + DEFAULT_THU_TU_SX);
+
+        // Get all the kyThuatHoTroList where thuTuSX does not contain UPDATED_THU_TU_SX
+        defaultKyThuatHoTroShouldBeFound("thuTuSX.doesNotContain=" + UPDATED_THU_TU_SX);
+    }
+
+    @Test
+    @Transactional
+    void getAllKyThuatHoTrosByChiDaoTuyenIsEqualToSomething() throws Exception {
+        // Initialize the database
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+        ChiDaoTuyen chiDaoTuyen;
+        if (TestUtil.findAll(em, ChiDaoTuyen.class).isEmpty()) {
+            chiDaoTuyen = ChiDaoTuyenResourceIT.createEntity(em);
+            em.persist(chiDaoTuyen);
+            em.flush();
+        } else {
+            chiDaoTuyen = TestUtil.findAll(em, ChiDaoTuyen.class).get(0);
+        }
+        em.persist(chiDaoTuyen);
+        em.flush();
+        kyThuatHoTro.setChiDaoTuyen(chiDaoTuyen);
+        kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
+        Long chiDaoTuyenId = chiDaoTuyen.getId();
+
+        // Get all the kyThuatHoTroList where chiDaoTuyen equals to chiDaoTuyenId
+        defaultKyThuatHoTroShouldBeFound("chiDaoTuyenId.equals=" + chiDaoTuyenId);
+
+        // Get all the kyThuatHoTroList where chiDaoTuyen equals to (chiDaoTuyenId + 1)
+        defaultKyThuatHoTroShouldNotBeFound("chiDaoTuyenId.equals=" + (chiDaoTuyenId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultKyThuatHoTroShouldBeFound(String filter) throws Exception {
+        restKyThuatHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(kyThuatHoTro.getId().intValue())))
+            .andExpect(jsonPath("$.[*].maKyThuat").value(hasItem(DEFAULT_MA_KY_THUAT)))
+            .andExpect(jsonPath("$.[*].tenKyThuat").value(hasItem(DEFAULT_TEN_KY_THUAT)))
+            .andExpect(jsonPath("$.[*].thuTuSX").value(hasItem(DEFAULT_THU_TU_SX)));
+
+        // Check, that the count call also returns 1
+        restKyThuatHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultKyThuatHoTroShouldNotBeFound(String filter) throws Exception {
+        restKyThuatHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restKyThuatHoTroMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

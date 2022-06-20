@@ -5,11 +5,12 @@ import com.mycompany.myapp.repository.LyDoCongTacRepository;
 import com.mycompany.myapp.service.LyDoCongTacService;
 import com.mycompany.myapp.service.dto.LyDoCongTacDTO;
 import com.mycompany.myapp.service.mapper.LyDoCongTacMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,9 @@ public class LyDoCongTacServiceImpl implements LyDoCongTacService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<LyDoCongTacDTO> findAll(Pageable pageable) {
+    public List<LyDoCongTacDTO> findAll() {
         log.debug("Request to get all LyDoCongTacs");
-        return lyDoCongTacRepository.findAll(pageable).map(lyDoCongTacMapper::toDto);
+        return lyDoCongTacRepository.findAll().stream().map(lyDoCongTacMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

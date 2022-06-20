@@ -2,26 +2,26 @@
   "chiDaoTuyenApp": {
     "kyThuatHoTro": {
       "home": {
-        "title": "Kỹ Thuật Hỗ Trợ",
-        "refreshListLabel": "Cập nhật lại danh sách",
-        "createLabel": "Thêm mới một Kỹ Thuật Hỗ Trợ",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Kỹ Thuật Hỗ Trợ",
-        "notFound": "Không tìm thấy Kỹ Thuật Hỗ Trợ "
+        "title": "Ky Thuat Ho Tros",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Ky Thuat Ho Tro",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Ky Thuat Ho Tro",
+        "notFound": "No Ky Thuat Ho Tros found"
       },
-      "created": "Một Kỹ Thuật Hỗ Trợ mới được tạo với định danh {{ param }}",
-      "updated": "Một Kỹ Thuật Hỗ Trợ cập nhật với định danh {{ param }}",
-      "deleted": "Một Kỹ Thuật Hỗ Trợ đã xóa với định danh {{ param }}",
+      "created": "Một Ky Thuat Ho Tro mới được tạo với định danh {{ param }}",
+      "updated": "Một Ky Thuat Ho Tro cập nhật với định danh {{ param }}",
+      "deleted": "Một Ky Thuat Ho Tro đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Kỹ Thuật Hỗ Trợ {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Ky Thuat Ho Tro {{ id }}?"
       },
       "detail": {
-        "title": "Kỹ Thuật Hỗ Trợ"
+        "title": "Ky Thuat Ho Tro"
       },
       "id": "ID",
-      "maKyThuat": "Mã Kỹ Thuật",
-      "tenKyThuat": "Tên Kỹ Thuật",
-      "thuTuSX": "Thứ Tự SX",
-      "chiDaoTuyen": "Chi Đạo Tuyến"
+      "maKyThuat": "Ma Ky Thuat",
+      "tenKyThuat": "Ten Ky Thuat",
+      "thuTuSX": "Thu Tu SX",
+      "chiDaoTuyen": "Chi Dao Tuyen"
     }
   }
 }

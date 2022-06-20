@@ -5,11 +5,12 @@ import com.mycompany.myapp.repository.ChiDaoTuyenRepository;
 import com.mycompany.myapp.service.ChiDaoTuyenService;
 import com.mycompany.myapp.service.dto.ChiDaoTuyenDTO;
 import com.mycompany.myapp.service.mapper.ChiDaoTuyenMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,9 +65,9 @@ public class ChiDaoTuyenServiceImpl implements ChiDaoTuyenService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ChiDaoTuyenDTO> findAll(Pageable pageable) {
+    public List<ChiDaoTuyenDTO> findAll() {
         log.debug("Request to get all ChiDaoTuyens");
-        return chiDaoTuyenRepository.findAll(pageable).map(chiDaoTuyenMapper::toDto);
+        return chiDaoTuyenRepository.findAll().stream().map(chiDaoTuyenMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
