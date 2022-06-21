@@ -1,0 +1,128 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="chiDaoTuyen">
+      <h2 data-cy="chiDaoTuyenDetailsHeading"><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.detail.title">Chi Dao Tuyen</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soQuyetDinh">So Quyet Dinh</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soQuyetDinh }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayQuyetDinh">Ngay Quyet Dinh</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ngayQuyetDinh | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soHD">So HD</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soHD }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayHD">Ngay HD</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ngayHD | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac">Ly Do Cong Tac</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.lyDoCongTac }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDung">Noi Dung</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.noiDung }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDenCongTac">Noi Den Cong Tac</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.noiDenCongTac }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayBatDau">Ngay Bat Dau</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ngayBatDau | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayKetThuc">Ngay Ket Thuc</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ngayKetThuc | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ghiChu">Ghi Chu</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ghiChu }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayTao">Ngay Tao</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ngayTao | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien">Nhan Vien</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.nhanVien }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro">Ky Thuat Ho Tro</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.kyThuatHoTro }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro">Vat Tu Ho Tro</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.vatTuHoTro }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnKhamDieuTri">So Bn Kham Dieu Tri</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soBnKhamDieuTri }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnPhauThuat">So Bn Phau Thuat</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soBnPhauThuat }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soCanBoChuyenGiao">So Can Bo Chuyen Giao</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.soCanBoChuyenGiao }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac">Ket Qua Cong Tac</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.ketQuaCongTac }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.luuTru">Luu Tru</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.luuTru }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienAn">Tien An</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.tienAn }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienO">Tien O</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.tienO }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienDiLai">Tien Di Lai</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.tienDiLai }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.taiLieu">Tai Lieu</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.taiLieu }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.giangDay">Giang Day</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.giangDay }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.khac">Khac</span></dt>
+        <dd>
+          <span>{{ chiDaoTuyen.khac }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/chi-dao-tuyen', chiDaoTuyen.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

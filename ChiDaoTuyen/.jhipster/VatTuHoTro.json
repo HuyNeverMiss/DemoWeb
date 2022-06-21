@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20220621064327",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "vat_tu_ho_tro",
+  "fields": [
+    {
+      "fieldName": "maVatTu",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tenVatTu",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "thuTuSX",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "VatTuHoTro",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "chiDaoTuyen",
+      "otherEntityRelationshipName": "vatTuHoTro",
+      "ownerSide": true,
+      "relationshipName": "chiDaoTuyen",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

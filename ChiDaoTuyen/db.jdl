@@ -1,0 +1,77 @@
+
+entity LyDoCongTac {
+	MaLyDo String,
+    TenLyDo String,
+    ThuTuSX String
+}
+
+entity KetQuaCongTac {
+	MaKetQua String,
+    TenKetQua String,
+    ThuTuSX String
+}
+
+entity KyThuatHoTro {
+	MaKyThuat String,
+    TenKyThuat String,
+    ThuTuSX String
+}
+
+entity NoiDenCongTac {
+	MaNoiDen String,
+    TenNoiDen String,
+    ThuTuSX String
+}
+
+entity VatTuHoTro {
+	MaVatTu String,
+    TenVatTu String,
+    ThuTuSX String
+}
+
+entity ChiDaoTuyen {
+    SoQuyetDinh String,
+    NgayQuyetDinh ZonedDateTime,
+    SoHD String,
+    NgayHD ZonedDateTime,
+    LyDoCongTac String,
+    NoiDung String,
+    NoiDenCongTac String,
+    NgayBatDau ZonedDateTime,
+    NgayKetThuc ZonedDateTime,
+    GhiChu String,
+    NgayTao ZonedDateTime,
+    NhanVien String,
+    KyThuatHoTro String,
+    VatTuHoTro String,
+    SoBnKhamDieuTri String,
+    SoBnPhauThuat String,
+    SoCanBoChuyenGiao String,
+    KetQuaCongTac String,
+    LuuTru String,
+    TienAn String,
+    TienO String,
+    TienDiLai String,
+    TaiLieu String,
+    GiangDay String,
+    Khac String
+}
+relationship OneToOne {
+	LyDoCongTac{ChiDaoTuyen} to ChiDaoTuyen
+}
+relationship OneToOne {
+	NoiDenCongTac{ChiDaoTuyen} to ChiDaoTuyen
+}
+relationship OneToOne {
+	KetQuaCongTac{ChiDaoTuyen} to ChiDaoTuyen
+}
+relationship OneToOne {
+	KyThuatHoTro{ChiDaoTuyen} to ChiDaoTuyen
+}
+relationship OneToOne {
+	VatTuHoTro{ChiDaoTuyen} to ChiDaoTuyen
+}
+// dto * with mapstruct
+paginate * with pagination
+filter *
+service all with serviceImpl

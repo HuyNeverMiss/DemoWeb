@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20220621064325",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "ky_thuat_ho_tro",
+  "fields": [
+    {
+      "fieldName": "maKyThuat",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tenKyThuat",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "thuTuSX",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "KyThuatHoTro",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "chiDaoTuyen",
+      "otherEntityRelationshipName": "kyThuatHoTro",
+      "ownerSide": true,
+      "relationshipName": "chiDaoTuyen",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

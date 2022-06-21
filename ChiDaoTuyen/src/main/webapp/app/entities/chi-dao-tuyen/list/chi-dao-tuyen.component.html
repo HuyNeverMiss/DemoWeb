@@ -1,0 +1,194 @@
+<div>
+  <h2 id="page-heading" data-cy="ChiDaoTuyenHeading">
+    <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.home.title">Chi Dao Tuyens</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-chi-dao-tuyen"
+        [routerLink]="['/chi-dao-tuyen/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.home.createLabel"> Create a new Chi Dao Tuyen </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="chiDaoTuyens?.length === 0">
+    <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.home.notFound">No chiDaoTuyens found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="chiDaoTuyens && chiDaoTuyens.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="soQuyetDinh">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soQuyetDinh">So Quyet Dinh</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="ngayQuyetDinh">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayQuyetDinh">Ngay Quyet Dinh</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="soHD">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soHD">So HD</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="ngayHD">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayHD">Ngay HD</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="lyDoCongTac">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac">Ly Do Cong Tac</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="noiDung">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDung">Noi Dung</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="noiDenCongTac">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDenCongTac">Noi Den Cong Tac</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="ngayBatDau">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayBatDau">Ngay Bat Dau</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="ngayKetThuc">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayKetThuc">Ngay Ket Thuc</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="ghiChu">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ghiChu">Ghi Chu</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="ngayTao">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayTao">Ngay Tao</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="nhanVien">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien">Nhan Vien</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="kyThuatHoTro">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro">Ky Thuat Ho Tro</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="vatTuHoTro">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro">Vat Tu Ho Tro</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="soBnKhamDieuTri">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnKhamDieuTri">So Bn Kham Dieu Tri</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="soBnPhauThuat">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnPhauThuat">So Bn Phau Thuat</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="soCanBoChuyenGiao">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soCanBoChuyenGiao">So Can Bo Chuyen Giao</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="ketQuaCongTac">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac">Ket Qua Cong Tac</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="luuTru">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.luuTru">Luu Tru</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="tienAn">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienAn">Tien An</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="tienO">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienO">Tien O</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="tienDiLai">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.tienDiLai">Tien Di Lai</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="taiLieu">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.taiLieu">Tai Lieu</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="giangDay">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.giangDay">Giang Day</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="khac">
+            <span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.khac">Khac</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let chiDaoTuyen of chiDaoTuyens; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/chi-dao-tuyen', chiDaoTuyen.id, 'view']">{{ chiDaoTuyen.id }}</a>
+          </td>
+          <td>{{ chiDaoTuyen.soQuyetDinh }}</td>
+          <td>{{ chiDaoTuyen.ngayQuyetDinh | formatMediumDatetime }}</td>
+          <td>{{ chiDaoTuyen.soHD }}</td>
+          <td>{{ chiDaoTuyen.ngayHD | formatMediumDatetime }}</td>
+          <td>{{ chiDaoTuyen.lyDoCongTac }}</td>
+          <td>{{ chiDaoTuyen.noiDung }}</td>
+          <td>{{ chiDaoTuyen.noiDenCongTac }}</td>
+          <td>{{ chiDaoTuyen.ngayBatDau | formatMediumDatetime }}</td>
+          <td>{{ chiDaoTuyen.ngayKetThuc | formatMediumDatetime }}</td>
+          <td>{{ chiDaoTuyen.ghiChu }}</td>
+          <td>{{ chiDaoTuyen.ngayTao | formatMediumDatetime }}</td>
+          <td>{{ chiDaoTuyen.nhanVien }}</td>
+          <td>{{ chiDaoTuyen.kyThuatHoTro }}</td>
+          <td>{{ chiDaoTuyen.vatTuHoTro }}</td>
+          <td>{{ chiDaoTuyen.soBnKhamDieuTri }}</td>
+          <td>{{ chiDaoTuyen.soBnPhauThuat }}</td>
+          <td>{{ chiDaoTuyen.soCanBoChuyenGiao }}</td>
+          <td>{{ chiDaoTuyen.ketQuaCongTac }}</td>
+          <td>{{ chiDaoTuyen.luuTru }}</td>
+          <td>{{ chiDaoTuyen.tienAn }}</td>
+          <td>{{ chiDaoTuyen.tienO }}</td>
+          <td>{{ chiDaoTuyen.tienDiLai }}</td>
+          <td>{{ chiDaoTuyen.taiLieu }}</td>
+          <td>{{ chiDaoTuyen.giangDay }}</td>
+          <td>{{ chiDaoTuyen.khac }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/chi-dao-tuyen', chiDaoTuyen.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/chi-dao-tuyen', chiDaoTuyen.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(chiDaoTuyen)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="chiDaoTuyens && chiDaoTuyens.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>
