@@ -2,19 +2,19 @@ import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
 
 export interface IVatTuHoTro {
   id?: number;
-  maVatTu?: string | null;
-  tenVatTu?: string | null;
+  maVatTu?: string;
+  tenVatTu?: string;
   thuTuSX?: string | null;
-  chiDaoTuyen?: IChiDaoTuyen | null;
+  chiDaoTuyens?: IChiDaoTuyen[] | null;
 }
 
 export class VatTuHoTro implements IVatTuHoTro {
   constructor(
     public id?: number,
-    public maVatTu?: string | null,
-    public tenVatTu?: string | null,
+    public maVatTu?: string,
+    public tenVatTu?: string,
     public thuTuSX?: string | null,
-    public chiDaoTuyen?: IChiDaoTuyen | null
+    public chiDaoTuyens?: IChiDaoTuyen[] | null
   ) {}
 }
 

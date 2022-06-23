@@ -27,6 +27,15 @@
             data-cy="soQuyetDinh"
             formControlName="soQuyetDinh"
           />
+          <div *ngIf="editForm.get('soQuyetDinh')!.invalid && (editForm.get('soQuyetDinh')!.dirty || editForm.get('soQuyetDinh')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('soQuyetDinh')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
@@ -44,11 +53,36 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
+          <div
+            *ngIf="
+              editForm.get('ngayQuyetDinh')!.invalid && (editForm.get('ngayQuyetDinh')!.dirty || editForm.get('ngayQuyetDinh')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('ngayQuyetDinh')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('ngayQuyetDinh')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soHD" for="field_soHD">So HD</label>
           <input type="text" class="form-control" name="soHD" id="field_soHD" data-cy="soHD" formControlName="soHD" />
+          <div *ngIf="editForm.get('soHD')!.invalid && (editForm.get('soHD')!.dirty || editForm.get('soHD')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('soHD')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
@@ -64,37 +98,32 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac" for="field_lyDoCongTac">Ly Do Cong Tac</label>
-          <input
-            type="text"
-            class="form-control"
-            name="lyDoCongTac"
-            id="field_lyDoCongTac"
-            data-cy="lyDoCongTac"
-            formControlName="lyDoCongTac"
-          />
+          <div *ngIf="editForm.get('ngayHD')!.invalid && (editForm.get('ngayHD')!.dirty || editForm.get('ngayHD')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('ngayHD')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('ngayHD')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDung" for="field_noiDung">Noi Dung</label>
           <input type="text" class="form-control" name="noiDung" id="field_noiDung" data-cy="noiDung" formControlName="noiDung" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDenCongTac" for="field_noiDenCongTac"
-            >Noi Den Cong Tac</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="noiDenCongTac"
-            id="field_noiDenCongTac"
-            data-cy="noiDenCongTac"
-            formControlName="noiDenCongTac"
-          />
+          <div *ngIf="editForm.get('noiDung')!.invalid && (editForm.get('noiDung')!.dirty || editForm.get('noiDung')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('noiDung')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
@@ -110,6 +139,22 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
+          <div *ngIf="editForm.get('ngayBatDau')!.invalid && (editForm.get('ngayBatDau')!.dirty || editForm.get('ngayBatDau')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('ngayBatDau')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('ngayBatDau')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
@@ -124,6 +169,22 @@
               formControlName="ngayKetThuc"
               placeholder="YYYY-MM-DD HH:mm"
             />
+          </div>
+          <div *ngIf="editForm.get('ngayKetThuc')!.invalid && (editForm.get('ngayKetThuc')!.dirty || editForm.get('ngayKetThuc')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('ngayKetThuc')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('ngayKetThuc')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
           </div>
         </div>
 
@@ -145,35 +206,22 @@
               placeholder="YYYY-MM-DD HH:mm"
             />
           </div>
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien" for="field_nhanVien">Nhan Vien</label>
-          <input type="text" class="form-control" name="nhanVien" id="field_nhanVien" data-cy="nhanVien" formControlName="nhanVien" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro" for="field_kyThuatHoTro">Ky Thuat Ho Tro</label>
-          <input
-            type="text"
-            class="form-control"
-            name="kyThuatHoTro"
-            id="field_kyThuatHoTro"
-            data-cy="kyThuatHoTro"
-            formControlName="kyThuatHoTro"
-          />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro" for="field_vatTuHoTro">Vat Tu Ho Tro</label>
-          <input
-            type="text"
-            class="form-control"
-            name="vatTuHoTro"
-            id="field_vatTuHoTro"
-            data-cy="vatTuHoTro"
-            formControlName="vatTuHoTro"
-          />
+          <div *ngIf="editForm.get('ngayTao')!.invalid && (editForm.get('ngayTao')!.dirty || editForm.get('ngayTao')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('ngayTao')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('ngayTao')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
@@ -219,20 +267,6 @@
         </div>
 
         <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac" for="field_ketQuaCongTac"
-            >Ket Qua Cong Tac</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="ketQuaCongTac"
-            id="field_ketQuaCongTac"
-            data-cy="ketQuaCongTac"
-            formControlName="ketQuaCongTac"
-          />
-        </div>
-
-        <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.luuTru" for="field_luuTru">Luu Tru</label>
           <input type="text" class="form-control" name="luuTru" id="field_luuTru" data-cy="luuTru" formControlName="luuTru" />
         </div>
@@ -265,6 +299,114 @@
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.khac" for="field_khac">Khac</label>
           <input type="text" class="form-control" name="khac" id="field_khac" data-cy="khac" formControlName="khac" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac" for="field_lyDoCongTac">Ly Do Cong Tac</label>
+          <select class="form-control" id="field_lyDoCongTac" data-cy="lyDoCongTac" name="lyDoCongTac" formControlName="lyDoCongTac">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                lyDoCongTacOption.id === editForm.get('lyDoCongTac')!.value?.id ? editForm.get('lyDoCongTac')!.value : lyDoCongTacOption
+              "
+              *ngFor="let lyDoCongTacOption of lyDoCongTacsSharedCollection; trackBy: trackLyDoCongTacById"
+            >
+              {{ lyDoCongTacOption.tenLyDo }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDenCongTac" for="field_noiDenCongTac"
+            >Noi Den Cong Tac</label
+          >
+          <select
+            class="form-control"
+            id="field_noiDenCongTac"
+            data-cy="noiDenCongTac"
+            name="noiDenCongTac"
+            formControlName="noiDenCongTac"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                noiDenCongTacOption.id === editForm.get('noiDenCongTac')!.value?.id
+                  ? editForm.get('noiDenCongTac')!.value
+                  : noiDenCongTacOption
+              "
+              *ngFor="let noiDenCongTacOption of noiDenCongTacsSharedCollection; trackBy: trackNoiDenCongTacById"
+            >
+              {{ noiDenCongTacOption.tenNoiDen }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac" for="field_ketQuaCongTac"
+            >Ket Qua Cong Tac</label
+          >
+          <select
+            class="form-control"
+            id="field_ketQuaCongTac"
+            data-cy="ketQuaCongTac"
+            name="ketQuaCongTac"
+            formControlName="ketQuaCongTac"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                ketQuaCongTacOption.id === editForm.get('ketQuaCongTac')!.value?.id
+                  ? editForm.get('ketQuaCongTac')!.value
+                  : ketQuaCongTacOption
+              "
+              *ngFor="let ketQuaCongTacOption of ketQuaCongTacsSharedCollection; trackBy: trackKetQuaCongTacById"
+            >
+              {{ ketQuaCongTacOption.tenKetQua }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro" for="field_kyThuatHoTro">Ky Thuat Ho Tro</label>
+          <select class="form-control" id="field_kyThuatHoTro" data-cy="kyThuatHoTro" name="kyThuatHoTro" formControlName="kyThuatHoTro">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                kyThuatHoTroOption.id === editForm.get('kyThuatHoTro')!.value?.id ? editForm.get('kyThuatHoTro')!.value : kyThuatHoTroOption
+              "
+              *ngFor="let kyThuatHoTroOption of kyThuatHoTrosSharedCollection; trackBy: trackKyThuatHoTroById"
+            >
+              {{ kyThuatHoTroOption.tenKyThuat }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro" for="field_vatTuHoTro">Vat Tu Ho Tro</label>
+          <select class="form-control" id="field_vatTuHoTro" data-cy="vatTuHoTro" name="vatTuHoTro" formControlName="vatTuHoTro">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                vatTuHoTroOption.id === editForm.get('vatTuHoTro')!.value?.id ? editForm.get('vatTuHoTro')!.value : vatTuHoTroOption
+              "
+              *ngFor="let vatTuHoTroOption of vatTuHoTrosSharedCollection; trackBy: trackVatTuHoTroById"
+            >
+              {{ vatTuHoTroOption.tenVatTu }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien" for="field_nhanVien">Nhan Vien</label>
+          <select class="form-control" id="field_nhanVien" data-cy="nhanVien" name="nhanVien" formControlName="nhanVien">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="nhanVienOption.id === editForm.get('nhanVien')!.value?.id ? editForm.get('nhanVien')!.value : nhanVienOption"
+              *ngFor="let nhanVienOption of nhanViensSharedCollection; trackBy: trackNhanVienById"
+            >
+              {{ nhanVienOption.chucVu }}
+            </option>
+          </select>
         </div>
       </div>
 

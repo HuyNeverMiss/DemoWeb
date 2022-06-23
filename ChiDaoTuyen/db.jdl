@@ -1,53 +1,52 @@
 
 entity LyDoCongTac {
-	MaLyDo String,
-    TenLyDo String,
+	MaLyDo String required,
+    TenLyDo String required,
     ThuTuSX String
 }
 
 entity KetQuaCongTac {
-	MaKetQua String,
-    TenKetQua String,
+	MaKetQua String required, 
+    TenKetQua String required,
     ThuTuSX String
 }
 
 entity KyThuatHoTro {
-	MaKyThuat String,
-    TenKyThuat String,
+	MaKyThuat String required,
+    TenKyThuat String required,
     ThuTuSX String
 }
 
 entity NoiDenCongTac {
-	MaNoiDen String,
-    TenNoiDen String,
+	MaNoiDen String required,
+    TenNoiDen String required, 
     ThuTuSX String
 }
 
 entity VatTuHoTro {
-	MaVatTu String,
-    TenVatTu String,
+	MaVatTu String required,
+    TenVatTu String required,
     ThuTuSX String
 }
 
+entity NhanVien {
+	MaNhanVien String required,
+    ChucVu String
+}
+
 entity ChiDaoTuyen {
-    SoQuyetDinh String,
-    NgayQuyetDinh ZonedDateTime,
-    SoHD String,
-    NgayHD ZonedDateTime,
-    LyDoCongTac String,
-    NoiDung String,
-    NoiDenCongTac String,
-    NgayBatDau ZonedDateTime,
-    NgayKetThuc ZonedDateTime,
+    SoQuyetDinh String required,
+    NgayQuyetDinh Instant required,
+    SoHD String required,
+    NgayHD Instant required,
+    NoiDung String required,
+    NgayBatDau Instant required,
+    NgayKetThuc Instant required,
     GhiChu String,
-    NgayTao ZonedDateTime,
-    NhanVien String,
-    KyThuatHoTro String,
-    VatTuHoTro String,
+    NgayTao Instant required,
     SoBnKhamDieuTri String,
     SoBnPhauThuat String,
     SoCanBoChuyenGiao String,
-    KetQuaCongTac String,
     LuuTru String,
     TienAn String,
     TienO String,
@@ -56,22 +55,15 @@ entity ChiDaoTuyen {
     GiangDay String,
     Khac String
 }
-relationship OneToOne {
-	LyDoCongTac{ChiDaoTuyen} to ChiDaoTuyen
+relationship OneToMany {
+	LyDoCongTac{ChiDaoTuyen} to ChiDaoTuyen, 
+    NoiDenCongTac{ChiDaoTuyen} to ChiDaoTuyen,
+    KetQuaCongTac{ChiDaoTuyen} to ChiDaoTuyen,
+    KyThuatHoTro{ChiDaoTuyen} to ChiDaoTuyen,
+    VatTuHoTro{ChiDaoTuyen} to ChiDaoTuyen,
+    NhanVien{ChiDaoTuyen} to ChiDaoTuyen
 }
-relationship OneToOne {
-	NoiDenCongTac{ChiDaoTuyen} to ChiDaoTuyen
-}
-relationship OneToOne {
-	KetQuaCongTac{ChiDaoTuyen} to ChiDaoTuyen
-}
-relationship OneToOne {
-	KyThuatHoTro{ChiDaoTuyen} to ChiDaoTuyen
-}
-relationship OneToOne {
-	VatTuHoTro{ChiDaoTuyen} to ChiDaoTuyen
-}
-// dto * with mapstruct
+dto * with mapstruct
 paginate * with pagination
 filter *
 service all with serviceImpl

@@ -2,19 +2,19 @@ import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
 
 export interface IKetQuaCongTac {
   id?: number;
-  maKetQua?: string | null;
-  tenKetQua?: string | null;
+  maKetQua?: string;
+  tenKetQua?: string;
   thuTuSX?: string | null;
-  chiDaoTuyen?: IChiDaoTuyen | null;
+  chiDaoTuyens?: IChiDaoTuyen[] | null;
 }
 
 export class KetQuaCongTac implements IKetQuaCongTac {
   constructor(
     public id?: number,
-    public maKetQua?: string | null,
-    public tenKetQua?: string | null,
+    public maKetQua?: string,
+    public tenKetQua?: string,
     public thuTuSX?: string | null,
-    public chiDaoTuyen?: IChiDaoTuyen | null
+    public chiDaoTuyens?: IChiDaoTuyen[] | null
   ) {}
 }
 

@@ -1,17 +1,19 @@
 {
   "applications": "*",
-  "changelogDate": "20220621064325",
-  "dto": "no",
+  "changelogDate": "20220623051415",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "ky_thuat_ho_tro",
   "fields": [
     {
       "fieldName": "maKyThuat",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "tenKyThuat",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "thuTuSX",
@@ -27,9 +29,8 @@
     {
       "otherEntityName": "chiDaoTuyen",
       "otherEntityRelationshipName": "kyThuatHoTro",
-      "ownerSide": true,
       "relationshipName": "chiDaoTuyen",
-      "relationshipType": "one-to-one"
+      "relationshipType": "one-to-many"
     }
   ],
   "service": "serviceImpl"

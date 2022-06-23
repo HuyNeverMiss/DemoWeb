@@ -1,7 +1,11 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,18 +25,24 @@ public class NoiDenCongTac implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "ma_noi_den")
+    @NotNull
+    @Column(name = "ma_noi_den", nullable = false)
     private String maNoiDen;
 
-    @Column(name = "ten_noi_den")
+    @NotNull
+    @Column(name = "ten_noi_den", nullable = false)
     private String tenNoiDen;
 
     @Column(name = "thu_tu_sx")
     private String thuTuSX;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private ChiDaoTuyen chiDaoTuyen;
+    @OneToMany(mappedBy = "noiDenCongTac")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "lyDoCongTac", "noiDenCongTac", "ketQuaCongTac", "kyThuatHoTro", "vatTuHoTro", "nhanVien" },
+        allowSetters = true
+    )
+    private Set<ChiDaoTuyen> chiDaoTuyens = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -88,16 +98,34 @@ public class NoiDenCongTac implements Serializable {
         this.thuTuSX = thuTuSX;
     }
 
-    public ChiDaoTuyen getChiDaoTuyen() {
-        return this.chiDaoTuyen;
+    public Set<ChiDaoTuyen> getChiDaoTuyens() {
+        return this.chiDaoTuyens;
     }
 
-    public void setChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
-        this.chiDaoTuyen = chiDaoTuyen;
+    public void setChiDaoTuyens(Set<ChiDaoTuyen> chiDaoTuyens) {
+        if (this.chiDaoTuyens != null) {
+            this.chiDaoTuyens.forEach(i -> i.setNoiDenCongTac(null));
+        }
+        if (chiDaoTuyens != null) {
+            chiDaoTuyens.forEach(i -> i.setNoiDenCongTac(this));
+        }
+        this.chiDaoTuyens = chiDaoTuyens;
     }
 
-    public NoiDenCongTac chiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
-        this.setChiDaoTuyen(chiDaoTuyen);
+    public NoiDenCongTac chiDaoTuyens(Set<ChiDaoTuyen> chiDaoTuyens) {
+        this.setChiDaoTuyens(chiDaoTuyens);
+        return this;
+    }
+
+    public NoiDenCongTac addChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyens.add(chiDaoTuyen);
+        chiDaoTuyen.setNoiDenCongTac(this);
+        return this;
+    }
+
+    public NoiDenCongTac removeChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyens.remove(chiDaoTuyen);
+        chiDaoTuyen.setNoiDenCongTac(null);
         return this;
     }
 

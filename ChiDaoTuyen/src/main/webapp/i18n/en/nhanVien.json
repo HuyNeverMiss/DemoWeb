@@ -1,0 +1,26 @@
+{
+  "chiDaoTuyenApp": {
+    "nhanVien": {
+      "home": {
+        "title": "Nhan Viens",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Nhan Vien",
+        "createOrEditLabel": "Create or edit a Nhan Vien",
+        "notFound": "No Nhan Viens found"
+      },
+      "created": "A new Nhan Vien is created with identifier {{ param }}",
+      "updated": "A Nhan Vien is updated with identifier {{ param }}",
+      "deleted": "A Nhan Vien is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Nhan Vien {{ id }}?"
+      },
+      "detail": {
+        "title": "Nhan Vien"
+      },
+      "id": "ID",
+      "maNhanVien": "Ma Nhan Vien",
+      "chucVu": "Chuc Vu",
+      "chiDaoTuyen": "Chi Dao Tuyen"
+    }
+  }
+}

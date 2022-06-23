@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.*; // for static metamodels
 import com.mycompany.myapp.domain.VatTuHoTro;
 import com.mycompany.myapp.repository.VatTuHoTroRepository;
 import com.mycompany.myapp.service.criteria.VatTuHoTroCriteria;
+import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
+import com.mycompany.myapp.service.mapper.VatTuHoTroMapper;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import tech.jhipster.service.QueryService;
  * Service for executing complex queries for {@link VatTuHoTro} entities in the database.
  * The main input is a {@link VatTuHoTroCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link VatTuHoTro} or a {@link Page} of {@link VatTuHoTro} which fulfills the criteria.
+ * It returns a {@link List} of {@link VatTuHoTroDTO} or a {@link Page} of {@link VatTuHoTroDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,33 +31,36 @@ public class VatTuHoTroQueryService extends QueryService<VatTuHoTro> {
 
     private final VatTuHoTroRepository vatTuHoTroRepository;
 
-    public VatTuHoTroQueryService(VatTuHoTroRepository vatTuHoTroRepository) {
+    private final VatTuHoTroMapper vatTuHoTroMapper;
+
+    public VatTuHoTroQueryService(VatTuHoTroRepository vatTuHoTroRepository, VatTuHoTroMapper vatTuHoTroMapper) {
         this.vatTuHoTroRepository = vatTuHoTroRepository;
+        this.vatTuHoTroMapper = vatTuHoTroMapper;
     }
 
     /**
-     * Return a {@link List} of {@link VatTuHoTro} which matches the criteria from the database.
+     * Return a {@link List} of {@link VatTuHoTroDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<VatTuHoTro> findByCriteria(VatTuHoTroCriteria criteria) {
+    public List<VatTuHoTroDTO> findByCriteria(VatTuHoTroCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<VatTuHoTro> specification = createSpecification(criteria);
-        return vatTuHoTroRepository.findAll(specification);
+        return vatTuHoTroMapper.toDto(vatTuHoTroRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link VatTuHoTro} which matches the criteria from the database.
+     * Return a {@link Page} of {@link VatTuHoTroDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<VatTuHoTro> findByCriteria(VatTuHoTroCriteria criteria, Pageable page) {
+    public Page<VatTuHoTroDTO> findByCriteria(VatTuHoTroCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<VatTuHoTro> specification = createSpecification(criteria);
-        return vatTuHoTroRepository.findAll(specification, page);
+        return vatTuHoTroRepository.findAll(specification, page).map(vatTuHoTroMapper::toDto);
     }
 
     /**
@@ -99,7 +104,7 @@ public class VatTuHoTroQueryService extends QueryService<VatTuHoTro> {
                     specification.and(
                         buildSpecification(
                             criteria.getChiDaoTuyenId(),
-                            root -> root.join(VatTuHoTro_.chiDaoTuyen, JoinType.LEFT).get(ChiDaoTuyen_.id)
+                            root -> root.join(VatTuHoTro_.chiDaoTuyens, JoinType.LEFT).get(ChiDaoTuyen_.id)
                         )
                     );
             }

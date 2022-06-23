@@ -11,6 +11,8 @@ import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.VatTuHoTro;
 import com.mycompany.myapp.repository.VatTuHoTroRepository;
 import com.mycompany.myapp.service.criteria.VatTuHoTroCriteria;
+import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
+import com.mycompany.myapp.service.mapper.VatTuHoTroMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,6 +51,9 @@ class VatTuHoTroResourceIT {
 
     @Autowired
     private VatTuHoTroRepository vatTuHoTroRepository;
+
+    @Autowired
+    private VatTuHoTroMapper vatTuHoTroMapper;
 
     @Autowired
     private EntityManager em;
@@ -90,12 +95,13 @@ class VatTuHoTroResourceIT {
     void createVatTuHoTro() throws Exception {
         int databaseSizeBeforeCreate = vatTuHoTroRepository.findAll().size();
         // Create the VatTuHoTro
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
         restVatTuHoTroMockMvc
             .perform(
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isCreated());
 
@@ -113,6 +119,7 @@ class VatTuHoTroResourceIT {
     void createVatTuHoTroWithExistingId() throws Exception {
         // Create the VatTuHoTro with an existing ID
         vatTuHoTro.setId(1L);
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
 
         int databaseSizeBeforeCreate = vatTuHoTroRepository.findAll().size();
 
@@ -122,13 +129,59 @@ class VatTuHoTroResourceIT {
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the VatTuHoTro in the database
         List<VatTuHoTro> vatTuHoTroList = vatTuHoTroRepository.findAll();
         assertThat(vatTuHoTroList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkMaVatTuIsRequired() throws Exception {
+        int databaseSizeBeforeTest = vatTuHoTroRepository.findAll().size();
+        // set the field null
+        vatTuHoTro.setMaVatTu(null);
+
+        // Create the VatTuHoTro, which fails.
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
+        restVatTuHoTroMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<VatTuHoTro> vatTuHoTroList = vatTuHoTroRepository.findAll();
+        assertThat(vatTuHoTroList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkTenVatTuIsRequired() throws Exception {
+        int databaseSizeBeforeTest = vatTuHoTroRepository.findAll().size();
+        // set the field null
+        vatTuHoTro.setTenVatTu(null);
+
+        // Create the VatTuHoTro, which fails.
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
+        restVatTuHoTroMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<VatTuHoTro> vatTuHoTroList = vatTuHoTroRepository.findAll();
+        assertThat(vatTuHoTroList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -432,7 +485,7 @@ class VatTuHoTroResourceIT {
         }
         em.persist(chiDaoTuyen);
         em.flush();
-        vatTuHoTro.setChiDaoTuyen(chiDaoTuyen);
+        vatTuHoTro.addChiDaoTuyen(chiDaoTuyen);
         vatTuHoTroRepository.saveAndFlush(vatTuHoTro);
         Long chiDaoTuyenId = chiDaoTuyen.getId();
 
@@ -503,13 +556,14 @@ class VatTuHoTroResourceIT {
         // Disconnect from session so that the updates on updatedVatTuHoTro are not directly saved in db
         em.detach(updatedVatTuHoTro);
         updatedVatTuHoTro.maVatTu(UPDATED_MA_VAT_TU).tenVatTu(UPDATED_TEN_VAT_TU).thuTuSX(UPDATED_THU_TU_SX);
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(updatedVatTuHoTro);
 
         restVatTuHoTroMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedVatTuHoTro.getId())
+                put(ENTITY_API_URL_ID, vatTuHoTroDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedVatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isOk());
 
@@ -528,13 +582,16 @@ class VatTuHoTroResourceIT {
         int databaseSizeBeforeUpdate = vatTuHoTroRepository.findAll().size();
         vatTuHoTro.setId(count.incrementAndGet());
 
+        // Create the VatTuHoTro
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restVatTuHoTroMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, vatTuHoTro.getId())
+                put(ENTITY_API_URL_ID, vatTuHoTroDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -549,13 +606,16 @@ class VatTuHoTroResourceIT {
         int databaseSizeBeforeUpdate = vatTuHoTroRepository.findAll().size();
         vatTuHoTro.setId(count.incrementAndGet());
 
+        // Create the VatTuHoTro
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restVatTuHoTroMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -570,13 +630,16 @@ class VatTuHoTroResourceIT {
         int databaseSizeBeforeUpdate = vatTuHoTroRepository.findAll().size();
         vatTuHoTro.setId(count.incrementAndGet());
 
+        // Create the VatTuHoTro
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restVatTuHoTroMockMvc
             .perform(
                 put(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -655,13 +718,16 @@ class VatTuHoTroResourceIT {
         int databaseSizeBeforeUpdate = vatTuHoTroRepository.findAll().size();
         vatTuHoTro.setId(count.incrementAndGet());
 
+        // Create the VatTuHoTro
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restVatTuHoTroMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, vatTuHoTro.getId())
+                patch(ENTITY_API_URL_ID, vatTuHoTroDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -676,13 +742,16 @@ class VatTuHoTroResourceIT {
         int databaseSizeBeforeUpdate = vatTuHoTroRepository.findAll().size();
         vatTuHoTro.setId(count.incrementAndGet());
 
+        // Create the VatTuHoTro
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restVatTuHoTroMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -697,13 +766,16 @@ class VatTuHoTroResourceIT {
         int databaseSizeBeforeUpdate = vatTuHoTroRepository.findAll().size();
         vatTuHoTro.setId(count.incrementAndGet());
 
+        // Create the VatTuHoTro
+        VatTuHoTroDTO vatTuHoTroDTO = vatTuHoTroMapper.toDto(vatTuHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restVatTuHoTroMockMvc
             .perform(
                 patch(ENTITY_API_URL)
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(vatTuHoTroDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

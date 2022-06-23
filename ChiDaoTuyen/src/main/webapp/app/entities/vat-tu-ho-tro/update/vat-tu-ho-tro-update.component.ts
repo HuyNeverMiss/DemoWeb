@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IVatTuHoTro, VatTuHoTro } from '../vat-tu-ho-tro.model';
 import { VatTuHoTroService } from '../service/vat-tu-ho-tro.service';
-import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
-import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-tuyen.service';
 
 @Component({
   selector: 'jhi-vat-tu-ho-tro-update',
@@ -17,28 +15,18 @@ import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-t
 export class VatTuHoTroUpdateComponent implements OnInit {
   isSaving = false;
 
-  chiDaoTuyensCollection: IChiDaoTuyen[] = [];
-
   editForm = this.fb.group({
     id: [],
-    maVatTu: [],
-    tenVatTu: [],
+    maVatTu: [null, [Validators.required]],
+    tenVatTu: [null, [Validators.required]],
     thuTuSX: [],
-    chiDaoTuyen: [],
   });
 
-  constructor(
-    protected vatTuHoTroService: VatTuHoTroService,
-    protected chiDaoTuyenService: ChiDaoTuyenService,
-    protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
-  ) {}
+  constructor(protected vatTuHoTroService: VatTuHoTroService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ vatTuHoTro }) => {
       this.updateForm(vatTuHoTro);
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -54,10 +42,6 @@ export class VatTuHoTroUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.vatTuHoTroService.create(vatTuHoTro));
     }
-  }
-
-  trackChiDaoTuyenById(_index: number, item: IChiDaoTuyen): number {
-    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IVatTuHoTro>>): void {
@@ -85,25 +69,7 @@ export class VatTuHoTroUpdateComponent implements OnInit {
       maVatTu: vatTuHoTro.maVatTu,
       tenVatTu: vatTuHoTro.tenVatTu,
       thuTuSX: vatTuHoTro.thuTuSX,
-      chiDaoTuyen: vatTuHoTro.chiDaoTuyen,
     });
-
-    this.chiDaoTuyensCollection = this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(
-      this.chiDaoTuyensCollection,
-      vatTuHoTro.chiDaoTuyen
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.chiDaoTuyenService
-      .query({ 'vatTuHoTroId.specified': 'false' })
-      .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
-      .pipe(
-        map((chiDaoTuyens: IChiDaoTuyen[]) =>
-          this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(chiDaoTuyens, this.editForm.get('chiDaoTuyen')!.value)
-        )
-      )
-      .subscribe((chiDaoTuyens: IChiDaoTuyen[]) => (this.chiDaoTuyensCollection = chiDaoTuyens));
   }
 
   protected createFromForm(): IVatTuHoTro {
@@ -113,7 +79,6 @@ export class VatTuHoTroUpdateComponent implements OnInit {
       maVatTu: this.editForm.get(['maVatTu'])!.value,
       tenVatTu: this.editForm.get(['tenVatTu'])!.value,
       thuTuSX: this.editForm.get(['thuTuSX'])!.value,
-      chiDaoTuyen: this.editForm.get(['chiDaoTuyen'])!.value,
     };
   }
 }

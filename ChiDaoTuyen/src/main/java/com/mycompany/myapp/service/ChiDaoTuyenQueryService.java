@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.*; // for static metamodels
 import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.repository.ChiDaoTuyenRepository;
 import com.mycompany.myapp.service.criteria.ChiDaoTuyenCriteria;
+import com.mycompany.myapp.service.dto.ChiDaoTuyenDTO;
+import com.mycompany.myapp.service.mapper.ChiDaoTuyenMapper;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import tech.jhipster.service.QueryService;
  * Service for executing complex queries for {@link ChiDaoTuyen} entities in the database.
  * The main input is a {@link ChiDaoTuyenCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link ChiDaoTuyen} or a {@link Page} of {@link ChiDaoTuyen} which fulfills the criteria.
+ * It returns a {@link List} of {@link ChiDaoTuyenDTO} or a {@link Page} of {@link ChiDaoTuyenDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,33 +31,36 @@ public class ChiDaoTuyenQueryService extends QueryService<ChiDaoTuyen> {
 
     private final ChiDaoTuyenRepository chiDaoTuyenRepository;
 
-    public ChiDaoTuyenQueryService(ChiDaoTuyenRepository chiDaoTuyenRepository) {
+    private final ChiDaoTuyenMapper chiDaoTuyenMapper;
+
+    public ChiDaoTuyenQueryService(ChiDaoTuyenRepository chiDaoTuyenRepository, ChiDaoTuyenMapper chiDaoTuyenMapper) {
         this.chiDaoTuyenRepository = chiDaoTuyenRepository;
+        this.chiDaoTuyenMapper = chiDaoTuyenMapper;
     }
 
     /**
-     * Return a {@link List} of {@link ChiDaoTuyen} which matches the criteria from the database.
+     * Return a {@link List} of {@link ChiDaoTuyenDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<ChiDaoTuyen> findByCriteria(ChiDaoTuyenCriteria criteria) {
+    public List<ChiDaoTuyenDTO> findByCriteria(ChiDaoTuyenCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<ChiDaoTuyen> specification = createSpecification(criteria);
-        return chiDaoTuyenRepository.findAll(specification);
+        return chiDaoTuyenMapper.toDto(chiDaoTuyenRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link ChiDaoTuyen} which matches the criteria from the database.
+     * Return a {@link Page} of {@link ChiDaoTuyenDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<ChiDaoTuyen> findByCriteria(ChiDaoTuyenCriteria criteria, Pageable page) {
+    public Page<ChiDaoTuyenDTO> findByCriteria(ChiDaoTuyenCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<ChiDaoTuyen> specification = createSpecification(criteria);
-        return chiDaoTuyenRepository.findAll(specification, page);
+        return chiDaoTuyenRepository.findAll(specification, page).map(chiDaoTuyenMapper::toDto);
     }
 
     /**
@@ -97,14 +102,8 @@ public class ChiDaoTuyenQueryService extends QueryService<ChiDaoTuyen> {
             if (criteria.getNgayHD() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getNgayHD(), ChiDaoTuyen_.ngayHD));
             }
-            if (criteria.getLyDoCongTac() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getLyDoCongTac(), ChiDaoTuyen_.lyDoCongTac));
-            }
             if (criteria.getNoiDung() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getNoiDung(), ChiDaoTuyen_.noiDung));
-            }
-            if (criteria.getNoiDenCongTac() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getNoiDenCongTac(), ChiDaoTuyen_.noiDenCongTac));
             }
             if (criteria.getNgayBatDau() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getNgayBatDau(), ChiDaoTuyen_.ngayBatDau));
@@ -118,15 +117,6 @@ public class ChiDaoTuyenQueryService extends QueryService<ChiDaoTuyen> {
             if (criteria.getNgayTao() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getNgayTao(), ChiDaoTuyen_.ngayTao));
             }
-            if (criteria.getNhanVien() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getNhanVien(), ChiDaoTuyen_.nhanVien));
-            }
-            if (criteria.getKyThuatHoTro() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getKyThuatHoTro(), ChiDaoTuyen_.kyThuatHoTro));
-            }
-            if (criteria.getVatTuHoTro() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getVatTuHoTro(), ChiDaoTuyen_.vatTuHoTro));
-            }
             if (criteria.getSoBnKhamDieuTri() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getSoBnKhamDieuTri(), ChiDaoTuyen_.soBnKhamDieuTri));
             }
@@ -136,9 +126,6 @@ public class ChiDaoTuyenQueryService extends QueryService<ChiDaoTuyen> {
             if (criteria.getSoCanBoChuyenGiao() != null) {
                 specification =
                     specification.and(buildStringSpecification(criteria.getSoCanBoChuyenGiao(), ChiDaoTuyen_.soCanBoChuyenGiao));
-            }
-            if (criteria.getKetQuaCongTac() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getKetQuaCongTac(), ChiDaoTuyen_.ketQuaCongTac));
             }
             if (criteria.getLuuTru() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLuuTru(), ChiDaoTuyen_.luuTru));
@@ -160,6 +147,60 @@ public class ChiDaoTuyenQueryService extends QueryService<ChiDaoTuyen> {
             }
             if (criteria.getKhac() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getKhac(), ChiDaoTuyen_.khac));
+            }
+            if (criteria.getLyDoCongTacId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getLyDoCongTacId(),
+                            root -> root.join(ChiDaoTuyen_.lyDoCongTac, JoinType.LEFT).get(LyDoCongTac_.id)
+                        )
+                    );
+            }
+            if (criteria.getNoiDenCongTacId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getNoiDenCongTacId(),
+                            root -> root.join(ChiDaoTuyen_.noiDenCongTac, JoinType.LEFT).get(NoiDenCongTac_.id)
+                        )
+                    );
+            }
+            if (criteria.getKetQuaCongTacId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getKetQuaCongTacId(),
+                            root -> root.join(ChiDaoTuyen_.ketQuaCongTac, JoinType.LEFT).get(KetQuaCongTac_.id)
+                        )
+                    );
+            }
+            if (criteria.getKyThuatHoTroId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getKyThuatHoTroId(),
+                            root -> root.join(ChiDaoTuyen_.kyThuatHoTro, JoinType.LEFT).get(KyThuatHoTro_.id)
+                        )
+                    );
+            }
+            if (criteria.getVatTuHoTroId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getVatTuHoTroId(),
+                            root -> root.join(ChiDaoTuyen_.vatTuHoTro, JoinType.LEFT).get(VatTuHoTro_.id)
+                        )
+                    );
+            }
+            if (criteria.getNhanVienId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getNhanVienId(),
+                            root -> root.join(ChiDaoTuyen_.nhanVien, JoinType.LEFT).get(NhanVien_.id)
+                        )
+                    );
             }
         }
         return specification;

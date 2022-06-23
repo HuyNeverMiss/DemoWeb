@@ -1,37 +1,37 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.domain.NoiDenCongTac;
+import com.mycompany.myapp.service.dto.NoiDenCongTacDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link NoiDenCongTac}.
+ * Service Interface for managing {@link com.mycompany.myapp.domain.NoiDenCongTac}.
  */
 public interface NoiDenCongTacService {
     /**
      * Save a noiDenCongTac.
      *
-     * @param noiDenCongTac the entity to save.
+     * @param noiDenCongTacDTO the entity to save.
      * @return the persisted entity.
      */
-    NoiDenCongTac save(NoiDenCongTac noiDenCongTac);
+    NoiDenCongTacDTO save(NoiDenCongTacDTO noiDenCongTacDTO);
 
     /**
      * Updates a noiDenCongTac.
      *
-     * @param noiDenCongTac the entity to update.
+     * @param noiDenCongTacDTO the entity to update.
      * @return the persisted entity.
      */
-    NoiDenCongTac update(NoiDenCongTac noiDenCongTac);
+    NoiDenCongTacDTO update(NoiDenCongTacDTO noiDenCongTacDTO);
 
     /**
      * Partially updates a noiDenCongTac.
      *
-     * @param noiDenCongTac the entity to update partially.
+     * @param noiDenCongTacDTO the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<NoiDenCongTac> partialUpdate(NoiDenCongTac noiDenCongTac);
+    Optional<NoiDenCongTacDTO> partialUpdate(NoiDenCongTacDTO noiDenCongTacDTO);
 
     /**
      * Get all the noiDenCongTacs.
@@ -39,7 +39,7 @@ public interface NoiDenCongTacService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<NoiDenCongTac> findAll(Pageable pageable);
+    Page<NoiDenCongTacDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" noiDenCongTac.
@@ -47,7 +47,7 @@ public interface NoiDenCongTacService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<NoiDenCongTac> findOne(Long id);
+    Optional<NoiDenCongTacDTO> findOne(Long id);
 
     /**
      * Delete the "id" noiDenCongTac.

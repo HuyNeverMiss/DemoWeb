@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IKetQuaCongTac, KetQuaCongTac } from '../ket-qua-cong-tac.model';
 import { KetQuaCongTacService } from '../service/ket-qua-cong-tac.service';
-import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
-import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-tuyen.service';
 
 @Component({
   selector: 'jhi-ket-qua-cong-tac-update',
@@ -17,28 +15,18 @@ import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-t
 export class KetQuaCongTacUpdateComponent implements OnInit {
   isSaving = false;
 
-  chiDaoTuyensCollection: IChiDaoTuyen[] = [];
-
   editForm = this.fb.group({
     id: [],
-    maKetQua: [],
-    tenKetQua: [],
+    maKetQua: [null, [Validators.required]],
+    tenKetQua: [null, [Validators.required]],
     thuTuSX: [],
-    chiDaoTuyen: [],
   });
 
-  constructor(
-    protected ketQuaCongTacService: KetQuaCongTacService,
-    protected chiDaoTuyenService: ChiDaoTuyenService,
-    protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
-  ) {}
+  constructor(protected ketQuaCongTacService: KetQuaCongTacService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ ketQuaCongTac }) => {
       this.updateForm(ketQuaCongTac);
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -54,10 +42,6 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.ketQuaCongTacService.create(ketQuaCongTac));
     }
-  }
-
-  trackChiDaoTuyenById(_index: number, item: IChiDaoTuyen): number {
-    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IKetQuaCongTac>>): void {
@@ -85,25 +69,7 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
       maKetQua: ketQuaCongTac.maKetQua,
       tenKetQua: ketQuaCongTac.tenKetQua,
       thuTuSX: ketQuaCongTac.thuTuSX,
-      chiDaoTuyen: ketQuaCongTac.chiDaoTuyen,
     });
-
-    this.chiDaoTuyensCollection = this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(
-      this.chiDaoTuyensCollection,
-      ketQuaCongTac.chiDaoTuyen
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.chiDaoTuyenService
-      .query({ 'ketQuaCongTacId.specified': 'false' })
-      .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
-      .pipe(
-        map((chiDaoTuyens: IChiDaoTuyen[]) =>
-          this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(chiDaoTuyens, this.editForm.get('chiDaoTuyen')!.value)
-        )
-      )
-      .subscribe((chiDaoTuyens: IChiDaoTuyen[]) => (this.chiDaoTuyensCollection = chiDaoTuyens));
   }
 
   protected createFromForm(): IKetQuaCongTac {
@@ -113,7 +79,6 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
       maKetQua: this.editForm.get(['maKetQua'])!.value,
       tenKetQua: this.editForm.get(['tenKetQua'])!.value,
       thuTuSX: this.editForm.get(['thuTuSX'])!.value,
-      chiDaoTuyen: this.editForm.get(['chiDaoTuyen'])!.value,
     };
   }
 }

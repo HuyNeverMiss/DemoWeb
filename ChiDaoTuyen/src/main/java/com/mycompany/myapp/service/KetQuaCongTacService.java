@@ -1,37 +1,37 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.domain.KetQuaCongTac;
+import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link KetQuaCongTac}.
+ * Service Interface for managing {@link com.mycompany.myapp.domain.KetQuaCongTac}.
  */
 public interface KetQuaCongTacService {
     /**
      * Save a ketQuaCongTac.
      *
-     * @param ketQuaCongTac the entity to save.
+     * @param ketQuaCongTacDTO the entity to save.
      * @return the persisted entity.
      */
-    KetQuaCongTac save(KetQuaCongTac ketQuaCongTac);
+    KetQuaCongTacDTO save(KetQuaCongTacDTO ketQuaCongTacDTO);
 
     /**
      * Updates a ketQuaCongTac.
      *
-     * @param ketQuaCongTac the entity to update.
+     * @param ketQuaCongTacDTO the entity to update.
      * @return the persisted entity.
      */
-    KetQuaCongTac update(KetQuaCongTac ketQuaCongTac);
+    KetQuaCongTacDTO update(KetQuaCongTacDTO ketQuaCongTacDTO);
 
     /**
      * Partially updates a ketQuaCongTac.
      *
-     * @param ketQuaCongTac the entity to update partially.
+     * @param ketQuaCongTacDTO the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<KetQuaCongTac> partialUpdate(KetQuaCongTac ketQuaCongTac);
+    Optional<KetQuaCongTacDTO> partialUpdate(KetQuaCongTacDTO ketQuaCongTacDTO);
 
     /**
      * Get all the ketQuaCongTacs.
@@ -39,7 +39,7 @@ public interface KetQuaCongTacService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<KetQuaCongTac> findAll(Pageable pageable);
+    Page<KetQuaCongTacDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" ketQuaCongTac.
@@ -47,7 +47,7 @@ public interface KetQuaCongTacService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<KetQuaCongTac> findOne(Long id);
+    Optional<KetQuaCongTacDTO> findOne(Long id);
 
     /**
      * Delete the "id" ketQuaCongTac.

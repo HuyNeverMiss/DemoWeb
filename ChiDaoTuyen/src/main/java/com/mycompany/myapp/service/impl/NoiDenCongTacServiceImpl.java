@@ -3,6 +3,8 @@ package com.mycompany.myapp.service.impl;
 import com.mycompany.myapp.domain.NoiDenCongTac;
 import com.mycompany.myapp.repository.NoiDenCongTacRepository;
 import com.mycompany.myapp.service.NoiDenCongTacService;
+import com.mycompany.myapp.service.dto.NoiDenCongTacDTO;
+import com.mycompany.myapp.service.mapper.NoiDenCongTacMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,56 +24,56 @@ public class NoiDenCongTacServiceImpl implements NoiDenCongTacService {
 
     private final NoiDenCongTacRepository noiDenCongTacRepository;
 
-    public NoiDenCongTacServiceImpl(NoiDenCongTacRepository noiDenCongTacRepository) {
+    private final NoiDenCongTacMapper noiDenCongTacMapper;
+
+    public NoiDenCongTacServiceImpl(NoiDenCongTacRepository noiDenCongTacRepository, NoiDenCongTacMapper noiDenCongTacMapper) {
         this.noiDenCongTacRepository = noiDenCongTacRepository;
+        this.noiDenCongTacMapper = noiDenCongTacMapper;
     }
 
     @Override
-    public NoiDenCongTac save(NoiDenCongTac noiDenCongTac) {
-        log.debug("Request to save NoiDenCongTac : {}", noiDenCongTac);
-        return noiDenCongTacRepository.save(noiDenCongTac);
+    public NoiDenCongTacDTO save(NoiDenCongTacDTO noiDenCongTacDTO) {
+        log.debug("Request to save NoiDenCongTac : {}", noiDenCongTacDTO);
+        NoiDenCongTac noiDenCongTac = noiDenCongTacMapper.toEntity(noiDenCongTacDTO);
+        noiDenCongTac = noiDenCongTacRepository.save(noiDenCongTac);
+        return noiDenCongTacMapper.toDto(noiDenCongTac);
     }
 
     @Override
-    public NoiDenCongTac update(NoiDenCongTac noiDenCongTac) {
-        log.debug("Request to save NoiDenCongTac : {}", noiDenCongTac);
-        return noiDenCongTacRepository.save(noiDenCongTac);
+    public NoiDenCongTacDTO update(NoiDenCongTacDTO noiDenCongTacDTO) {
+        log.debug("Request to save NoiDenCongTac : {}", noiDenCongTacDTO);
+        NoiDenCongTac noiDenCongTac = noiDenCongTacMapper.toEntity(noiDenCongTacDTO);
+        noiDenCongTac = noiDenCongTacRepository.save(noiDenCongTac);
+        return noiDenCongTacMapper.toDto(noiDenCongTac);
     }
 
     @Override
-    public Optional<NoiDenCongTac> partialUpdate(NoiDenCongTac noiDenCongTac) {
-        log.debug("Request to partially update NoiDenCongTac : {}", noiDenCongTac);
+    public Optional<NoiDenCongTacDTO> partialUpdate(NoiDenCongTacDTO noiDenCongTacDTO) {
+        log.debug("Request to partially update NoiDenCongTac : {}", noiDenCongTacDTO);
 
         return noiDenCongTacRepository
-            .findById(noiDenCongTac.getId())
+            .findById(noiDenCongTacDTO.getId())
             .map(existingNoiDenCongTac -> {
-                if (noiDenCongTac.getMaNoiDen() != null) {
-                    existingNoiDenCongTac.setMaNoiDen(noiDenCongTac.getMaNoiDen());
-                }
-                if (noiDenCongTac.getTenNoiDen() != null) {
-                    existingNoiDenCongTac.setTenNoiDen(noiDenCongTac.getTenNoiDen());
-                }
-                if (noiDenCongTac.getThuTuSX() != null) {
-                    existingNoiDenCongTac.setThuTuSX(noiDenCongTac.getThuTuSX());
-                }
+                noiDenCongTacMapper.partialUpdate(existingNoiDenCongTac, noiDenCongTacDTO);
 
                 return existingNoiDenCongTac;
             })
-            .map(noiDenCongTacRepository::save);
+            .map(noiDenCongTacRepository::save)
+            .map(noiDenCongTacMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<NoiDenCongTac> findAll(Pageable pageable) {
+    public Page<NoiDenCongTacDTO> findAll(Pageable pageable) {
         log.debug("Request to get all NoiDenCongTacs");
-        return noiDenCongTacRepository.findAll(pageable);
+        return noiDenCongTacRepository.findAll(pageable).map(noiDenCongTacMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<NoiDenCongTac> findOne(Long id) {
+    public Optional<NoiDenCongTacDTO> findOne(Long id) {
         log.debug("Request to get NoiDenCongTac : {}", id);
-        return noiDenCongTacRepository.findById(id);
+        return noiDenCongTacRepository.findById(id).map(noiDenCongTacMapper::toDto);
     }
 
     @Override

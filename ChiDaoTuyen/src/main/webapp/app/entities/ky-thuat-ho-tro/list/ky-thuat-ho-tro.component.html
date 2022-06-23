@@ -42,9 +42,6 @@
           <th scope="col" jhiSortBy="thuTuSX">
             <span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.thuTuSX">Thu Tu SX</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="chiDaoTuyen.id">
-            <span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.chiDaoTuyen">Chi Dao Tuyen</span> <fa-icon icon="sort"></fa-icon>
-          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -56,11 +53,6 @@
           <td>{{ kyThuatHoTro.maKyThuat }}</td>
           <td>{{ kyThuatHoTro.tenKyThuat }}</td>
           <td>{{ kyThuatHoTro.thuTuSX }}</td>
-          <td>
-            <div *ngIf="kyThuatHoTro.chiDaoTuyen">
-              <a [routerLink]="['/chi-dao-tuyen', kyThuatHoTro.chiDaoTuyen?.id, 'view']">{{ kyThuatHoTro.chiDaoTuyen?.id }}</a>
-            </div>
-          </td>
           <td class="text-end">
             <div class="btn-group">
               <button

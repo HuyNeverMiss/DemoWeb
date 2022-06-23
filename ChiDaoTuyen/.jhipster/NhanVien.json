@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20220623051418",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "nhan_vien",
+  "fields": [
+    {
+      "fieldName": "maNhanVien",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "chucVu",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "NhanVien",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "chiDaoTuyen",
+      "otherEntityRelationshipName": "nhanVien",
+      "relationshipName": "chiDaoTuyen",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

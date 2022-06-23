@@ -11,6 +11,8 @@ import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.KetQuaCongTac;
 import com.mycompany.myapp.repository.KetQuaCongTacRepository;
 import com.mycompany.myapp.service.criteria.KetQuaCongTacCriteria;
+import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
+import com.mycompany.myapp.service.mapper.KetQuaCongTacMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,6 +51,9 @@ class KetQuaCongTacResourceIT {
 
     @Autowired
     private KetQuaCongTacRepository ketQuaCongTacRepository;
+
+    @Autowired
+    private KetQuaCongTacMapper ketQuaCongTacMapper;
 
     @Autowired
     private EntityManager em;
@@ -96,12 +101,13 @@ class KetQuaCongTacResourceIT {
     void createKetQuaCongTac() throws Exception {
         int databaseSizeBeforeCreate = ketQuaCongTacRepository.findAll().size();
         // Create the KetQuaCongTac
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
         restKetQuaCongTacMockMvc
             .perform(
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isCreated());
 
@@ -119,6 +125,7 @@ class KetQuaCongTacResourceIT {
     void createKetQuaCongTacWithExistingId() throws Exception {
         // Create the KetQuaCongTac with an existing ID
         ketQuaCongTac.setId(1L);
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
 
         int databaseSizeBeforeCreate = ketQuaCongTacRepository.findAll().size();
 
@@ -128,13 +135,59 @@ class KetQuaCongTacResourceIT {
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the KetQuaCongTac in the database
         List<KetQuaCongTac> ketQuaCongTacList = ketQuaCongTacRepository.findAll();
         assertThat(ketQuaCongTacList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkMaKetQuaIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ketQuaCongTacRepository.findAll().size();
+        // set the field null
+        ketQuaCongTac.setMaKetQua(null);
+
+        // Create the KetQuaCongTac, which fails.
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
+        restKetQuaCongTacMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<KetQuaCongTac> ketQuaCongTacList = ketQuaCongTacRepository.findAll();
+        assertThat(ketQuaCongTacList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkTenKetQuaIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ketQuaCongTacRepository.findAll().size();
+        // set the field null
+        ketQuaCongTac.setTenKetQua(null);
+
+        // Create the KetQuaCongTac, which fails.
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
+        restKetQuaCongTacMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<KetQuaCongTac> ketQuaCongTacList = ketQuaCongTacRepository.findAll();
+        assertThat(ketQuaCongTacList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -438,7 +491,7 @@ class KetQuaCongTacResourceIT {
         }
         em.persist(chiDaoTuyen);
         em.flush();
-        ketQuaCongTac.setChiDaoTuyen(chiDaoTuyen);
+        ketQuaCongTac.addChiDaoTuyen(chiDaoTuyen);
         ketQuaCongTacRepository.saveAndFlush(ketQuaCongTac);
         Long chiDaoTuyenId = chiDaoTuyen.getId();
 
@@ -509,13 +562,14 @@ class KetQuaCongTacResourceIT {
         // Disconnect from session so that the updates on updatedKetQuaCongTac are not directly saved in db
         em.detach(updatedKetQuaCongTac);
         updatedKetQuaCongTac.maKetQua(UPDATED_MA_KET_QUA).tenKetQua(UPDATED_TEN_KET_QUA).thuTuSX(UPDATED_THU_TU_SX);
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(updatedKetQuaCongTac);
 
         restKetQuaCongTacMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedKetQuaCongTac.getId())
+                put(ENTITY_API_URL_ID, ketQuaCongTacDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedKetQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isOk());
 
@@ -534,13 +588,16 @@ class KetQuaCongTacResourceIT {
         int databaseSizeBeforeUpdate = ketQuaCongTacRepository.findAll().size();
         ketQuaCongTac.setId(count.incrementAndGet());
 
+        // Create the KetQuaCongTac
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKetQuaCongTacMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, ketQuaCongTac.getId())
+                put(ENTITY_API_URL_ID, ketQuaCongTacDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -555,13 +612,16 @@ class KetQuaCongTacResourceIT {
         int databaseSizeBeforeUpdate = ketQuaCongTacRepository.findAll().size();
         ketQuaCongTac.setId(count.incrementAndGet());
 
+        // Create the KetQuaCongTac
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKetQuaCongTacMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -576,13 +636,16 @@ class KetQuaCongTacResourceIT {
         int databaseSizeBeforeUpdate = ketQuaCongTacRepository.findAll().size();
         ketQuaCongTac.setId(count.incrementAndGet());
 
+        // Create the KetQuaCongTac
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKetQuaCongTacMockMvc
             .perform(
                 put(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -661,13 +724,16 @@ class KetQuaCongTacResourceIT {
         int databaseSizeBeforeUpdate = ketQuaCongTacRepository.findAll().size();
         ketQuaCongTac.setId(count.incrementAndGet());
 
+        // Create the KetQuaCongTac
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKetQuaCongTacMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, ketQuaCongTac.getId())
+                patch(ENTITY_API_URL_ID, ketQuaCongTacDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -682,13 +748,16 @@ class KetQuaCongTacResourceIT {
         int databaseSizeBeforeUpdate = ketQuaCongTacRepository.findAll().size();
         ketQuaCongTac.setId(count.incrementAndGet());
 
+        // Create the KetQuaCongTac
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKetQuaCongTacMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -703,13 +772,16 @@ class KetQuaCongTacResourceIT {
         int databaseSizeBeforeUpdate = ketQuaCongTacRepository.findAll().size();
         ketQuaCongTac.setId(count.incrementAndGet());
 
+        // Create the KetQuaCongTac
+        KetQuaCongTacDTO ketQuaCongTacDTO = ketQuaCongTacMapper.toDto(ketQuaCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKetQuaCongTacMockMvc
             .perform(
                 patch(ENTITY_API_URL)
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(ketQuaCongTacDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

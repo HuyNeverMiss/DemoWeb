@@ -11,6 +11,8 @@ import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.LyDoCongTac;
 import com.mycompany.myapp.repository.LyDoCongTacRepository;
 import com.mycompany.myapp.service.criteria.LyDoCongTacCriteria;
+import com.mycompany.myapp.service.dto.LyDoCongTacDTO;
+import com.mycompany.myapp.service.mapper.LyDoCongTacMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,6 +51,9 @@ class LyDoCongTacResourceIT {
 
     @Autowired
     private LyDoCongTacRepository lyDoCongTacRepository;
+
+    @Autowired
+    private LyDoCongTacMapper lyDoCongTacMapper;
 
     @Autowired
     private EntityManager em;
@@ -90,12 +95,13 @@ class LyDoCongTacResourceIT {
     void createLyDoCongTac() throws Exception {
         int databaseSizeBeforeCreate = lyDoCongTacRepository.findAll().size();
         // Create the LyDoCongTac
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
         restLyDoCongTacMockMvc
             .perform(
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isCreated());
 
@@ -113,6 +119,7 @@ class LyDoCongTacResourceIT {
     void createLyDoCongTacWithExistingId() throws Exception {
         // Create the LyDoCongTac with an existing ID
         lyDoCongTac.setId(1L);
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
 
         int databaseSizeBeforeCreate = lyDoCongTacRepository.findAll().size();
 
@@ -122,13 +129,59 @@ class LyDoCongTacResourceIT {
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the LyDoCongTac in the database
         List<LyDoCongTac> lyDoCongTacList = lyDoCongTacRepository.findAll();
         assertThat(lyDoCongTacList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkMaLyDoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = lyDoCongTacRepository.findAll().size();
+        // set the field null
+        lyDoCongTac.setMaLyDo(null);
+
+        // Create the LyDoCongTac, which fails.
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
+        restLyDoCongTacMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<LyDoCongTac> lyDoCongTacList = lyDoCongTacRepository.findAll();
+        assertThat(lyDoCongTacList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkTenLyDoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = lyDoCongTacRepository.findAll().size();
+        // set the field null
+        lyDoCongTac.setTenLyDo(null);
+
+        // Create the LyDoCongTac, which fails.
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
+        restLyDoCongTacMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<LyDoCongTac> lyDoCongTacList = lyDoCongTacRepository.findAll();
+        assertThat(lyDoCongTacList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -432,7 +485,7 @@ class LyDoCongTacResourceIT {
         }
         em.persist(chiDaoTuyen);
         em.flush();
-        lyDoCongTac.setChiDaoTuyen(chiDaoTuyen);
+        lyDoCongTac.addChiDaoTuyen(chiDaoTuyen);
         lyDoCongTacRepository.saveAndFlush(lyDoCongTac);
         Long chiDaoTuyenId = chiDaoTuyen.getId();
 
@@ -503,13 +556,14 @@ class LyDoCongTacResourceIT {
         // Disconnect from session so that the updates on updatedLyDoCongTac are not directly saved in db
         em.detach(updatedLyDoCongTac);
         updatedLyDoCongTac.maLyDo(UPDATED_MA_LY_DO).tenLyDo(UPDATED_TEN_LY_DO).thuTuSX(UPDATED_THU_TU_SX);
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(updatedLyDoCongTac);
 
         restLyDoCongTacMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedLyDoCongTac.getId())
+                put(ENTITY_API_URL_ID, lyDoCongTacDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedLyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isOk());
 
@@ -528,13 +582,16 @@ class LyDoCongTacResourceIT {
         int databaseSizeBeforeUpdate = lyDoCongTacRepository.findAll().size();
         lyDoCongTac.setId(count.incrementAndGet());
 
+        // Create the LyDoCongTac
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLyDoCongTacMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, lyDoCongTac.getId())
+                put(ENTITY_API_URL_ID, lyDoCongTacDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -549,13 +606,16 @@ class LyDoCongTacResourceIT {
         int databaseSizeBeforeUpdate = lyDoCongTacRepository.findAll().size();
         lyDoCongTac.setId(count.incrementAndGet());
 
+        // Create the LyDoCongTac
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restLyDoCongTacMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -570,13 +630,16 @@ class LyDoCongTacResourceIT {
         int databaseSizeBeforeUpdate = lyDoCongTacRepository.findAll().size();
         lyDoCongTac.setId(count.incrementAndGet());
 
+        // Create the LyDoCongTac
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restLyDoCongTacMockMvc
             .perform(
                 put(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -655,13 +718,16 @@ class LyDoCongTacResourceIT {
         int databaseSizeBeforeUpdate = lyDoCongTacRepository.findAll().size();
         lyDoCongTac.setId(count.incrementAndGet());
 
+        // Create the LyDoCongTac
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLyDoCongTacMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, lyDoCongTac.getId())
+                patch(ENTITY_API_URL_ID, lyDoCongTacDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -676,13 +742,16 @@ class LyDoCongTacResourceIT {
         int databaseSizeBeforeUpdate = lyDoCongTacRepository.findAll().size();
         lyDoCongTac.setId(count.incrementAndGet());
 
+        // Create the LyDoCongTac
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restLyDoCongTacMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -697,13 +766,16 @@ class LyDoCongTacResourceIT {
         int databaseSizeBeforeUpdate = lyDoCongTacRepository.findAll().size();
         lyDoCongTac.setId(count.incrementAndGet());
 
+        // Create the LyDoCongTac
+        LyDoCongTacDTO lyDoCongTacDTO = lyDoCongTacMapper.toDto(lyDoCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restLyDoCongTacMockMvc
             .perform(
                 patch(ENTITY_API_URL)
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(lyDoCongTacDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

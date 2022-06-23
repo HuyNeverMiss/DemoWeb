@@ -1,16 +1,18 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.domain.NoiDenCongTac;
 import com.mycompany.myapp.repository.NoiDenCongTacRepository;
 import com.mycompany.myapp.service.NoiDenCongTacQueryService;
 import com.mycompany.myapp.service.NoiDenCongTacService;
 import com.mycompany.myapp.service.criteria.NoiDenCongTacCriteria;
+import com.mycompany.myapp.service.dto.NoiDenCongTacDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,17 +59,18 @@ public class NoiDenCongTacResource {
     /**
      * {@code POST  /noi-den-cong-tacs} : Create a new noiDenCongTac.
      *
-     * @param noiDenCongTac the noiDenCongTac to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new noiDenCongTac, or with status {@code 400 (Bad Request)} if the noiDenCongTac has already an ID.
+     * @param noiDenCongTacDTO the noiDenCongTacDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new noiDenCongTacDTO, or with status {@code 400 (Bad Request)} if the noiDenCongTac has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/noi-den-cong-tacs")
-    public ResponseEntity<NoiDenCongTac> createNoiDenCongTac(@RequestBody NoiDenCongTac noiDenCongTac) throws URISyntaxException {
-        log.debug("REST request to save NoiDenCongTac : {}", noiDenCongTac);
-        if (noiDenCongTac.getId() != null) {
+    public ResponseEntity<NoiDenCongTacDTO> createNoiDenCongTac(@Valid @RequestBody NoiDenCongTacDTO noiDenCongTacDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save NoiDenCongTac : {}", noiDenCongTacDTO);
+        if (noiDenCongTacDTO.getId() != null) {
             throw new BadRequestAlertException("A new noiDenCongTac cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        NoiDenCongTac result = noiDenCongTacService.save(noiDenCongTac);
+        NoiDenCongTacDTO result = noiDenCongTacService.save(noiDenCongTacDTO);
         return ResponseEntity
             .created(new URI("/api/noi-den-cong-tacs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -77,23 +80,23 @@ public class NoiDenCongTacResource {
     /**
      * {@code PUT  /noi-den-cong-tacs/:id} : Updates an existing noiDenCongTac.
      *
-     * @param id the id of the noiDenCongTac to save.
-     * @param noiDenCongTac the noiDenCongTac to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated noiDenCongTac,
-     * or with status {@code 400 (Bad Request)} if the noiDenCongTac is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the noiDenCongTac couldn't be updated.
+     * @param id the id of the noiDenCongTacDTO to save.
+     * @param noiDenCongTacDTO the noiDenCongTacDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated noiDenCongTacDTO,
+     * or with status {@code 400 (Bad Request)} if the noiDenCongTacDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the noiDenCongTacDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/noi-den-cong-tacs/{id}")
-    public ResponseEntity<NoiDenCongTac> updateNoiDenCongTac(
+    public ResponseEntity<NoiDenCongTacDTO> updateNoiDenCongTac(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody NoiDenCongTac noiDenCongTac
+        @Valid @RequestBody NoiDenCongTacDTO noiDenCongTacDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update NoiDenCongTac : {}, {}", id, noiDenCongTac);
-        if (noiDenCongTac.getId() == null) {
+        log.debug("REST request to update NoiDenCongTac : {}, {}", id, noiDenCongTacDTO);
+        if (noiDenCongTacDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, noiDenCongTac.getId())) {
+        if (!Objects.equals(id, noiDenCongTacDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -101,34 +104,34 @@ public class NoiDenCongTacResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        NoiDenCongTac result = noiDenCongTacService.update(noiDenCongTac);
+        NoiDenCongTacDTO result = noiDenCongTacService.update(noiDenCongTacDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, noiDenCongTac.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, noiDenCongTacDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /noi-den-cong-tacs/:id} : Partial updates given fields of an existing noiDenCongTac, field will ignore if it is null
      *
-     * @param id the id of the noiDenCongTac to save.
-     * @param noiDenCongTac the noiDenCongTac to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated noiDenCongTac,
-     * or with status {@code 400 (Bad Request)} if the noiDenCongTac is not valid,
-     * or with status {@code 404 (Not Found)} if the noiDenCongTac is not found,
-     * or with status {@code 500 (Internal Server Error)} if the noiDenCongTac couldn't be updated.
+     * @param id the id of the noiDenCongTacDTO to save.
+     * @param noiDenCongTacDTO the noiDenCongTacDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated noiDenCongTacDTO,
+     * or with status {@code 400 (Bad Request)} if the noiDenCongTacDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the noiDenCongTacDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the noiDenCongTacDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/noi-den-cong-tacs/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<NoiDenCongTac> partialUpdateNoiDenCongTac(
+    public ResponseEntity<NoiDenCongTacDTO> partialUpdateNoiDenCongTac(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody NoiDenCongTac noiDenCongTac
+        @NotNull @RequestBody NoiDenCongTacDTO noiDenCongTacDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update NoiDenCongTac partially : {}, {}", id, noiDenCongTac);
-        if (noiDenCongTac.getId() == null) {
+        log.debug("REST request to partial update NoiDenCongTac partially : {}, {}", id, noiDenCongTacDTO);
+        if (noiDenCongTacDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, noiDenCongTac.getId())) {
+        if (!Objects.equals(id, noiDenCongTacDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -136,11 +139,11 @@ public class NoiDenCongTacResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<NoiDenCongTac> result = noiDenCongTacService.partialUpdate(noiDenCongTac);
+        Optional<NoiDenCongTacDTO> result = noiDenCongTacService.partialUpdate(noiDenCongTacDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, noiDenCongTac.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, noiDenCongTacDTO.getId().toString())
         );
     }
 
@@ -152,12 +155,12 @@ public class NoiDenCongTacResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of noiDenCongTacs in body.
      */
     @GetMapping("/noi-den-cong-tacs")
-    public ResponseEntity<List<NoiDenCongTac>> getAllNoiDenCongTacs(
+    public ResponseEntity<List<NoiDenCongTacDTO>> getAllNoiDenCongTacs(
         NoiDenCongTacCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get NoiDenCongTacs by criteria: {}", criteria);
-        Page<NoiDenCongTac> page = noiDenCongTacQueryService.findByCriteria(criteria, pageable);
+        Page<NoiDenCongTacDTO> page = noiDenCongTacQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -177,20 +180,20 @@ public class NoiDenCongTacResource {
     /**
      * {@code GET  /noi-den-cong-tacs/:id} : get the "id" noiDenCongTac.
      *
-     * @param id the id of the noiDenCongTac to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the noiDenCongTac, or with status {@code 404 (Not Found)}.
+     * @param id the id of the noiDenCongTacDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the noiDenCongTacDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/noi-den-cong-tacs/{id}")
-    public ResponseEntity<NoiDenCongTac> getNoiDenCongTac(@PathVariable Long id) {
+    public ResponseEntity<NoiDenCongTacDTO> getNoiDenCongTac(@PathVariable Long id) {
         log.debug("REST request to get NoiDenCongTac : {}", id);
-        Optional<NoiDenCongTac> noiDenCongTac = noiDenCongTacService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(noiDenCongTac);
+        Optional<NoiDenCongTacDTO> noiDenCongTacDTO = noiDenCongTacService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(noiDenCongTacDTO);
     }
 
     /**
      * {@code DELETE  /noi-den-cong-tacs/:id} : delete the "id" noiDenCongTac.
      *
-     * @param id the id of the noiDenCongTac to delete.
+     * @param id the id of the noiDenCongTacDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/noi-den-cong-tacs/{id}")

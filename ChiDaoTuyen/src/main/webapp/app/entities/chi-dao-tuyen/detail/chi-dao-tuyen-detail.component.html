@@ -30,17 +30,9 @@
         <dd>
           <span>{{ chiDaoTuyen.ngayHD | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac">Ly Do Cong Tac</span></dt>
-        <dd>
-          <span>{{ chiDaoTuyen.lyDoCongTac }}</span>
-        </dd>
         <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDung">Noi Dung</span></dt>
         <dd>
           <span>{{ chiDaoTuyen.noiDung }}</span>
-        </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDenCongTac">Noi Den Cong Tac</span></dt>
-        <dd>
-          <span>{{ chiDaoTuyen.noiDenCongTac }}</span>
         </dd>
         <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ngayBatDau">Ngay Bat Dau</span></dt>
         <dd>
@@ -58,18 +50,6 @@
         <dd>
           <span>{{ chiDaoTuyen.ngayTao | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien">Nhan Vien</span></dt>
-        <dd>
-          <span>{{ chiDaoTuyen.nhanVien }}</span>
-        </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro">Ky Thuat Ho Tro</span></dt>
-        <dd>
-          <span>{{ chiDaoTuyen.kyThuatHoTro }}</span>
-        </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro">Vat Tu Ho Tro</span></dt>
-        <dd>
-          <span>{{ chiDaoTuyen.vatTuHoTro }}</span>
-        </dd>
         <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soBnKhamDieuTri">So Bn Kham Dieu Tri</span></dt>
         <dd>
           <span>{{ chiDaoTuyen.soBnKhamDieuTri }}</span>
@@ -81,10 +61,6 @@
         <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.soCanBoChuyenGiao">So Can Bo Chuyen Giao</span></dt>
         <dd>
           <span>{{ chiDaoTuyen.soCanBoChuyenGiao }}</span>
-        </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac">Ket Qua Cong Tac</span></dt>
-        <dd>
-          <span>{{ chiDaoTuyen.ketQuaCongTac }}</span>
         </dd>
         <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.luuTru">Luu Tru</span></dt>
         <dd>
@@ -113,6 +89,42 @@
         <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.khac">Khac</span></dt>
         <dd>
           <span>{{ chiDaoTuyen.khac }}</span>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.lyDoCongTac">Ly Do Cong Tac</span></dt>
+        <dd>
+          <div *ngIf="chiDaoTuyen.lyDoCongTac">
+            <a [routerLink]="['/ly-do-cong-tac', chiDaoTuyen.lyDoCongTac?.id, 'view']">{{ chiDaoTuyen.lyDoCongTac?.tenLyDo }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.noiDenCongTac">Noi Den Cong Tac</span></dt>
+        <dd>
+          <div *ngIf="chiDaoTuyen.noiDenCongTac">
+            <a [routerLink]="['/noi-den-cong-tac', chiDaoTuyen.noiDenCongTac?.id, 'view']">{{ chiDaoTuyen.noiDenCongTac?.tenNoiDen }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.ketQuaCongTac">Ket Qua Cong Tac</span></dt>
+        <dd>
+          <div *ngIf="chiDaoTuyen.ketQuaCongTac">
+            <a [routerLink]="['/ket-qua-cong-tac', chiDaoTuyen.ketQuaCongTac?.id, 'view']">{{ chiDaoTuyen.ketQuaCongTac?.tenKetQua }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.kyThuatHoTro">Ky Thuat Ho Tro</span></dt>
+        <dd>
+          <div *ngIf="chiDaoTuyen.kyThuatHoTro">
+            <a [routerLink]="['/ky-thuat-ho-tro', chiDaoTuyen.kyThuatHoTro?.id, 'view']">{{ chiDaoTuyen.kyThuatHoTro?.tenKyThuat }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.vatTuHoTro">Vat Tu Ho Tro</span></dt>
+        <dd>
+          <div *ngIf="chiDaoTuyen.vatTuHoTro">
+            <a [routerLink]="['/vat-tu-ho-tro', chiDaoTuyen.vatTuHoTro?.id, 'view']">{{ chiDaoTuyen.vatTuHoTro?.tenVatTu }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="chiDaoTuyenApp.chiDaoTuyen.nhanVien">Nhan Vien</span></dt>
+        <dd>
+          <div *ngIf="chiDaoTuyen.nhanVien">
+            <a [routerLink]="['/nhan-vien', chiDaoTuyen.nhanVien?.id, 'view']">{{ chiDaoTuyen.nhanVien?.chucVu }}</a>
+          </div>
         </dd>
       </dl>
 

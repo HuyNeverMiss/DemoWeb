@@ -1,37 +1,37 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.domain.ChiDaoTuyen;
+import com.mycompany.myapp.service.dto.ChiDaoTuyenDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link ChiDaoTuyen}.
+ * Service Interface for managing {@link com.mycompany.myapp.domain.ChiDaoTuyen}.
  */
 public interface ChiDaoTuyenService {
     /**
      * Save a chiDaoTuyen.
      *
-     * @param chiDaoTuyen the entity to save.
+     * @param chiDaoTuyenDTO the entity to save.
      * @return the persisted entity.
      */
-    ChiDaoTuyen save(ChiDaoTuyen chiDaoTuyen);
+    ChiDaoTuyenDTO save(ChiDaoTuyenDTO chiDaoTuyenDTO);
 
     /**
      * Updates a chiDaoTuyen.
      *
-     * @param chiDaoTuyen the entity to update.
+     * @param chiDaoTuyenDTO the entity to update.
      * @return the persisted entity.
      */
-    ChiDaoTuyen update(ChiDaoTuyen chiDaoTuyen);
+    ChiDaoTuyenDTO update(ChiDaoTuyenDTO chiDaoTuyenDTO);
 
     /**
      * Partially updates a chiDaoTuyen.
      *
-     * @param chiDaoTuyen the entity to update partially.
+     * @param chiDaoTuyenDTO the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<ChiDaoTuyen> partialUpdate(ChiDaoTuyen chiDaoTuyen);
+    Optional<ChiDaoTuyenDTO> partialUpdate(ChiDaoTuyenDTO chiDaoTuyenDTO);
 
     /**
      * Get all the chiDaoTuyens.
@@ -39,7 +39,7 @@ public interface ChiDaoTuyenService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<ChiDaoTuyen> findAll(Pageable pageable);
+    Page<ChiDaoTuyenDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" chiDaoTuyen.
@@ -47,7 +47,7 @@ public interface ChiDaoTuyenService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<ChiDaoTuyen> findOne(Long id);
+    Optional<ChiDaoTuyenDTO> findOne(Long id);
 
     /**
      * Delete the "id" chiDaoTuyen.

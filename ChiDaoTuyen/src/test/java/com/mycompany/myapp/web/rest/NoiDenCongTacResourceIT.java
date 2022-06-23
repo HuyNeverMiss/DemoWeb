@@ -11,6 +11,8 @@ import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.NoiDenCongTac;
 import com.mycompany.myapp.repository.NoiDenCongTacRepository;
 import com.mycompany.myapp.service.criteria.NoiDenCongTacCriteria;
+import com.mycompany.myapp.service.dto.NoiDenCongTacDTO;
+import com.mycompany.myapp.service.mapper.NoiDenCongTacMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,6 +51,9 @@ class NoiDenCongTacResourceIT {
 
     @Autowired
     private NoiDenCongTacRepository noiDenCongTacRepository;
+
+    @Autowired
+    private NoiDenCongTacMapper noiDenCongTacMapper;
 
     @Autowired
     private EntityManager em;
@@ -96,12 +101,13 @@ class NoiDenCongTacResourceIT {
     void createNoiDenCongTac() throws Exception {
         int databaseSizeBeforeCreate = noiDenCongTacRepository.findAll().size();
         // Create the NoiDenCongTac
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
         restNoiDenCongTacMockMvc
             .perform(
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isCreated());
 
@@ -119,6 +125,7 @@ class NoiDenCongTacResourceIT {
     void createNoiDenCongTacWithExistingId() throws Exception {
         // Create the NoiDenCongTac with an existing ID
         noiDenCongTac.setId(1L);
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
 
         int databaseSizeBeforeCreate = noiDenCongTacRepository.findAll().size();
 
@@ -128,13 +135,59 @@ class NoiDenCongTacResourceIT {
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the NoiDenCongTac in the database
         List<NoiDenCongTac> noiDenCongTacList = noiDenCongTacRepository.findAll();
         assertThat(noiDenCongTacList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkMaNoiDenIsRequired() throws Exception {
+        int databaseSizeBeforeTest = noiDenCongTacRepository.findAll().size();
+        // set the field null
+        noiDenCongTac.setMaNoiDen(null);
+
+        // Create the NoiDenCongTac, which fails.
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
+        restNoiDenCongTacMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<NoiDenCongTac> noiDenCongTacList = noiDenCongTacRepository.findAll();
+        assertThat(noiDenCongTacList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkTenNoiDenIsRequired() throws Exception {
+        int databaseSizeBeforeTest = noiDenCongTacRepository.findAll().size();
+        // set the field null
+        noiDenCongTac.setTenNoiDen(null);
+
+        // Create the NoiDenCongTac, which fails.
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
+        restNoiDenCongTacMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<NoiDenCongTac> noiDenCongTacList = noiDenCongTacRepository.findAll();
+        assertThat(noiDenCongTacList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -438,7 +491,7 @@ class NoiDenCongTacResourceIT {
         }
         em.persist(chiDaoTuyen);
         em.flush();
-        noiDenCongTac.setChiDaoTuyen(chiDaoTuyen);
+        noiDenCongTac.addChiDaoTuyen(chiDaoTuyen);
         noiDenCongTacRepository.saveAndFlush(noiDenCongTac);
         Long chiDaoTuyenId = chiDaoTuyen.getId();
 
@@ -509,13 +562,14 @@ class NoiDenCongTacResourceIT {
         // Disconnect from session so that the updates on updatedNoiDenCongTac are not directly saved in db
         em.detach(updatedNoiDenCongTac);
         updatedNoiDenCongTac.maNoiDen(UPDATED_MA_NOI_DEN).tenNoiDen(UPDATED_TEN_NOI_DEN).thuTuSX(UPDATED_THU_TU_SX);
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(updatedNoiDenCongTac);
 
         restNoiDenCongTacMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedNoiDenCongTac.getId())
+                put(ENTITY_API_URL_ID, noiDenCongTacDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedNoiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isOk());
 
@@ -534,13 +588,16 @@ class NoiDenCongTacResourceIT {
         int databaseSizeBeforeUpdate = noiDenCongTacRepository.findAll().size();
         noiDenCongTac.setId(count.incrementAndGet());
 
+        // Create the NoiDenCongTac
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNoiDenCongTacMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, noiDenCongTac.getId())
+                put(ENTITY_API_URL_ID, noiDenCongTacDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -555,13 +612,16 @@ class NoiDenCongTacResourceIT {
         int databaseSizeBeforeUpdate = noiDenCongTacRepository.findAll().size();
         noiDenCongTac.setId(count.incrementAndGet());
 
+        // Create the NoiDenCongTac
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restNoiDenCongTacMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -576,13 +636,16 @@ class NoiDenCongTacResourceIT {
         int databaseSizeBeforeUpdate = noiDenCongTacRepository.findAll().size();
         noiDenCongTac.setId(count.incrementAndGet());
 
+        // Create the NoiDenCongTac
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restNoiDenCongTacMockMvc
             .perform(
                 put(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -661,13 +724,16 @@ class NoiDenCongTacResourceIT {
         int databaseSizeBeforeUpdate = noiDenCongTacRepository.findAll().size();
         noiDenCongTac.setId(count.incrementAndGet());
 
+        // Create the NoiDenCongTac
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restNoiDenCongTacMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, noiDenCongTac.getId())
+                patch(ENTITY_API_URL_ID, noiDenCongTacDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -682,13 +748,16 @@ class NoiDenCongTacResourceIT {
         int databaseSizeBeforeUpdate = noiDenCongTacRepository.findAll().size();
         noiDenCongTac.setId(count.incrementAndGet());
 
+        // Create the NoiDenCongTac
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restNoiDenCongTacMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -703,13 +772,16 @@ class NoiDenCongTacResourceIT {
         int databaseSizeBeforeUpdate = noiDenCongTacRepository.findAll().size();
         noiDenCongTac.setId(count.incrementAndGet());
 
+        // Create the NoiDenCongTac
+        NoiDenCongTacDTO noiDenCongTacDTO = noiDenCongTacMapper.toDto(noiDenCongTac);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restNoiDenCongTacMockMvc
             .perform(
                 patch(ENTITY_API_URL)
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTac))
+                    .content(TestUtil.convertObjectToJsonBytes(noiDenCongTacDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

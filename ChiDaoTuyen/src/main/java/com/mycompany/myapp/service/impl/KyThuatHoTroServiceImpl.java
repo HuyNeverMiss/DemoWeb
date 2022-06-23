@@ -3,6 +3,8 @@ package com.mycompany.myapp.service.impl;
 import com.mycompany.myapp.domain.KyThuatHoTro;
 import com.mycompany.myapp.repository.KyThuatHoTroRepository;
 import com.mycompany.myapp.service.KyThuatHoTroService;
+import com.mycompany.myapp.service.dto.KyThuatHoTroDTO;
+import com.mycompany.myapp.service.mapper.KyThuatHoTroMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,56 +24,56 @@ public class KyThuatHoTroServiceImpl implements KyThuatHoTroService {
 
     private final KyThuatHoTroRepository kyThuatHoTroRepository;
 
-    public KyThuatHoTroServiceImpl(KyThuatHoTroRepository kyThuatHoTroRepository) {
+    private final KyThuatHoTroMapper kyThuatHoTroMapper;
+
+    public KyThuatHoTroServiceImpl(KyThuatHoTroRepository kyThuatHoTroRepository, KyThuatHoTroMapper kyThuatHoTroMapper) {
         this.kyThuatHoTroRepository = kyThuatHoTroRepository;
+        this.kyThuatHoTroMapper = kyThuatHoTroMapper;
     }
 
     @Override
-    public KyThuatHoTro save(KyThuatHoTro kyThuatHoTro) {
-        log.debug("Request to save KyThuatHoTro : {}", kyThuatHoTro);
-        return kyThuatHoTroRepository.save(kyThuatHoTro);
+    public KyThuatHoTroDTO save(KyThuatHoTroDTO kyThuatHoTroDTO) {
+        log.debug("Request to save KyThuatHoTro : {}", kyThuatHoTroDTO);
+        KyThuatHoTro kyThuatHoTro = kyThuatHoTroMapper.toEntity(kyThuatHoTroDTO);
+        kyThuatHoTro = kyThuatHoTroRepository.save(kyThuatHoTro);
+        return kyThuatHoTroMapper.toDto(kyThuatHoTro);
     }
 
     @Override
-    public KyThuatHoTro update(KyThuatHoTro kyThuatHoTro) {
-        log.debug("Request to save KyThuatHoTro : {}", kyThuatHoTro);
-        return kyThuatHoTroRepository.save(kyThuatHoTro);
+    public KyThuatHoTroDTO update(KyThuatHoTroDTO kyThuatHoTroDTO) {
+        log.debug("Request to save KyThuatHoTro : {}", kyThuatHoTroDTO);
+        KyThuatHoTro kyThuatHoTro = kyThuatHoTroMapper.toEntity(kyThuatHoTroDTO);
+        kyThuatHoTro = kyThuatHoTroRepository.save(kyThuatHoTro);
+        return kyThuatHoTroMapper.toDto(kyThuatHoTro);
     }
 
     @Override
-    public Optional<KyThuatHoTro> partialUpdate(KyThuatHoTro kyThuatHoTro) {
-        log.debug("Request to partially update KyThuatHoTro : {}", kyThuatHoTro);
+    public Optional<KyThuatHoTroDTO> partialUpdate(KyThuatHoTroDTO kyThuatHoTroDTO) {
+        log.debug("Request to partially update KyThuatHoTro : {}", kyThuatHoTroDTO);
 
         return kyThuatHoTroRepository
-            .findById(kyThuatHoTro.getId())
+            .findById(kyThuatHoTroDTO.getId())
             .map(existingKyThuatHoTro -> {
-                if (kyThuatHoTro.getMaKyThuat() != null) {
-                    existingKyThuatHoTro.setMaKyThuat(kyThuatHoTro.getMaKyThuat());
-                }
-                if (kyThuatHoTro.getTenKyThuat() != null) {
-                    existingKyThuatHoTro.setTenKyThuat(kyThuatHoTro.getTenKyThuat());
-                }
-                if (kyThuatHoTro.getThuTuSX() != null) {
-                    existingKyThuatHoTro.setThuTuSX(kyThuatHoTro.getThuTuSX());
-                }
+                kyThuatHoTroMapper.partialUpdate(existingKyThuatHoTro, kyThuatHoTroDTO);
 
                 return existingKyThuatHoTro;
             })
-            .map(kyThuatHoTroRepository::save);
+            .map(kyThuatHoTroRepository::save)
+            .map(kyThuatHoTroMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<KyThuatHoTro> findAll(Pageable pageable) {
+    public Page<KyThuatHoTroDTO> findAll(Pageable pageable) {
         log.debug("Request to get all KyThuatHoTros");
-        return kyThuatHoTroRepository.findAll(pageable);
+        return kyThuatHoTroRepository.findAll(pageable).map(kyThuatHoTroMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<KyThuatHoTro> findOne(Long id) {
+    public Optional<KyThuatHoTroDTO> findOne(Long id) {
         log.debug("Request to get KyThuatHoTro : {}", id);
-        return kyThuatHoTroRepository.findById(id);
+        return kyThuatHoTroRepository.findById(id).map(kyThuatHoTroMapper::toDto);
     }
 
     @Override

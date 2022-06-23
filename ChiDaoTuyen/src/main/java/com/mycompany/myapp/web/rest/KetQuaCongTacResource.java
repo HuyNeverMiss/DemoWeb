@@ -1,16 +1,18 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.domain.KetQuaCongTac;
 import com.mycompany.myapp.repository.KetQuaCongTacRepository;
 import com.mycompany.myapp.service.KetQuaCongTacQueryService;
 import com.mycompany.myapp.service.KetQuaCongTacService;
 import com.mycompany.myapp.service.criteria.KetQuaCongTacCriteria;
+import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,17 +59,18 @@ public class KetQuaCongTacResource {
     /**
      * {@code POST  /ket-qua-cong-tacs} : Create a new ketQuaCongTac.
      *
-     * @param ketQuaCongTac the ketQuaCongTac to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ketQuaCongTac, or with status {@code 400 (Bad Request)} if the ketQuaCongTac has already an ID.
+     * @param ketQuaCongTacDTO the ketQuaCongTacDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ketQuaCongTacDTO, or with status {@code 400 (Bad Request)} if the ketQuaCongTac has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/ket-qua-cong-tacs")
-    public ResponseEntity<KetQuaCongTac> createKetQuaCongTac(@RequestBody KetQuaCongTac ketQuaCongTac) throws URISyntaxException {
-        log.debug("REST request to save KetQuaCongTac : {}", ketQuaCongTac);
-        if (ketQuaCongTac.getId() != null) {
+    public ResponseEntity<KetQuaCongTacDTO> createKetQuaCongTac(@Valid @RequestBody KetQuaCongTacDTO ketQuaCongTacDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save KetQuaCongTac : {}", ketQuaCongTacDTO);
+        if (ketQuaCongTacDTO.getId() != null) {
             throw new BadRequestAlertException("A new ketQuaCongTac cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        KetQuaCongTac result = ketQuaCongTacService.save(ketQuaCongTac);
+        KetQuaCongTacDTO result = ketQuaCongTacService.save(ketQuaCongTacDTO);
         return ResponseEntity
             .created(new URI("/api/ket-qua-cong-tacs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -77,23 +80,23 @@ public class KetQuaCongTacResource {
     /**
      * {@code PUT  /ket-qua-cong-tacs/:id} : Updates an existing ketQuaCongTac.
      *
-     * @param id the id of the ketQuaCongTac to save.
-     * @param ketQuaCongTac the ketQuaCongTac to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ketQuaCongTac,
-     * or with status {@code 400 (Bad Request)} if the ketQuaCongTac is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the ketQuaCongTac couldn't be updated.
+     * @param id the id of the ketQuaCongTacDTO to save.
+     * @param ketQuaCongTacDTO the ketQuaCongTacDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ketQuaCongTacDTO,
+     * or with status {@code 400 (Bad Request)} if the ketQuaCongTacDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the ketQuaCongTacDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/ket-qua-cong-tacs/{id}")
-    public ResponseEntity<KetQuaCongTac> updateKetQuaCongTac(
+    public ResponseEntity<KetQuaCongTacDTO> updateKetQuaCongTac(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody KetQuaCongTac ketQuaCongTac
+        @Valid @RequestBody KetQuaCongTacDTO ketQuaCongTacDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update KetQuaCongTac : {}, {}", id, ketQuaCongTac);
-        if (ketQuaCongTac.getId() == null) {
+        log.debug("REST request to update KetQuaCongTac : {}, {}", id, ketQuaCongTacDTO);
+        if (ketQuaCongTacDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, ketQuaCongTac.getId())) {
+        if (!Objects.equals(id, ketQuaCongTacDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -101,34 +104,34 @@ public class KetQuaCongTacResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        KetQuaCongTac result = ketQuaCongTacService.update(ketQuaCongTac);
+        KetQuaCongTacDTO result = ketQuaCongTacService.update(ketQuaCongTacDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ketQuaCongTac.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ketQuaCongTacDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /ket-qua-cong-tacs/:id} : Partial updates given fields of an existing ketQuaCongTac, field will ignore if it is null
      *
-     * @param id the id of the ketQuaCongTac to save.
-     * @param ketQuaCongTac the ketQuaCongTac to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ketQuaCongTac,
-     * or with status {@code 400 (Bad Request)} if the ketQuaCongTac is not valid,
-     * or with status {@code 404 (Not Found)} if the ketQuaCongTac is not found,
-     * or with status {@code 500 (Internal Server Error)} if the ketQuaCongTac couldn't be updated.
+     * @param id the id of the ketQuaCongTacDTO to save.
+     * @param ketQuaCongTacDTO the ketQuaCongTacDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ketQuaCongTacDTO,
+     * or with status {@code 400 (Bad Request)} if the ketQuaCongTacDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the ketQuaCongTacDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the ketQuaCongTacDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/ket-qua-cong-tacs/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<KetQuaCongTac> partialUpdateKetQuaCongTac(
+    public ResponseEntity<KetQuaCongTacDTO> partialUpdateKetQuaCongTac(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody KetQuaCongTac ketQuaCongTac
+        @NotNull @RequestBody KetQuaCongTacDTO ketQuaCongTacDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update KetQuaCongTac partially : {}, {}", id, ketQuaCongTac);
-        if (ketQuaCongTac.getId() == null) {
+        log.debug("REST request to partial update KetQuaCongTac partially : {}, {}", id, ketQuaCongTacDTO);
+        if (ketQuaCongTacDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, ketQuaCongTac.getId())) {
+        if (!Objects.equals(id, ketQuaCongTacDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -136,11 +139,11 @@ public class KetQuaCongTacResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<KetQuaCongTac> result = ketQuaCongTacService.partialUpdate(ketQuaCongTac);
+        Optional<KetQuaCongTacDTO> result = ketQuaCongTacService.partialUpdate(ketQuaCongTacDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ketQuaCongTac.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ketQuaCongTacDTO.getId().toString())
         );
     }
 
@@ -152,12 +155,12 @@ public class KetQuaCongTacResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ketQuaCongTacs in body.
      */
     @GetMapping("/ket-qua-cong-tacs")
-    public ResponseEntity<List<KetQuaCongTac>> getAllKetQuaCongTacs(
+    public ResponseEntity<List<KetQuaCongTacDTO>> getAllKetQuaCongTacs(
         KetQuaCongTacCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get KetQuaCongTacs by criteria: {}", criteria);
-        Page<KetQuaCongTac> page = ketQuaCongTacQueryService.findByCriteria(criteria, pageable);
+        Page<KetQuaCongTacDTO> page = ketQuaCongTacQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -177,20 +180,20 @@ public class KetQuaCongTacResource {
     /**
      * {@code GET  /ket-qua-cong-tacs/:id} : get the "id" ketQuaCongTac.
      *
-     * @param id the id of the ketQuaCongTac to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ketQuaCongTac, or with status {@code 404 (Not Found)}.
+     * @param id the id of the ketQuaCongTacDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ketQuaCongTacDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/ket-qua-cong-tacs/{id}")
-    public ResponseEntity<KetQuaCongTac> getKetQuaCongTac(@PathVariable Long id) {
+    public ResponseEntity<KetQuaCongTacDTO> getKetQuaCongTac(@PathVariable Long id) {
         log.debug("REST request to get KetQuaCongTac : {}", id);
-        Optional<KetQuaCongTac> ketQuaCongTac = ketQuaCongTacService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(ketQuaCongTac);
+        Optional<KetQuaCongTacDTO> ketQuaCongTacDTO = ketQuaCongTacService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(ketQuaCongTacDTO);
     }
 
     /**
      * {@code DELETE  /ket-qua-cong-tacs/:id} : delete the "id" ketQuaCongTac.
      *
-     * @param id the id of the ketQuaCongTac to delete.
+     * @param id the id of the ketQuaCongTacDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/ket-qua-cong-tacs/{id}")

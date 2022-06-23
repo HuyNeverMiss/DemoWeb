@@ -3,6 +3,8 @@ package com.mycompany.myapp.service.impl;
 import com.mycompany.myapp.domain.KetQuaCongTac;
 import com.mycompany.myapp.repository.KetQuaCongTacRepository;
 import com.mycompany.myapp.service.KetQuaCongTacService;
+import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
+import com.mycompany.myapp.service.mapper.KetQuaCongTacMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,56 +24,56 @@ public class KetQuaCongTacServiceImpl implements KetQuaCongTacService {
 
     private final KetQuaCongTacRepository ketQuaCongTacRepository;
 
-    public KetQuaCongTacServiceImpl(KetQuaCongTacRepository ketQuaCongTacRepository) {
+    private final KetQuaCongTacMapper ketQuaCongTacMapper;
+
+    public KetQuaCongTacServiceImpl(KetQuaCongTacRepository ketQuaCongTacRepository, KetQuaCongTacMapper ketQuaCongTacMapper) {
         this.ketQuaCongTacRepository = ketQuaCongTacRepository;
+        this.ketQuaCongTacMapper = ketQuaCongTacMapper;
     }
 
     @Override
-    public KetQuaCongTac save(KetQuaCongTac ketQuaCongTac) {
-        log.debug("Request to save KetQuaCongTac : {}", ketQuaCongTac);
-        return ketQuaCongTacRepository.save(ketQuaCongTac);
+    public KetQuaCongTacDTO save(KetQuaCongTacDTO ketQuaCongTacDTO) {
+        log.debug("Request to save KetQuaCongTac : {}", ketQuaCongTacDTO);
+        KetQuaCongTac ketQuaCongTac = ketQuaCongTacMapper.toEntity(ketQuaCongTacDTO);
+        ketQuaCongTac = ketQuaCongTacRepository.save(ketQuaCongTac);
+        return ketQuaCongTacMapper.toDto(ketQuaCongTac);
     }
 
     @Override
-    public KetQuaCongTac update(KetQuaCongTac ketQuaCongTac) {
-        log.debug("Request to save KetQuaCongTac : {}", ketQuaCongTac);
-        return ketQuaCongTacRepository.save(ketQuaCongTac);
+    public KetQuaCongTacDTO update(KetQuaCongTacDTO ketQuaCongTacDTO) {
+        log.debug("Request to save KetQuaCongTac : {}", ketQuaCongTacDTO);
+        KetQuaCongTac ketQuaCongTac = ketQuaCongTacMapper.toEntity(ketQuaCongTacDTO);
+        ketQuaCongTac = ketQuaCongTacRepository.save(ketQuaCongTac);
+        return ketQuaCongTacMapper.toDto(ketQuaCongTac);
     }
 
     @Override
-    public Optional<KetQuaCongTac> partialUpdate(KetQuaCongTac ketQuaCongTac) {
-        log.debug("Request to partially update KetQuaCongTac : {}", ketQuaCongTac);
+    public Optional<KetQuaCongTacDTO> partialUpdate(KetQuaCongTacDTO ketQuaCongTacDTO) {
+        log.debug("Request to partially update KetQuaCongTac : {}", ketQuaCongTacDTO);
 
         return ketQuaCongTacRepository
-            .findById(ketQuaCongTac.getId())
+            .findById(ketQuaCongTacDTO.getId())
             .map(existingKetQuaCongTac -> {
-                if (ketQuaCongTac.getMaKetQua() != null) {
-                    existingKetQuaCongTac.setMaKetQua(ketQuaCongTac.getMaKetQua());
-                }
-                if (ketQuaCongTac.getTenKetQua() != null) {
-                    existingKetQuaCongTac.setTenKetQua(ketQuaCongTac.getTenKetQua());
-                }
-                if (ketQuaCongTac.getThuTuSX() != null) {
-                    existingKetQuaCongTac.setThuTuSX(ketQuaCongTac.getThuTuSX());
-                }
+                ketQuaCongTacMapper.partialUpdate(existingKetQuaCongTac, ketQuaCongTacDTO);
 
                 return existingKetQuaCongTac;
             })
-            .map(ketQuaCongTacRepository::save);
+            .map(ketQuaCongTacRepository::save)
+            .map(ketQuaCongTacMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<KetQuaCongTac> findAll(Pageable pageable) {
+    public Page<KetQuaCongTacDTO> findAll(Pageable pageable) {
         log.debug("Request to get all KetQuaCongTacs");
-        return ketQuaCongTacRepository.findAll(pageable);
+        return ketQuaCongTacRepository.findAll(pageable).map(ketQuaCongTacMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<KetQuaCongTac> findOne(Long id) {
+    public Optional<KetQuaCongTacDTO> findOne(Long id) {
         log.debug("Request to get KetQuaCongTac : {}", id);
-        return ketQuaCongTacRepository.findById(id);
+        return ketQuaCongTacRepository.findById(id).map(ketQuaCongTacMapper::toDto);
     }
 
     @Override

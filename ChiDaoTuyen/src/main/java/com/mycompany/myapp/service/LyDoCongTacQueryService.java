@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.*; // for static metamodels
 import com.mycompany.myapp.domain.LyDoCongTac;
 import com.mycompany.myapp.repository.LyDoCongTacRepository;
 import com.mycompany.myapp.service.criteria.LyDoCongTacCriteria;
+import com.mycompany.myapp.service.dto.LyDoCongTacDTO;
+import com.mycompany.myapp.service.mapper.LyDoCongTacMapper;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import tech.jhipster.service.QueryService;
  * Service for executing complex queries for {@link LyDoCongTac} entities in the database.
  * The main input is a {@link LyDoCongTacCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link LyDoCongTac} or a {@link Page} of {@link LyDoCongTac} which fulfills the criteria.
+ * It returns a {@link List} of {@link LyDoCongTacDTO} or a {@link Page} of {@link LyDoCongTacDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,33 +31,36 @@ public class LyDoCongTacQueryService extends QueryService<LyDoCongTac> {
 
     private final LyDoCongTacRepository lyDoCongTacRepository;
 
-    public LyDoCongTacQueryService(LyDoCongTacRepository lyDoCongTacRepository) {
+    private final LyDoCongTacMapper lyDoCongTacMapper;
+
+    public LyDoCongTacQueryService(LyDoCongTacRepository lyDoCongTacRepository, LyDoCongTacMapper lyDoCongTacMapper) {
         this.lyDoCongTacRepository = lyDoCongTacRepository;
+        this.lyDoCongTacMapper = lyDoCongTacMapper;
     }
 
     /**
-     * Return a {@link List} of {@link LyDoCongTac} which matches the criteria from the database.
+     * Return a {@link List} of {@link LyDoCongTacDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<LyDoCongTac> findByCriteria(LyDoCongTacCriteria criteria) {
+    public List<LyDoCongTacDTO> findByCriteria(LyDoCongTacCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<LyDoCongTac> specification = createSpecification(criteria);
-        return lyDoCongTacRepository.findAll(specification);
+        return lyDoCongTacMapper.toDto(lyDoCongTacRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link LyDoCongTac} which matches the criteria from the database.
+     * Return a {@link Page} of {@link LyDoCongTacDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<LyDoCongTac> findByCriteria(LyDoCongTacCriteria criteria, Pageable page) {
+    public Page<LyDoCongTacDTO> findByCriteria(LyDoCongTacCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<LyDoCongTac> specification = createSpecification(criteria);
-        return lyDoCongTacRepository.findAll(specification, page);
+        return lyDoCongTacRepository.findAll(specification, page).map(lyDoCongTacMapper::toDto);
     }
 
     /**
@@ -99,7 +104,7 @@ public class LyDoCongTacQueryService extends QueryService<LyDoCongTac> {
                     specification.and(
                         buildSpecification(
                             criteria.getChiDaoTuyenId(),
-                            root -> root.join(LyDoCongTac_.chiDaoTuyen, JoinType.LEFT).get(ChiDaoTuyen_.id)
+                            root -> root.join(LyDoCongTac_.chiDaoTuyens, JoinType.LEFT).get(ChiDaoTuyen_.id)
                         )
                     );
             }

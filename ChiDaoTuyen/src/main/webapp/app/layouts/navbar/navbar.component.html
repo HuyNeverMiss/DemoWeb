@@ -106,6 +106,18 @@
             <li>
               <a
                 class="dropdown-item"
+                routerLink="nhan-vien"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span jhiTranslate="global.menu.entities.nhanVien">Nhan Vien</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
                 routerLink="chi-dao-tuyen"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"

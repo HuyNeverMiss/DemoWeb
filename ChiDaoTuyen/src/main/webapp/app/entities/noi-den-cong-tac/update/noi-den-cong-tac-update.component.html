@@ -20,31 +20,34 @@
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.noiDenCongTac.maNoiDen" for="field_maNoiDen">Ma Noi Den</label>
           <input type="text" class="form-control" name="maNoiDen" id="field_maNoiDen" data-cy="maNoiDen" formControlName="maNoiDen" />
+          <div *ngIf="editForm.get('maNoiDen')!.invalid && (editForm.get('maNoiDen')!.dirty || editForm.get('maNoiDen')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('maNoiDen')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.noiDenCongTac.tenNoiDen" for="field_tenNoiDen">Ten Noi Den</label>
           <input type="text" class="form-control" name="tenNoiDen" id="field_tenNoiDen" data-cy="tenNoiDen" formControlName="tenNoiDen" />
+          <div *ngIf="editForm.get('tenNoiDen')!.invalid && (editForm.get('tenNoiDen')!.dirty || editForm.get('tenNoiDen')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('tenNoiDen')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="row mb-3">
           <label class="form-label" jhiTranslate="chiDaoTuyenApp.noiDenCongTac.thuTuSX" for="field_thuTuSX">Thu Tu SX</label>
           <input type="text" class="form-control" name="thuTuSX" id="field_thuTuSX" data-cy="thuTuSX" formControlName="thuTuSX" />
-        </div>
-
-        <div class="row mb-3">
-          <label class="form-label" jhiTranslate="chiDaoTuyenApp.noiDenCongTac.chiDaoTuyen" for="field_chiDaoTuyen">Chi Dao Tuyen</label>
-          <select class="form-control" id="field_chiDaoTuyen" data-cy="chiDaoTuyen" name="chiDaoTuyen" formControlName="chiDaoTuyen">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="
-                chiDaoTuyenOption.id === editForm.get('chiDaoTuyen')!.value?.id ? editForm.get('chiDaoTuyen')!.value : chiDaoTuyenOption
-              "
-              *ngFor="let chiDaoTuyenOption of chiDaoTuyensCollection; trackBy: trackChiDaoTuyenById"
-            >
-              {{ chiDaoTuyenOption.id }}
-            </option>
-          </select>
         </div>
       </div>
 

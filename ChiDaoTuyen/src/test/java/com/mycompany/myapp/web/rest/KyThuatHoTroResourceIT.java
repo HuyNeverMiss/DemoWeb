@@ -11,6 +11,8 @@ import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.domain.KyThuatHoTro;
 import com.mycompany.myapp.repository.KyThuatHoTroRepository;
 import com.mycompany.myapp.service.criteria.KyThuatHoTroCriteria;
+import com.mycompany.myapp.service.dto.KyThuatHoTroDTO;
+import com.mycompany.myapp.service.mapper.KyThuatHoTroMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -49,6 +51,9 @@ class KyThuatHoTroResourceIT {
 
     @Autowired
     private KyThuatHoTroRepository kyThuatHoTroRepository;
+
+    @Autowired
+    private KyThuatHoTroMapper kyThuatHoTroMapper;
 
     @Autowired
     private EntityManager em;
@@ -96,12 +101,13 @@ class KyThuatHoTroResourceIT {
     void createKyThuatHoTro() throws Exception {
         int databaseSizeBeforeCreate = kyThuatHoTroRepository.findAll().size();
         // Create the KyThuatHoTro
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
         restKyThuatHoTroMockMvc
             .perform(
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isCreated());
 
@@ -119,6 +125,7 @@ class KyThuatHoTroResourceIT {
     void createKyThuatHoTroWithExistingId() throws Exception {
         // Create the KyThuatHoTro with an existing ID
         kyThuatHoTro.setId(1L);
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
 
         int databaseSizeBeforeCreate = kyThuatHoTroRepository.findAll().size();
 
@@ -128,13 +135,59 @@ class KyThuatHoTroResourceIT {
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the KyThuatHoTro in the database
         List<KyThuatHoTro> kyThuatHoTroList = kyThuatHoTroRepository.findAll();
         assertThat(kyThuatHoTroList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkMaKyThuatIsRequired() throws Exception {
+        int databaseSizeBeforeTest = kyThuatHoTroRepository.findAll().size();
+        // set the field null
+        kyThuatHoTro.setMaKyThuat(null);
+
+        // Create the KyThuatHoTro, which fails.
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
+        restKyThuatHoTroMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<KyThuatHoTro> kyThuatHoTroList = kyThuatHoTroRepository.findAll();
+        assertThat(kyThuatHoTroList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkTenKyThuatIsRequired() throws Exception {
+        int databaseSizeBeforeTest = kyThuatHoTroRepository.findAll().size();
+        // set the field null
+        kyThuatHoTro.setTenKyThuat(null);
+
+        // Create the KyThuatHoTro, which fails.
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
+        restKyThuatHoTroMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<KyThuatHoTro> kyThuatHoTroList = kyThuatHoTroRepository.findAll();
+        assertThat(kyThuatHoTroList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -438,7 +491,7 @@ class KyThuatHoTroResourceIT {
         }
         em.persist(chiDaoTuyen);
         em.flush();
-        kyThuatHoTro.setChiDaoTuyen(chiDaoTuyen);
+        kyThuatHoTro.addChiDaoTuyen(chiDaoTuyen);
         kyThuatHoTroRepository.saveAndFlush(kyThuatHoTro);
         Long chiDaoTuyenId = chiDaoTuyen.getId();
 
@@ -509,13 +562,14 @@ class KyThuatHoTroResourceIT {
         // Disconnect from session so that the updates on updatedKyThuatHoTro are not directly saved in db
         em.detach(updatedKyThuatHoTro);
         updatedKyThuatHoTro.maKyThuat(UPDATED_MA_KY_THUAT).tenKyThuat(UPDATED_TEN_KY_THUAT).thuTuSX(UPDATED_THU_TU_SX);
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(updatedKyThuatHoTro);
 
         restKyThuatHoTroMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedKyThuatHoTro.getId())
+                put(ENTITY_API_URL_ID, kyThuatHoTroDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedKyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isOk());
 
@@ -534,13 +588,16 @@ class KyThuatHoTroResourceIT {
         int databaseSizeBeforeUpdate = kyThuatHoTroRepository.findAll().size();
         kyThuatHoTro.setId(count.incrementAndGet());
 
+        // Create the KyThuatHoTro
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKyThuatHoTroMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, kyThuatHoTro.getId())
+                put(ENTITY_API_URL_ID, kyThuatHoTroDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -555,13 +612,16 @@ class KyThuatHoTroResourceIT {
         int databaseSizeBeforeUpdate = kyThuatHoTroRepository.findAll().size();
         kyThuatHoTro.setId(count.incrementAndGet());
 
+        // Create the KyThuatHoTro
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKyThuatHoTroMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -576,13 +636,16 @@ class KyThuatHoTroResourceIT {
         int databaseSizeBeforeUpdate = kyThuatHoTroRepository.findAll().size();
         kyThuatHoTro.setId(count.incrementAndGet());
 
+        // Create the KyThuatHoTro
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKyThuatHoTroMockMvc
             .perform(
                 put(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -659,13 +722,16 @@ class KyThuatHoTroResourceIT {
         int databaseSizeBeforeUpdate = kyThuatHoTroRepository.findAll().size();
         kyThuatHoTro.setId(count.incrementAndGet());
 
+        // Create the KyThuatHoTro
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restKyThuatHoTroMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, kyThuatHoTro.getId())
+                patch(ENTITY_API_URL_ID, kyThuatHoTroDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -680,13 +746,16 @@ class KyThuatHoTroResourceIT {
         int databaseSizeBeforeUpdate = kyThuatHoTroRepository.findAll().size();
         kyThuatHoTro.setId(count.incrementAndGet());
 
+        // Create the KyThuatHoTro
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKyThuatHoTroMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -701,13 +770,16 @@ class KyThuatHoTroResourceIT {
         int databaseSizeBeforeUpdate = kyThuatHoTroRepository.findAll().size();
         kyThuatHoTro.setId(count.incrementAndGet());
 
+        // Create the KyThuatHoTro
+        KyThuatHoTroDTO kyThuatHoTroDTO = kyThuatHoTroMapper.toDto(kyThuatHoTro);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restKyThuatHoTroMockMvc
             .perform(
                 patch(ENTITY_API_URL)
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTro))
+                    .content(TestUtil.convertObjectToJsonBytes(kyThuatHoTroDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

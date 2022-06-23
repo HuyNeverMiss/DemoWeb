@@ -26,12 +26,6 @@
         <dd>
           <span>{{ ketQuaCongTac.thuTuSX }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.ketQuaCongTac.chiDaoTuyen">Chi Dao Tuyen</span></dt>
-        <dd>
-          <div *ngIf="ketQuaCongTac.chiDaoTuyen">
-            <a [routerLink]="['/chi-dao-tuyen', ketQuaCongTac.chiDaoTuyen?.id, 'view']">{{ ketQuaCongTac.chiDaoTuyen?.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.*; // for static metamodels
 import com.mycompany.myapp.domain.KetQuaCongTac;
 import com.mycompany.myapp.repository.KetQuaCongTacRepository;
 import com.mycompany.myapp.service.criteria.KetQuaCongTacCriteria;
+import com.mycompany.myapp.service.dto.KetQuaCongTacDTO;
+import com.mycompany.myapp.service.mapper.KetQuaCongTacMapper;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import tech.jhipster.service.QueryService;
  * Service for executing complex queries for {@link KetQuaCongTac} entities in the database.
  * The main input is a {@link KetQuaCongTacCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link KetQuaCongTac} or a {@link Page} of {@link KetQuaCongTac} which fulfills the criteria.
+ * It returns a {@link List} of {@link KetQuaCongTacDTO} or a {@link Page} of {@link KetQuaCongTacDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,33 +31,36 @@ public class KetQuaCongTacQueryService extends QueryService<KetQuaCongTac> {
 
     private final KetQuaCongTacRepository ketQuaCongTacRepository;
 
-    public KetQuaCongTacQueryService(KetQuaCongTacRepository ketQuaCongTacRepository) {
+    private final KetQuaCongTacMapper ketQuaCongTacMapper;
+
+    public KetQuaCongTacQueryService(KetQuaCongTacRepository ketQuaCongTacRepository, KetQuaCongTacMapper ketQuaCongTacMapper) {
         this.ketQuaCongTacRepository = ketQuaCongTacRepository;
+        this.ketQuaCongTacMapper = ketQuaCongTacMapper;
     }
 
     /**
-     * Return a {@link List} of {@link KetQuaCongTac} which matches the criteria from the database.
+     * Return a {@link List} of {@link KetQuaCongTacDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<KetQuaCongTac> findByCriteria(KetQuaCongTacCriteria criteria) {
+    public List<KetQuaCongTacDTO> findByCriteria(KetQuaCongTacCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<KetQuaCongTac> specification = createSpecification(criteria);
-        return ketQuaCongTacRepository.findAll(specification);
+        return ketQuaCongTacMapper.toDto(ketQuaCongTacRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link KetQuaCongTac} which matches the criteria from the database.
+     * Return a {@link Page} of {@link KetQuaCongTacDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<KetQuaCongTac> findByCriteria(KetQuaCongTacCriteria criteria, Pageable page) {
+    public Page<KetQuaCongTacDTO> findByCriteria(KetQuaCongTacCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<KetQuaCongTac> specification = createSpecification(criteria);
-        return ketQuaCongTacRepository.findAll(specification, page);
+        return ketQuaCongTacRepository.findAll(specification, page).map(ketQuaCongTacMapper::toDto);
     }
 
     /**
@@ -99,7 +104,7 @@ public class KetQuaCongTacQueryService extends QueryService<KetQuaCongTac> {
                     specification.and(
                         buildSpecification(
                             criteria.getChiDaoTuyenId(),
-                            root -> root.join(KetQuaCongTac_.chiDaoTuyen, JoinType.LEFT).get(ChiDaoTuyen_.id)
+                            root -> root.join(KetQuaCongTac_.chiDaoTuyens, JoinType.LEFT).get(ChiDaoTuyen_.id)
                         )
                     );
             }

@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.*; // for static metamodels
 import com.mycompany.myapp.domain.KyThuatHoTro;
 import com.mycompany.myapp.repository.KyThuatHoTroRepository;
 import com.mycompany.myapp.service.criteria.KyThuatHoTroCriteria;
+import com.mycompany.myapp.service.dto.KyThuatHoTroDTO;
+import com.mycompany.myapp.service.mapper.KyThuatHoTroMapper;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import tech.jhipster.service.QueryService;
  * Service for executing complex queries for {@link KyThuatHoTro} entities in the database.
  * The main input is a {@link KyThuatHoTroCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link KyThuatHoTro} or a {@link Page} of {@link KyThuatHoTro} which fulfills the criteria.
+ * It returns a {@link List} of {@link KyThuatHoTroDTO} or a {@link Page} of {@link KyThuatHoTroDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,33 +31,36 @@ public class KyThuatHoTroQueryService extends QueryService<KyThuatHoTro> {
 
     private final KyThuatHoTroRepository kyThuatHoTroRepository;
 
-    public KyThuatHoTroQueryService(KyThuatHoTroRepository kyThuatHoTroRepository) {
+    private final KyThuatHoTroMapper kyThuatHoTroMapper;
+
+    public KyThuatHoTroQueryService(KyThuatHoTroRepository kyThuatHoTroRepository, KyThuatHoTroMapper kyThuatHoTroMapper) {
         this.kyThuatHoTroRepository = kyThuatHoTroRepository;
+        this.kyThuatHoTroMapper = kyThuatHoTroMapper;
     }
 
     /**
-     * Return a {@link List} of {@link KyThuatHoTro} which matches the criteria from the database.
+     * Return a {@link List} of {@link KyThuatHoTroDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<KyThuatHoTro> findByCriteria(KyThuatHoTroCriteria criteria) {
+    public List<KyThuatHoTroDTO> findByCriteria(KyThuatHoTroCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<KyThuatHoTro> specification = createSpecification(criteria);
-        return kyThuatHoTroRepository.findAll(specification);
+        return kyThuatHoTroMapper.toDto(kyThuatHoTroRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link KyThuatHoTro} which matches the criteria from the database.
+     * Return a {@link Page} of {@link KyThuatHoTroDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<KyThuatHoTro> findByCriteria(KyThuatHoTroCriteria criteria, Pageable page) {
+    public Page<KyThuatHoTroDTO> findByCriteria(KyThuatHoTroCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<KyThuatHoTro> specification = createSpecification(criteria);
-        return kyThuatHoTroRepository.findAll(specification, page);
+        return kyThuatHoTroRepository.findAll(specification, page).map(kyThuatHoTroMapper::toDto);
     }
 
     /**
@@ -99,7 +104,7 @@ public class KyThuatHoTroQueryService extends QueryService<KyThuatHoTro> {
                     specification.and(
                         buildSpecification(
                             criteria.getChiDaoTuyenId(),
-                            root -> root.join(KyThuatHoTro_.chiDaoTuyen, JoinType.LEFT).get(ChiDaoTuyen_.id)
+                            root -> root.join(KyThuatHoTro_.chiDaoTuyens, JoinType.LEFT).get(ChiDaoTuyen_.id)
                         )
                     );
             }

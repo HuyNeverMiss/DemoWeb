@@ -1,15 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
 import { IChiDaoTuyen, ChiDaoTuyen } from '../chi-dao-tuyen.model';
 import { ChiDaoTuyenService } from '../service/chi-dao-tuyen.service';
+import { ILyDoCongTac } from 'app/entities/ly-do-cong-tac/ly-do-cong-tac.model';
+import { LyDoCongTacService } from 'app/entities/ly-do-cong-tac/service/ly-do-cong-tac.service';
+import { INoiDenCongTac } from 'app/entities/noi-den-cong-tac/noi-den-cong-tac.model';
+import { NoiDenCongTacService } from 'app/entities/noi-den-cong-tac/service/noi-den-cong-tac.service';
+import { IKetQuaCongTac } from 'app/entities/ket-qua-cong-tac/ket-qua-cong-tac.model';
+import { KetQuaCongTacService } from 'app/entities/ket-qua-cong-tac/service/ket-qua-cong-tac.service';
+import { IKyThuatHoTro } from 'app/entities/ky-thuat-ho-tro/ky-thuat-ho-tro.model';
+import { KyThuatHoTroService } from 'app/entities/ky-thuat-ho-tro/service/ky-thuat-ho-tro.service';
+import { IVatTuHoTro } from 'app/entities/vat-tu-ho-tro/vat-tu-ho-tro.model';
+import { VatTuHoTroService } from 'app/entities/vat-tu-ho-tro/service/vat-tu-ho-tro.service';
+import { INhanVien } from 'app/entities/nhan-vien/nhan-vien.model';
+import { NhanVienService } from 'app/entities/nhan-vien/service/nhan-vien.service';
 
 @Component({
   selector: 'jhi-chi-dao-tuyen-update',
@@ -18,26 +30,27 @@ import { ChiDaoTuyenService } from '../service/chi-dao-tuyen.service';
 export class ChiDaoTuyenUpdateComponent implements OnInit {
   isSaving = false;
 
+  lyDoCongTacsSharedCollection: ILyDoCongTac[] = [];
+  noiDenCongTacsSharedCollection: INoiDenCongTac[] = [];
+  ketQuaCongTacsSharedCollection: IKetQuaCongTac[] = [];
+  kyThuatHoTrosSharedCollection: IKyThuatHoTro[] = [];
+  vatTuHoTrosSharedCollection: IVatTuHoTro[] = [];
+  nhanViensSharedCollection: INhanVien[] = [];
+
   editForm = this.fb.group({
     id: [],
-    soQuyetDinh: [],
-    ngayQuyetDinh: [],
-    soHD: [],
-    ngayHD: [],
-    lyDoCongTac: [],
-    noiDung: [],
-    noiDenCongTac: [],
-    ngayBatDau: [],
-    ngayKetThuc: [],
+    soQuyetDinh: [null, [Validators.required]],
+    ngayQuyetDinh: [null, [Validators.required]],
+    soHD: [null, [Validators.required]],
+    ngayHD: [null, [Validators.required]],
+    noiDung: [null, [Validators.required]],
+    ngayBatDau: [null, [Validators.required]],
+    ngayKetThuc: [null, [Validators.required]],
     ghiChu: [],
-    ngayTao: [],
-    nhanVien: [],
-    kyThuatHoTro: [],
-    vatTuHoTro: [],
+    ngayTao: [null, [Validators.required]],
     soBnKhamDieuTri: [],
     soBnPhauThuat: [],
     soCanBoChuyenGiao: [],
-    ketQuaCongTac: [],
     luuTru: [],
     tienAn: [],
     tienO: [],
@@ -45,9 +58,25 @@ export class ChiDaoTuyenUpdateComponent implements OnInit {
     taiLieu: [],
     giangDay: [],
     khac: [],
+    lyDoCongTac: [],
+    noiDenCongTac: [],
+    ketQuaCongTac: [],
+    kyThuatHoTro: [],
+    vatTuHoTro: [],
+    nhanVien: [],
   });
 
-  constructor(protected chiDaoTuyenService: ChiDaoTuyenService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected chiDaoTuyenService: ChiDaoTuyenService,
+    protected lyDoCongTacService: LyDoCongTacService,
+    protected noiDenCongTacService: NoiDenCongTacService,
+    protected ketQuaCongTacService: KetQuaCongTacService,
+    protected kyThuatHoTroService: KyThuatHoTroService,
+    protected vatTuHoTroService: VatTuHoTroService,
+    protected nhanVienService: NhanVienService,
+    protected activatedRoute: ActivatedRoute,
+    protected fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ chiDaoTuyen }) => {
@@ -61,6 +90,8 @@ export class ChiDaoTuyenUpdateComponent implements OnInit {
       }
 
       this.updateForm(chiDaoTuyen);
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -76,6 +107,30 @@ export class ChiDaoTuyenUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.chiDaoTuyenService.create(chiDaoTuyen));
     }
+  }
+
+  trackLyDoCongTacById(_index: number, item: ILyDoCongTac): number {
+    return item.id!;
+  }
+
+  trackNoiDenCongTacById(_index: number, item: INoiDenCongTac): number {
+    return item.id!;
+  }
+
+  trackKetQuaCongTacById(_index: number, item: IKetQuaCongTac): number {
+    return item.id!;
+  }
+
+  trackKyThuatHoTroById(_index: number, item: IKyThuatHoTro): number {
+    return item.id!;
+  }
+
+  trackVatTuHoTroById(_index: number, item: IVatTuHoTro): number {
+    return item.id!;
+  }
+
+  trackNhanVienById(_index: number, item: INhanVien): number {
+    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IChiDaoTuyen>>): void {
@@ -104,20 +159,14 @@ export class ChiDaoTuyenUpdateComponent implements OnInit {
       ngayQuyetDinh: chiDaoTuyen.ngayQuyetDinh ? chiDaoTuyen.ngayQuyetDinh.format(DATE_TIME_FORMAT) : null,
       soHD: chiDaoTuyen.soHD,
       ngayHD: chiDaoTuyen.ngayHD ? chiDaoTuyen.ngayHD.format(DATE_TIME_FORMAT) : null,
-      lyDoCongTac: chiDaoTuyen.lyDoCongTac,
       noiDung: chiDaoTuyen.noiDung,
-      noiDenCongTac: chiDaoTuyen.noiDenCongTac,
       ngayBatDau: chiDaoTuyen.ngayBatDau ? chiDaoTuyen.ngayBatDau.format(DATE_TIME_FORMAT) : null,
       ngayKetThuc: chiDaoTuyen.ngayKetThuc ? chiDaoTuyen.ngayKetThuc.format(DATE_TIME_FORMAT) : null,
       ghiChu: chiDaoTuyen.ghiChu,
       ngayTao: chiDaoTuyen.ngayTao ? chiDaoTuyen.ngayTao.format(DATE_TIME_FORMAT) : null,
-      nhanVien: chiDaoTuyen.nhanVien,
-      kyThuatHoTro: chiDaoTuyen.kyThuatHoTro,
-      vatTuHoTro: chiDaoTuyen.vatTuHoTro,
       soBnKhamDieuTri: chiDaoTuyen.soBnKhamDieuTri,
       soBnPhauThuat: chiDaoTuyen.soBnPhauThuat,
       soCanBoChuyenGiao: chiDaoTuyen.soCanBoChuyenGiao,
-      ketQuaCongTac: chiDaoTuyen.ketQuaCongTac,
       luuTru: chiDaoTuyen.luuTru,
       tienAn: chiDaoTuyen.tienAn,
       tienO: chiDaoTuyen.tienO,
@@ -125,7 +174,100 @@ export class ChiDaoTuyenUpdateComponent implements OnInit {
       taiLieu: chiDaoTuyen.taiLieu,
       giangDay: chiDaoTuyen.giangDay,
       khac: chiDaoTuyen.khac,
+      lyDoCongTac: chiDaoTuyen.lyDoCongTac,
+      noiDenCongTac: chiDaoTuyen.noiDenCongTac,
+      ketQuaCongTac: chiDaoTuyen.ketQuaCongTac,
+      kyThuatHoTro: chiDaoTuyen.kyThuatHoTro,
+      vatTuHoTro: chiDaoTuyen.vatTuHoTro,
+      nhanVien: chiDaoTuyen.nhanVien,
     });
+
+    this.lyDoCongTacsSharedCollection = this.lyDoCongTacService.addLyDoCongTacToCollectionIfMissing(
+      this.lyDoCongTacsSharedCollection,
+      chiDaoTuyen.lyDoCongTac
+    );
+    this.noiDenCongTacsSharedCollection = this.noiDenCongTacService.addNoiDenCongTacToCollectionIfMissing(
+      this.noiDenCongTacsSharedCollection,
+      chiDaoTuyen.noiDenCongTac
+    );
+    this.ketQuaCongTacsSharedCollection = this.ketQuaCongTacService.addKetQuaCongTacToCollectionIfMissing(
+      this.ketQuaCongTacsSharedCollection,
+      chiDaoTuyen.ketQuaCongTac
+    );
+    this.kyThuatHoTrosSharedCollection = this.kyThuatHoTroService.addKyThuatHoTroToCollectionIfMissing(
+      this.kyThuatHoTrosSharedCollection,
+      chiDaoTuyen.kyThuatHoTro
+    );
+    this.vatTuHoTrosSharedCollection = this.vatTuHoTroService.addVatTuHoTroToCollectionIfMissing(
+      this.vatTuHoTrosSharedCollection,
+      chiDaoTuyen.vatTuHoTro
+    );
+    this.nhanViensSharedCollection = this.nhanVienService.addNhanVienToCollectionIfMissing(
+      this.nhanViensSharedCollection,
+      chiDaoTuyen.nhanVien
+    );
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.lyDoCongTacService
+      .query()
+      .pipe(map((res: HttpResponse<ILyDoCongTac[]>) => res.body ?? []))
+      .pipe(
+        map((lyDoCongTacs: ILyDoCongTac[]) =>
+          this.lyDoCongTacService.addLyDoCongTacToCollectionIfMissing(lyDoCongTacs, this.editForm.get('lyDoCongTac')!.value)
+        )
+      )
+      .subscribe((lyDoCongTacs: ILyDoCongTac[]) => (this.lyDoCongTacsSharedCollection = lyDoCongTacs));
+
+    this.noiDenCongTacService
+      .query()
+      .pipe(map((res: HttpResponse<INoiDenCongTac[]>) => res.body ?? []))
+      .pipe(
+        map((noiDenCongTacs: INoiDenCongTac[]) =>
+          this.noiDenCongTacService.addNoiDenCongTacToCollectionIfMissing(noiDenCongTacs, this.editForm.get('noiDenCongTac')!.value)
+        )
+      )
+      .subscribe((noiDenCongTacs: INoiDenCongTac[]) => (this.noiDenCongTacsSharedCollection = noiDenCongTacs));
+
+    this.ketQuaCongTacService
+      .query()
+      .pipe(map((res: HttpResponse<IKetQuaCongTac[]>) => res.body ?? []))
+      .pipe(
+        map((ketQuaCongTacs: IKetQuaCongTac[]) =>
+          this.ketQuaCongTacService.addKetQuaCongTacToCollectionIfMissing(ketQuaCongTacs, this.editForm.get('ketQuaCongTac')!.value)
+        )
+      )
+      .subscribe((ketQuaCongTacs: IKetQuaCongTac[]) => (this.ketQuaCongTacsSharedCollection = ketQuaCongTacs));
+
+    this.kyThuatHoTroService
+      .query()
+      .pipe(map((res: HttpResponse<IKyThuatHoTro[]>) => res.body ?? []))
+      .pipe(
+        map((kyThuatHoTros: IKyThuatHoTro[]) =>
+          this.kyThuatHoTroService.addKyThuatHoTroToCollectionIfMissing(kyThuatHoTros, this.editForm.get('kyThuatHoTro')!.value)
+        )
+      )
+      .subscribe((kyThuatHoTros: IKyThuatHoTro[]) => (this.kyThuatHoTrosSharedCollection = kyThuatHoTros));
+
+    this.vatTuHoTroService
+      .query()
+      .pipe(map((res: HttpResponse<IVatTuHoTro[]>) => res.body ?? []))
+      .pipe(
+        map((vatTuHoTros: IVatTuHoTro[]) =>
+          this.vatTuHoTroService.addVatTuHoTroToCollectionIfMissing(vatTuHoTros, this.editForm.get('vatTuHoTro')!.value)
+        )
+      )
+      .subscribe((vatTuHoTros: IVatTuHoTro[]) => (this.vatTuHoTrosSharedCollection = vatTuHoTros));
+
+    this.nhanVienService
+      .query()
+      .pipe(map((res: HttpResponse<INhanVien[]>) => res.body ?? []))
+      .pipe(
+        map((nhanViens: INhanVien[]) =>
+          this.nhanVienService.addNhanVienToCollectionIfMissing(nhanViens, this.editForm.get('nhanVien')!.value)
+        )
+      )
+      .subscribe((nhanViens: INhanVien[]) => (this.nhanViensSharedCollection = nhanViens));
   }
 
   protected createFromForm(): IChiDaoTuyen {
@@ -138,22 +280,16 @@ export class ChiDaoTuyenUpdateComponent implements OnInit {
         : undefined,
       soHD: this.editForm.get(['soHD'])!.value,
       ngayHD: this.editForm.get(['ngayHD'])!.value ? dayjs(this.editForm.get(['ngayHD'])!.value, DATE_TIME_FORMAT) : undefined,
-      lyDoCongTac: this.editForm.get(['lyDoCongTac'])!.value,
       noiDung: this.editForm.get(['noiDung'])!.value,
-      noiDenCongTac: this.editForm.get(['noiDenCongTac'])!.value,
       ngayBatDau: this.editForm.get(['ngayBatDau'])!.value ? dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_TIME_FORMAT) : undefined,
       ngayKetThuc: this.editForm.get(['ngayKetThuc'])!.value
         ? dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_TIME_FORMAT)
         : undefined,
       ghiChu: this.editForm.get(['ghiChu'])!.value,
       ngayTao: this.editForm.get(['ngayTao'])!.value ? dayjs(this.editForm.get(['ngayTao'])!.value, DATE_TIME_FORMAT) : undefined,
-      nhanVien: this.editForm.get(['nhanVien'])!.value,
-      kyThuatHoTro: this.editForm.get(['kyThuatHoTro'])!.value,
-      vatTuHoTro: this.editForm.get(['vatTuHoTro'])!.value,
       soBnKhamDieuTri: this.editForm.get(['soBnKhamDieuTri'])!.value,
       soBnPhauThuat: this.editForm.get(['soBnPhauThuat'])!.value,
       soCanBoChuyenGiao: this.editForm.get(['soCanBoChuyenGiao'])!.value,
-      ketQuaCongTac: this.editForm.get(['ketQuaCongTac'])!.value,
       luuTru: this.editForm.get(['luuTru'])!.value,
       tienAn: this.editForm.get(['tienAn'])!.value,
       tienO: this.editForm.get(['tienO'])!.value,
@@ -161,6 +297,12 @@ export class ChiDaoTuyenUpdateComponent implements OnInit {
       taiLieu: this.editForm.get(['taiLieu'])!.value,
       giangDay: this.editForm.get(['giangDay'])!.value,
       khac: this.editForm.get(['khac'])!.value,
+      lyDoCongTac: this.editForm.get(['lyDoCongTac'])!.value,
+      noiDenCongTac: this.editForm.get(['noiDenCongTac'])!.value,
+      ketQuaCongTac: this.editForm.get(['ketQuaCongTac'])!.value,
+      kyThuatHoTro: this.editForm.get(['kyThuatHoTro'])!.value,
+      vatTuHoTro: this.editForm.get(['vatTuHoTro'])!.value,
+      nhanVien: this.editForm.get(['nhanVien'])!.value,
     };
   }
 }

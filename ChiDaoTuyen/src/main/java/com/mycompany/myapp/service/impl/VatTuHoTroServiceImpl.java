@@ -3,6 +3,8 @@ package com.mycompany.myapp.service.impl;
 import com.mycompany.myapp.domain.VatTuHoTro;
 import com.mycompany.myapp.repository.VatTuHoTroRepository;
 import com.mycompany.myapp.service.VatTuHoTroService;
+import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
+import com.mycompany.myapp.service.mapper.VatTuHoTroMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,56 +24,56 @@ public class VatTuHoTroServiceImpl implements VatTuHoTroService {
 
     private final VatTuHoTroRepository vatTuHoTroRepository;
 
-    public VatTuHoTroServiceImpl(VatTuHoTroRepository vatTuHoTroRepository) {
+    private final VatTuHoTroMapper vatTuHoTroMapper;
+
+    public VatTuHoTroServiceImpl(VatTuHoTroRepository vatTuHoTroRepository, VatTuHoTroMapper vatTuHoTroMapper) {
         this.vatTuHoTroRepository = vatTuHoTroRepository;
+        this.vatTuHoTroMapper = vatTuHoTroMapper;
     }
 
     @Override
-    public VatTuHoTro save(VatTuHoTro vatTuHoTro) {
-        log.debug("Request to save VatTuHoTro : {}", vatTuHoTro);
-        return vatTuHoTroRepository.save(vatTuHoTro);
+    public VatTuHoTroDTO save(VatTuHoTroDTO vatTuHoTroDTO) {
+        log.debug("Request to save VatTuHoTro : {}", vatTuHoTroDTO);
+        VatTuHoTro vatTuHoTro = vatTuHoTroMapper.toEntity(vatTuHoTroDTO);
+        vatTuHoTro = vatTuHoTroRepository.save(vatTuHoTro);
+        return vatTuHoTroMapper.toDto(vatTuHoTro);
     }
 
     @Override
-    public VatTuHoTro update(VatTuHoTro vatTuHoTro) {
-        log.debug("Request to save VatTuHoTro : {}", vatTuHoTro);
-        return vatTuHoTroRepository.save(vatTuHoTro);
+    public VatTuHoTroDTO update(VatTuHoTroDTO vatTuHoTroDTO) {
+        log.debug("Request to save VatTuHoTro : {}", vatTuHoTroDTO);
+        VatTuHoTro vatTuHoTro = vatTuHoTroMapper.toEntity(vatTuHoTroDTO);
+        vatTuHoTro = vatTuHoTroRepository.save(vatTuHoTro);
+        return vatTuHoTroMapper.toDto(vatTuHoTro);
     }
 
     @Override
-    public Optional<VatTuHoTro> partialUpdate(VatTuHoTro vatTuHoTro) {
-        log.debug("Request to partially update VatTuHoTro : {}", vatTuHoTro);
+    public Optional<VatTuHoTroDTO> partialUpdate(VatTuHoTroDTO vatTuHoTroDTO) {
+        log.debug("Request to partially update VatTuHoTro : {}", vatTuHoTroDTO);
 
         return vatTuHoTroRepository
-            .findById(vatTuHoTro.getId())
+            .findById(vatTuHoTroDTO.getId())
             .map(existingVatTuHoTro -> {
-                if (vatTuHoTro.getMaVatTu() != null) {
-                    existingVatTuHoTro.setMaVatTu(vatTuHoTro.getMaVatTu());
-                }
-                if (vatTuHoTro.getTenVatTu() != null) {
-                    existingVatTuHoTro.setTenVatTu(vatTuHoTro.getTenVatTu());
-                }
-                if (vatTuHoTro.getThuTuSX() != null) {
-                    existingVatTuHoTro.setThuTuSX(vatTuHoTro.getThuTuSX());
-                }
+                vatTuHoTroMapper.partialUpdate(existingVatTuHoTro, vatTuHoTroDTO);
 
                 return existingVatTuHoTro;
             })
-            .map(vatTuHoTroRepository::save);
+            .map(vatTuHoTroRepository::save)
+            .map(vatTuHoTroMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<VatTuHoTro> findAll(Pageable pageable) {
+    public Page<VatTuHoTroDTO> findAll(Pageable pageable) {
         log.debug("Request to get all VatTuHoTros");
-        return vatTuHoTroRepository.findAll(pageable);
+        return vatTuHoTroRepository.findAll(pageable).map(vatTuHoTroMapper::toDto);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<VatTuHoTro> findOne(Long id) {
+    public Optional<VatTuHoTroDTO> findOne(Long id) {
         log.debug("Request to get VatTuHoTro : {}", id);
-        return vatTuHoTroRepository.findById(id);
+        return vatTuHoTroRepository.findById(id).map(vatTuHoTroMapper::toDto);
     }
 
     @Override

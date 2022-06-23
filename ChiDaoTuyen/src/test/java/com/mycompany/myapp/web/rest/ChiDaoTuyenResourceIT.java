@@ -1,6 +1,5 @@
 package com.mycompany.myapp.web.rest;
 
-import static com.mycompany.myapp.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -9,12 +8,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.mycompany.myapp.IntegrationTest;
 import com.mycompany.myapp.domain.ChiDaoTuyen;
+import com.mycompany.myapp.domain.KetQuaCongTac;
+import com.mycompany.myapp.domain.KyThuatHoTro;
+import com.mycompany.myapp.domain.LyDoCongTac;
+import com.mycompany.myapp.domain.NhanVien;
+import com.mycompany.myapp.domain.NoiDenCongTac;
+import com.mycompany.myapp.domain.VatTuHoTro;
 import com.mycompany.myapp.repository.ChiDaoTuyenRepository;
 import com.mycompany.myapp.service.criteria.ChiDaoTuyenCriteria;
+import com.mycompany.myapp.service.dto.ChiDaoTuyenDTO;
+import com.mycompany.myapp.service.mapper.ChiDaoTuyenMapper;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -39,49 +44,29 @@ class ChiDaoTuyenResourceIT {
     private static final String DEFAULT_SO_QUYET_DINH = "AAAAAAAAAA";
     private static final String UPDATED_SO_QUYET_DINH = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_NGAY_QUYET_DINH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_NGAY_QUYET_DINH = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_NGAY_QUYET_DINH = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+    private static final Instant DEFAULT_NGAY_QUYET_DINH = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_NGAY_QUYET_DINH = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_SO_HD = "AAAAAAAAAA";
     private static final String UPDATED_SO_HD = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_NGAY_HD = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_NGAY_HD = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_NGAY_HD = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
-
-    private static final String DEFAULT_LY_DO_CONG_TAC = "AAAAAAAAAA";
-    private static final String UPDATED_LY_DO_CONG_TAC = "BBBBBBBBBB";
+    private static final Instant DEFAULT_NGAY_HD = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_NGAY_HD = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_NOI_DUNG = "AAAAAAAAAA";
     private static final String UPDATED_NOI_DUNG = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NOI_DEN_CONG_TAC = "AAAAAAAAAA";
-    private static final String UPDATED_NOI_DEN_CONG_TAC = "BBBBBBBBBB";
+    private static final Instant DEFAULT_NGAY_BAT_DAU = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_NGAY_BAT_DAU = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final ZonedDateTime DEFAULT_NGAY_BAT_DAU = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_NGAY_BAT_DAU = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_NGAY_BAT_DAU = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
-
-    private static final ZonedDateTime DEFAULT_NGAY_KET_THUC = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_NGAY_KET_THUC = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_NGAY_KET_THUC = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+    private static final Instant DEFAULT_NGAY_KET_THUC = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_NGAY_KET_THUC = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_GHI_CHU = "AAAAAAAAAA";
     private static final String UPDATED_GHI_CHU = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_NGAY_TAO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_NGAY_TAO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_NGAY_TAO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
-
-    private static final String DEFAULT_NHAN_VIEN = "AAAAAAAAAA";
-    private static final String UPDATED_NHAN_VIEN = "BBBBBBBBBB";
-
-    private static final String DEFAULT_KY_THUAT_HO_TRO = "AAAAAAAAAA";
-    private static final String UPDATED_KY_THUAT_HO_TRO = "BBBBBBBBBB";
-
-    private static final String DEFAULT_VAT_TU_HO_TRO = "AAAAAAAAAA";
-    private static final String UPDATED_VAT_TU_HO_TRO = "BBBBBBBBBB";
+    private static final Instant DEFAULT_NGAY_TAO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_NGAY_TAO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_SO_BN_KHAM_DIEU_TRI = "AAAAAAAAAA";
     private static final String UPDATED_SO_BN_KHAM_DIEU_TRI = "BBBBBBBBBB";
@@ -91,9 +76,6 @@ class ChiDaoTuyenResourceIT {
 
     private static final String DEFAULT_SO_CAN_BO_CHUYEN_GIAO = "AAAAAAAAAA";
     private static final String UPDATED_SO_CAN_BO_CHUYEN_GIAO = "BBBBBBBBBB";
-
-    private static final String DEFAULT_KET_QUA_CONG_TAC = "AAAAAAAAAA";
-    private static final String UPDATED_KET_QUA_CONG_TAC = "BBBBBBBBBB";
 
     private static final String DEFAULT_LUU_TRU = "AAAAAAAAAA";
     private static final String UPDATED_LUU_TRU = "BBBBBBBBBB";
@@ -126,6 +108,9 @@ class ChiDaoTuyenResourceIT {
     private ChiDaoTuyenRepository chiDaoTuyenRepository;
 
     @Autowired
+    private ChiDaoTuyenMapper chiDaoTuyenMapper;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -145,20 +130,14 @@ class ChiDaoTuyenResourceIT {
             .ngayQuyetDinh(DEFAULT_NGAY_QUYET_DINH)
             .soHD(DEFAULT_SO_HD)
             .ngayHD(DEFAULT_NGAY_HD)
-            .lyDoCongTac(DEFAULT_LY_DO_CONG_TAC)
             .noiDung(DEFAULT_NOI_DUNG)
-            .noiDenCongTac(DEFAULT_NOI_DEN_CONG_TAC)
             .ngayBatDau(DEFAULT_NGAY_BAT_DAU)
             .ngayKetThuc(DEFAULT_NGAY_KET_THUC)
             .ghiChu(DEFAULT_GHI_CHU)
             .ngayTao(DEFAULT_NGAY_TAO)
-            .nhanVien(DEFAULT_NHAN_VIEN)
-            .kyThuatHoTro(DEFAULT_KY_THUAT_HO_TRO)
-            .vatTuHoTro(DEFAULT_VAT_TU_HO_TRO)
             .soBnKhamDieuTri(DEFAULT_SO_BN_KHAM_DIEU_TRI)
             .soBnPhauThuat(DEFAULT_SO_BN_PHAU_THUAT)
             .soCanBoChuyenGiao(DEFAULT_SO_CAN_BO_CHUYEN_GIAO)
-            .ketQuaCongTac(DEFAULT_KET_QUA_CONG_TAC)
             .luuTru(DEFAULT_LUU_TRU)
             .tienAn(DEFAULT_TIEN_AN)
             .tienO(DEFAULT_TIEN_O)
@@ -181,20 +160,14 @@ class ChiDaoTuyenResourceIT {
             .ngayQuyetDinh(UPDATED_NGAY_QUYET_DINH)
             .soHD(UPDATED_SO_HD)
             .ngayHD(UPDATED_NGAY_HD)
-            .lyDoCongTac(UPDATED_LY_DO_CONG_TAC)
             .noiDung(UPDATED_NOI_DUNG)
-            .noiDenCongTac(UPDATED_NOI_DEN_CONG_TAC)
             .ngayBatDau(UPDATED_NGAY_BAT_DAU)
             .ngayKetThuc(UPDATED_NGAY_KET_THUC)
             .ghiChu(UPDATED_GHI_CHU)
             .ngayTao(UPDATED_NGAY_TAO)
-            .nhanVien(UPDATED_NHAN_VIEN)
-            .kyThuatHoTro(UPDATED_KY_THUAT_HO_TRO)
-            .vatTuHoTro(UPDATED_VAT_TU_HO_TRO)
             .soBnKhamDieuTri(UPDATED_SO_BN_KHAM_DIEU_TRI)
             .soBnPhauThuat(UPDATED_SO_BN_PHAU_THUAT)
             .soCanBoChuyenGiao(UPDATED_SO_CAN_BO_CHUYEN_GIAO)
-            .ketQuaCongTac(UPDATED_KET_QUA_CONG_TAC)
             .luuTru(UPDATED_LUU_TRU)
             .tienAn(UPDATED_TIEN_AN)
             .tienO(UPDATED_TIEN_O)
@@ -215,12 +188,13 @@ class ChiDaoTuyenResourceIT {
     void createChiDaoTuyen() throws Exception {
         int databaseSizeBeforeCreate = chiDaoTuyenRepository.findAll().size();
         // Create the ChiDaoTuyen
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
         restChiDaoTuyenMockMvc
             .perform(
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isCreated());
 
@@ -232,20 +206,14 @@ class ChiDaoTuyenResourceIT {
         assertThat(testChiDaoTuyen.getNgayQuyetDinh()).isEqualTo(DEFAULT_NGAY_QUYET_DINH);
         assertThat(testChiDaoTuyen.getSoHD()).isEqualTo(DEFAULT_SO_HD);
         assertThat(testChiDaoTuyen.getNgayHD()).isEqualTo(DEFAULT_NGAY_HD);
-        assertThat(testChiDaoTuyen.getLyDoCongTac()).isEqualTo(DEFAULT_LY_DO_CONG_TAC);
         assertThat(testChiDaoTuyen.getNoiDung()).isEqualTo(DEFAULT_NOI_DUNG);
-        assertThat(testChiDaoTuyen.getNoiDenCongTac()).isEqualTo(DEFAULT_NOI_DEN_CONG_TAC);
         assertThat(testChiDaoTuyen.getNgayBatDau()).isEqualTo(DEFAULT_NGAY_BAT_DAU);
         assertThat(testChiDaoTuyen.getNgayKetThuc()).isEqualTo(DEFAULT_NGAY_KET_THUC);
         assertThat(testChiDaoTuyen.getGhiChu()).isEqualTo(DEFAULT_GHI_CHU);
         assertThat(testChiDaoTuyen.getNgayTao()).isEqualTo(DEFAULT_NGAY_TAO);
-        assertThat(testChiDaoTuyen.getNhanVien()).isEqualTo(DEFAULT_NHAN_VIEN);
-        assertThat(testChiDaoTuyen.getKyThuatHoTro()).isEqualTo(DEFAULT_KY_THUAT_HO_TRO);
-        assertThat(testChiDaoTuyen.getVatTuHoTro()).isEqualTo(DEFAULT_VAT_TU_HO_TRO);
         assertThat(testChiDaoTuyen.getSoBnKhamDieuTri()).isEqualTo(DEFAULT_SO_BN_KHAM_DIEU_TRI);
         assertThat(testChiDaoTuyen.getSoBnPhauThuat()).isEqualTo(DEFAULT_SO_BN_PHAU_THUAT);
         assertThat(testChiDaoTuyen.getSoCanBoChuyenGiao()).isEqualTo(DEFAULT_SO_CAN_BO_CHUYEN_GIAO);
-        assertThat(testChiDaoTuyen.getKetQuaCongTac()).isEqualTo(DEFAULT_KET_QUA_CONG_TAC);
         assertThat(testChiDaoTuyen.getLuuTru()).isEqualTo(DEFAULT_LUU_TRU);
         assertThat(testChiDaoTuyen.getTienAn()).isEqualTo(DEFAULT_TIEN_AN);
         assertThat(testChiDaoTuyen.getTienO()).isEqualTo(DEFAULT_TIEN_O);
@@ -260,6 +228,7 @@ class ChiDaoTuyenResourceIT {
     void createChiDaoTuyenWithExistingId() throws Exception {
         // Create the ChiDaoTuyen with an existing ID
         chiDaoTuyen.setId(1L);
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
 
         int databaseSizeBeforeCreate = chiDaoTuyenRepository.findAll().size();
 
@@ -269,13 +238,197 @@ class ChiDaoTuyenResourceIT {
                 post(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isBadRequest());
 
         // Validate the ChiDaoTuyen in the database
         List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
         assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkSoQuyetDinhIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setSoQuyetDinh(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkNgayQuyetDinhIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setNgayQuyetDinh(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkSoHDIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setSoHD(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkNgayHDIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setNgayHD(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkNoiDungIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setNoiDung(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkNgayBatDauIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setNgayBatDau(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkNgayKetThucIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setNgayKetThuc(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkNgayTaoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = chiDaoTuyenRepository.findAll().size();
+        // set the field null
+        chiDaoTuyen.setNgayTao(null);
+
+        // Create the ChiDaoTuyen, which fails.
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
+        restChiDaoTuyenMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<ChiDaoTuyen> chiDaoTuyenList = chiDaoTuyenRepository.findAll();
+        assertThat(chiDaoTuyenList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -291,23 +444,17 @@ class ChiDaoTuyenResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(chiDaoTuyen.getId().intValue())))
             .andExpect(jsonPath("$.[*].soQuyetDinh").value(hasItem(DEFAULT_SO_QUYET_DINH)))
-            .andExpect(jsonPath("$.[*].ngayQuyetDinh").value(hasItem(sameInstant(DEFAULT_NGAY_QUYET_DINH))))
+            .andExpect(jsonPath("$.[*].ngayQuyetDinh").value(hasItem(DEFAULT_NGAY_QUYET_DINH.toString())))
             .andExpect(jsonPath("$.[*].soHD").value(hasItem(DEFAULT_SO_HD)))
-            .andExpect(jsonPath("$.[*].ngayHD").value(hasItem(sameInstant(DEFAULT_NGAY_HD))))
-            .andExpect(jsonPath("$.[*].lyDoCongTac").value(hasItem(DEFAULT_LY_DO_CONG_TAC)))
+            .andExpect(jsonPath("$.[*].ngayHD").value(hasItem(DEFAULT_NGAY_HD.toString())))
             .andExpect(jsonPath("$.[*].noiDung").value(hasItem(DEFAULT_NOI_DUNG)))
-            .andExpect(jsonPath("$.[*].noiDenCongTac").value(hasItem(DEFAULT_NOI_DEN_CONG_TAC)))
-            .andExpect(jsonPath("$.[*].ngayBatDau").value(hasItem(sameInstant(DEFAULT_NGAY_BAT_DAU))))
-            .andExpect(jsonPath("$.[*].ngayKetThuc").value(hasItem(sameInstant(DEFAULT_NGAY_KET_THUC))))
+            .andExpect(jsonPath("$.[*].ngayBatDau").value(hasItem(DEFAULT_NGAY_BAT_DAU.toString())))
+            .andExpect(jsonPath("$.[*].ngayKetThuc").value(hasItem(DEFAULT_NGAY_KET_THUC.toString())))
             .andExpect(jsonPath("$.[*].ghiChu").value(hasItem(DEFAULT_GHI_CHU)))
-            .andExpect(jsonPath("$.[*].ngayTao").value(hasItem(sameInstant(DEFAULT_NGAY_TAO))))
-            .andExpect(jsonPath("$.[*].nhanVien").value(hasItem(DEFAULT_NHAN_VIEN)))
-            .andExpect(jsonPath("$.[*].kyThuatHoTro").value(hasItem(DEFAULT_KY_THUAT_HO_TRO)))
-            .andExpect(jsonPath("$.[*].vatTuHoTro").value(hasItem(DEFAULT_VAT_TU_HO_TRO)))
+            .andExpect(jsonPath("$.[*].ngayTao").value(hasItem(DEFAULT_NGAY_TAO.toString())))
             .andExpect(jsonPath("$.[*].soBnKhamDieuTri").value(hasItem(DEFAULT_SO_BN_KHAM_DIEU_TRI)))
             .andExpect(jsonPath("$.[*].soBnPhauThuat").value(hasItem(DEFAULT_SO_BN_PHAU_THUAT)))
             .andExpect(jsonPath("$.[*].soCanBoChuyenGiao").value(hasItem(DEFAULT_SO_CAN_BO_CHUYEN_GIAO)))
-            .andExpect(jsonPath("$.[*].ketQuaCongTac").value(hasItem(DEFAULT_KET_QUA_CONG_TAC)))
             .andExpect(jsonPath("$.[*].luuTru").value(hasItem(DEFAULT_LUU_TRU)))
             .andExpect(jsonPath("$.[*].tienAn").value(hasItem(DEFAULT_TIEN_AN)))
             .andExpect(jsonPath("$.[*].tienO").value(hasItem(DEFAULT_TIEN_O)))
@@ -330,23 +477,17 @@ class ChiDaoTuyenResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(chiDaoTuyen.getId().intValue()))
             .andExpect(jsonPath("$.soQuyetDinh").value(DEFAULT_SO_QUYET_DINH))
-            .andExpect(jsonPath("$.ngayQuyetDinh").value(sameInstant(DEFAULT_NGAY_QUYET_DINH)))
+            .andExpect(jsonPath("$.ngayQuyetDinh").value(DEFAULT_NGAY_QUYET_DINH.toString()))
             .andExpect(jsonPath("$.soHD").value(DEFAULT_SO_HD))
-            .andExpect(jsonPath("$.ngayHD").value(sameInstant(DEFAULT_NGAY_HD)))
-            .andExpect(jsonPath("$.lyDoCongTac").value(DEFAULT_LY_DO_CONG_TAC))
+            .andExpect(jsonPath("$.ngayHD").value(DEFAULT_NGAY_HD.toString()))
             .andExpect(jsonPath("$.noiDung").value(DEFAULT_NOI_DUNG))
-            .andExpect(jsonPath("$.noiDenCongTac").value(DEFAULT_NOI_DEN_CONG_TAC))
-            .andExpect(jsonPath("$.ngayBatDau").value(sameInstant(DEFAULT_NGAY_BAT_DAU)))
-            .andExpect(jsonPath("$.ngayKetThuc").value(sameInstant(DEFAULT_NGAY_KET_THUC)))
+            .andExpect(jsonPath("$.ngayBatDau").value(DEFAULT_NGAY_BAT_DAU.toString()))
+            .andExpect(jsonPath("$.ngayKetThuc").value(DEFAULT_NGAY_KET_THUC.toString()))
             .andExpect(jsonPath("$.ghiChu").value(DEFAULT_GHI_CHU))
-            .andExpect(jsonPath("$.ngayTao").value(sameInstant(DEFAULT_NGAY_TAO)))
-            .andExpect(jsonPath("$.nhanVien").value(DEFAULT_NHAN_VIEN))
-            .andExpect(jsonPath("$.kyThuatHoTro").value(DEFAULT_KY_THUAT_HO_TRO))
-            .andExpect(jsonPath("$.vatTuHoTro").value(DEFAULT_VAT_TU_HO_TRO))
+            .andExpect(jsonPath("$.ngayTao").value(DEFAULT_NGAY_TAO.toString()))
             .andExpect(jsonPath("$.soBnKhamDieuTri").value(DEFAULT_SO_BN_KHAM_DIEU_TRI))
             .andExpect(jsonPath("$.soBnPhauThuat").value(DEFAULT_SO_BN_PHAU_THUAT))
             .andExpect(jsonPath("$.soCanBoChuyenGiao").value(DEFAULT_SO_CAN_BO_CHUYEN_GIAO))
-            .andExpect(jsonPath("$.ketQuaCongTac").value(DEFAULT_KET_QUA_CONG_TAC))
             .andExpect(jsonPath("$.luuTru").value(DEFAULT_LUU_TRU))
             .andExpect(jsonPath("$.tienAn").value(DEFAULT_TIEN_AN))
             .andExpect(jsonPath("$.tienO").value(DEFAULT_TIEN_O))
@@ -506,58 +647,6 @@ class ChiDaoTuyenResourceIT {
 
     @Test
     @Transactional
-    void getAllChiDaoTuyensByNgayQuyetDinhIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is greater than or equal to DEFAULT_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldBeFound("ngayQuyetDinh.greaterThanOrEqual=" + DEFAULT_NGAY_QUYET_DINH);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is greater than or equal to UPDATED_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldNotBeFound("ngayQuyetDinh.greaterThanOrEqual=" + UPDATED_NGAY_QUYET_DINH);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayQuyetDinhIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is less than or equal to DEFAULT_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldBeFound("ngayQuyetDinh.lessThanOrEqual=" + DEFAULT_NGAY_QUYET_DINH);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is less than or equal to SMALLER_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldNotBeFound("ngayQuyetDinh.lessThanOrEqual=" + SMALLER_NGAY_QUYET_DINH);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayQuyetDinhIsLessThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is less than DEFAULT_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldNotBeFound("ngayQuyetDinh.lessThan=" + DEFAULT_NGAY_QUYET_DINH);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is less than UPDATED_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldBeFound("ngayQuyetDinh.lessThan=" + UPDATED_NGAY_QUYET_DINH);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayQuyetDinhIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is greater than DEFAULT_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldNotBeFound("ngayQuyetDinh.greaterThan=" + DEFAULT_NGAY_QUYET_DINH);
-
-        // Get all the chiDaoTuyenList where ngayQuyetDinh is greater than SMALLER_NGAY_QUYET_DINH
-        defaultChiDaoTuyenShouldBeFound("ngayQuyetDinh.greaterThan=" + SMALLER_NGAY_QUYET_DINH);
-    }
-
-    @Test
-    @Transactional
     void getAllChiDaoTuyensBySoHDIsEqualToSomething() throws Exception {
         // Initialize the database
         chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
@@ -688,136 +777,6 @@ class ChiDaoTuyenResourceIT {
 
     @Test
     @Transactional
-    void getAllChiDaoTuyensByNgayHDIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayHD is greater than or equal to DEFAULT_NGAY_HD
-        defaultChiDaoTuyenShouldBeFound("ngayHD.greaterThanOrEqual=" + DEFAULT_NGAY_HD);
-
-        // Get all the chiDaoTuyenList where ngayHD is greater than or equal to UPDATED_NGAY_HD
-        defaultChiDaoTuyenShouldNotBeFound("ngayHD.greaterThanOrEqual=" + UPDATED_NGAY_HD);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayHDIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayHD is less than or equal to DEFAULT_NGAY_HD
-        defaultChiDaoTuyenShouldBeFound("ngayHD.lessThanOrEqual=" + DEFAULT_NGAY_HD);
-
-        // Get all the chiDaoTuyenList where ngayHD is less than or equal to SMALLER_NGAY_HD
-        defaultChiDaoTuyenShouldNotBeFound("ngayHD.lessThanOrEqual=" + SMALLER_NGAY_HD);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayHDIsLessThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayHD is less than DEFAULT_NGAY_HD
-        defaultChiDaoTuyenShouldNotBeFound("ngayHD.lessThan=" + DEFAULT_NGAY_HD);
-
-        // Get all the chiDaoTuyenList where ngayHD is less than UPDATED_NGAY_HD
-        defaultChiDaoTuyenShouldBeFound("ngayHD.lessThan=" + UPDATED_NGAY_HD);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayHDIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayHD is greater than DEFAULT_NGAY_HD
-        defaultChiDaoTuyenShouldNotBeFound("ngayHD.greaterThan=" + DEFAULT_NGAY_HD);
-
-        // Get all the chiDaoTuyenList where ngayHD is greater than SMALLER_NGAY_HD
-        defaultChiDaoTuyenShouldBeFound("ngayHD.greaterThan=" + SMALLER_NGAY_HD);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByLyDoCongTacIsEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac equals to DEFAULT_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("lyDoCongTac.equals=" + DEFAULT_LY_DO_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac equals to UPDATED_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("lyDoCongTac.equals=" + UPDATED_LY_DO_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByLyDoCongTacIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac not equals to DEFAULT_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("lyDoCongTac.notEquals=" + DEFAULT_LY_DO_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac not equals to UPDATED_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("lyDoCongTac.notEquals=" + UPDATED_LY_DO_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByLyDoCongTacIsInShouldWork() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac in DEFAULT_LY_DO_CONG_TAC or UPDATED_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("lyDoCongTac.in=" + DEFAULT_LY_DO_CONG_TAC + "," + UPDATED_LY_DO_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac equals to UPDATED_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("lyDoCongTac.in=" + UPDATED_LY_DO_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByLyDoCongTacIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac is not null
-        defaultChiDaoTuyenShouldBeFound("lyDoCongTac.specified=true");
-
-        // Get all the chiDaoTuyenList where lyDoCongTac is null
-        defaultChiDaoTuyenShouldNotBeFound("lyDoCongTac.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByLyDoCongTacContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac contains DEFAULT_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("lyDoCongTac.contains=" + DEFAULT_LY_DO_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac contains UPDATED_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("lyDoCongTac.contains=" + UPDATED_LY_DO_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByLyDoCongTacNotContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac does not contain DEFAULT_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("lyDoCongTac.doesNotContain=" + DEFAULT_LY_DO_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where lyDoCongTac does not contain UPDATED_LY_DO_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("lyDoCongTac.doesNotContain=" + UPDATED_LY_DO_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
     void getAllChiDaoTuyensByNoiDungIsEqualToSomething() throws Exception {
         // Initialize the database
         chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
@@ -896,84 +855,6 @@ class ChiDaoTuyenResourceIT {
 
     @Test
     @Transactional
-    void getAllChiDaoTuyensByNoiDenCongTacIsEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac equals to DEFAULT_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("noiDenCongTac.equals=" + DEFAULT_NOI_DEN_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac equals to UPDATED_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("noiDenCongTac.equals=" + UPDATED_NOI_DEN_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNoiDenCongTacIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac not equals to DEFAULT_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("noiDenCongTac.notEquals=" + DEFAULT_NOI_DEN_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac not equals to UPDATED_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("noiDenCongTac.notEquals=" + UPDATED_NOI_DEN_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNoiDenCongTacIsInShouldWork() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac in DEFAULT_NOI_DEN_CONG_TAC or UPDATED_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("noiDenCongTac.in=" + DEFAULT_NOI_DEN_CONG_TAC + "," + UPDATED_NOI_DEN_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac equals to UPDATED_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("noiDenCongTac.in=" + UPDATED_NOI_DEN_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNoiDenCongTacIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac is not null
-        defaultChiDaoTuyenShouldBeFound("noiDenCongTac.specified=true");
-
-        // Get all the chiDaoTuyenList where noiDenCongTac is null
-        defaultChiDaoTuyenShouldNotBeFound("noiDenCongTac.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNoiDenCongTacContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac contains DEFAULT_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("noiDenCongTac.contains=" + DEFAULT_NOI_DEN_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac contains UPDATED_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("noiDenCongTac.contains=" + UPDATED_NOI_DEN_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNoiDenCongTacNotContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac does not contain DEFAULT_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("noiDenCongTac.doesNotContain=" + DEFAULT_NOI_DEN_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where noiDenCongTac does not contain UPDATED_NOI_DEN_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("noiDenCongTac.doesNotContain=" + UPDATED_NOI_DEN_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
     void getAllChiDaoTuyensByNgayBatDauIsEqualToSomething() throws Exception {
         // Initialize the database
         chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
@@ -1026,58 +907,6 @@ class ChiDaoTuyenResourceIT {
 
     @Test
     @Transactional
-    void getAllChiDaoTuyensByNgayBatDauIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is greater than or equal to DEFAULT_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldBeFound("ngayBatDau.greaterThanOrEqual=" + DEFAULT_NGAY_BAT_DAU);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is greater than or equal to UPDATED_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldNotBeFound("ngayBatDau.greaterThanOrEqual=" + UPDATED_NGAY_BAT_DAU);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayBatDauIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is less than or equal to DEFAULT_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldBeFound("ngayBatDau.lessThanOrEqual=" + DEFAULT_NGAY_BAT_DAU);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is less than or equal to SMALLER_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldNotBeFound("ngayBatDau.lessThanOrEqual=" + SMALLER_NGAY_BAT_DAU);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayBatDauIsLessThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is less than DEFAULT_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldNotBeFound("ngayBatDau.lessThan=" + DEFAULT_NGAY_BAT_DAU);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is less than UPDATED_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldBeFound("ngayBatDau.lessThan=" + UPDATED_NGAY_BAT_DAU);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayBatDauIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is greater than DEFAULT_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldNotBeFound("ngayBatDau.greaterThan=" + DEFAULT_NGAY_BAT_DAU);
-
-        // Get all the chiDaoTuyenList where ngayBatDau is greater than SMALLER_NGAY_BAT_DAU
-        defaultChiDaoTuyenShouldBeFound("ngayBatDau.greaterThan=" + SMALLER_NGAY_BAT_DAU);
-    }
-
-    @Test
-    @Transactional
     void getAllChiDaoTuyensByNgayKetThucIsEqualToSomething() throws Exception {
         // Initialize the database
         chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
@@ -1126,58 +955,6 @@ class ChiDaoTuyenResourceIT {
 
         // Get all the chiDaoTuyenList where ngayKetThuc is null
         defaultChiDaoTuyenShouldNotBeFound("ngayKetThuc.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayKetThucIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is greater than or equal to DEFAULT_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldBeFound("ngayKetThuc.greaterThanOrEqual=" + DEFAULT_NGAY_KET_THUC);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is greater than or equal to UPDATED_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldNotBeFound("ngayKetThuc.greaterThanOrEqual=" + UPDATED_NGAY_KET_THUC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayKetThucIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is less than or equal to DEFAULT_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldBeFound("ngayKetThuc.lessThanOrEqual=" + DEFAULT_NGAY_KET_THUC);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is less than or equal to SMALLER_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldNotBeFound("ngayKetThuc.lessThanOrEqual=" + SMALLER_NGAY_KET_THUC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayKetThucIsLessThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is less than DEFAULT_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldNotBeFound("ngayKetThuc.lessThan=" + DEFAULT_NGAY_KET_THUC);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is less than UPDATED_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldBeFound("ngayKetThuc.lessThan=" + UPDATED_NGAY_KET_THUC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayKetThucIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is greater than DEFAULT_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldNotBeFound("ngayKetThuc.greaterThan=" + DEFAULT_NGAY_KET_THUC);
-
-        // Get all the chiDaoTuyenList where ngayKetThuc is greater than SMALLER_NGAY_KET_THUC
-        defaultChiDaoTuyenShouldBeFound("ngayKetThuc.greaterThan=" + SMALLER_NGAY_KET_THUC);
     }
 
     @Test
@@ -1308,292 +1085,6 @@ class ChiDaoTuyenResourceIT {
 
         // Get all the chiDaoTuyenList where ngayTao is null
         defaultChiDaoTuyenShouldNotBeFound("ngayTao.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayTaoIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayTao is greater than or equal to DEFAULT_NGAY_TAO
-        defaultChiDaoTuyenShouldBeFound("ngayTao.greaterThanOrEqual=" + DEFAULT_NGAY_TAO);
-
-        // Get all the chiDaoTuyenList where ngayTao is greater than or equal to UPDATED_NGAY_TAO
-        defaultChiDaoTuyenShouldNotBeFound("ngayTao.greaterThanOrEqual=" + UPDATED_NGAY_TAO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayTaoIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayTao is less than or equal to DEFAULT_NGAY_TAO
-        defaultChiDaoTuyenShouldBeFound("ngayTao.lessThanOrEqual=" + DEFAULT_NGAY_TAO);
-
-        // Get all the chiDaoTuyenList where ngayTao is less than or equal to SMALLER_NGAY_TAO
-        defaultChiDaoTuyenShouldNotBeFound("ngayTao.lessThanOrEqual=" + SMALLER_NGAY_TAO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayTaoIsLessThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayTao is less than DEFAULT_NGAY_TAO
-        defaultChiDaoTuyenShouldNotBeFound("ngayTao.lessThan=" + DEFAULT_NGAY_TAO);
-
-        // Get all the chiDaoTuyenList where ngayTao is less than UPDATED_NGAY_TAO
-        defaultChiDaoTuyenShouldBeFound("ngayTao.lessThan=" + UPDATED_NGAY_TAO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNgayTaoIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ngayTao is greater than DEFAULT_NGAY_TAO
-        defaultChiDaoTuyenShouldNotBeFound("ngayTao.greaterThan=" + DEFAULT_NGAY_TAO);
-
-        // Get all the chiDaoTuyenList where ngayTao is greater than SMALLER_NGAY_TAO
-        defaultChiDaoTuyenShouldBeFound("ngayTao.greaterThan=" + SMALLER_NGAY_TAO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNhanVienIsEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where nhanVien equals to DEFAULT_NHAN_VIEN
-        defaultChiDaoTuyenShouldBeFound("nhanVien.equals=" + DEFAULT_NHAN_VIEN);
-
-        // Get all the chiDaoTuyenList where nhanVien equals to UPDATED_NHAN_VIEN
-        defaultChiDaoTuyenShouldNotBeFound("nhanVien.equals=" + UPDATED_NHAN_VIEN);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNhanVienIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where nhanVien not equals to DEFAULT_NHAN_VIEN
-        defaultChiDaoTuyenShouldNotBeFound("nhanVien.notEquals=" + DEFAULT_NHAN_VIEN);
-
-        // Get all the chiDaoTuyenList where nhanVien not equals to UPDATED_NHAN_VIEN
-        defaultChiDaoTuyenShouldBeFound("nhanVien.notEquals=" + UPDATED_NHAN_VIEN);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNhanVienIsInShouldWork() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where nhanVien in DEFAULT_NHAN_VIEN or UPDATED_NHAN_VIEN
-        defaultChiDaoTuyenShouldBeFound("nhanVien.in=" + DEFAULT_NHAN_VIEN + "," + UPDATED_NHAN_VIEN);
-
-        // Get all the chiDaoTuyenList where nhanVien equals to UPDATED_NHAN_VIEN
-        defaultChiDaoTuyenShouldNotBeFound("nhanVien.in=" + UPDATED_NHAN_VIEN);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNhanVienIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where nhanVien is not null
-        defaultChiDaoTuyenShouldBeFound("nhanVien.specified=true");
-
-        // Get all the chiDaoTuyenList where nhanVien is null
-        defaultChiDaoTuyenShouldNotBeFound("nhanVien.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNhanVienContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where nhanVien contains DEFAULT_NHAN_VIEN
-        defaultChiDaoTuyenShouldBeFound("nhanVien.contains=" + DEFAULT_NHAN_VIEN);
-
-        // Get all the chiDaoTuyenList where nhanVien contains UPDATED_NHAN_VIEN
-        defaultChiDaoTuyenShouldNotBeFound("nhanVien.contains=" + UPDATED_NHAN_VIEN);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByNhanVienNotContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where nhanVien does not contain DEFAULT_NHAN_VIEN
-        defaultChiDaoTuyenShouldNotBeFound("nhanVien.doesNotContain=" + DEFAULT_NHAN_VIEN);
-
-        // Get all the chiDaoTuyenList where nhanVien does not contain UPDATED_NHAN_VIEN
-        defaultChiDaoTuyenShouldBeFound("nhanVien.doesNotContain=" + UPDATED_NHAN_VIEN);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKyThuatHoTroIsEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro equals to DEFAULT_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("kyThuatHoTro.equals=" + DEFAULT_KY_THUAT_HO_TRO);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro equals to UPDATED_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("kyThuatHoTro.equals=" + UPDATED_KY_THUAT_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKyThuatHoTroIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro not equals to DEFAULT_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("kyThuatHoTro.notEquals=" + DEFAULT_KY_THUAT_HO_TRO);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro not equals to UPDATED_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("kyThuatHoTro.notEquals=" + UPDATED_KY_THUAT_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKyThuatHoTroIsInShouldWork() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro in DEFAULT_KY_THUAT_HO_TRO or UPDATED_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("kyThuatHoTro.in=" + DEFAULT_KY_THUAT_HO_TRO + "," + UPDATED_KY_THUAT_HO_TRO);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro equals to UPDATED_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("kyThuatHoTro.in=" + UPDATED_KY_THUAT_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKyThuatHoTroIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro is not null
-        defaultChiDaoTuyenShouldBeFound("kyThuatHoTro.specified=true");
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro is null
-        defaultChiDaoTuyenShouldNotBeFound("kyThuatHoTro.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKyThuatHoTroContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro contains DEFAULT_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("kyThuatHoTro.contains=" + DEFAULT_KY_THUAT_HO_TRO);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro contains UPDATED_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("kyThuatHoTro.contains=" + UPDATED_KY_THUAT_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKyThuatHoTroNotContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro does not contain DEFAULT_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("kyThuatHoTro.doesNotContain=" + DEFAULT_KY_THUAT_HO_TRO);
-
-        // Get all the chiDaoTuyenList where kyThuatHoTro does not contain UPDATED_KY_THUAT_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("kyThuatHoTro.doesNotContain=" + UPDATED_KY_THUAT_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByVatTuHoTroIsEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro equals to DEFAULT_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("vatTuHoTro.equals=" + DEFAULT_VAT_TU_HO_TRO);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro equals to UPDATED_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("vatTuHoTro.equals=" + UPDATED_VAT_TU_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByVatTuHoTroIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro not equals to DEFAULT_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("vatTuHoTro.notEquals=" + DEFAULT_VAT_TU_HO_TRO);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro not equals to UPDATED_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("vatTuHoTro.notEquals=" + UPDATED_VAT_TU_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByVatTuHoTroIsInShouldWork() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro in DEFAULT_VAT_TU_HO_TRO or UPDATED_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("vatTuHoTro.in=" + DEFAULT_VAT_TU_HO_TRO + "," + UPDATED_VAT_TU_HO_TRO);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro equals to UPDATED_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("vatTuHoTro.in=" + UPDATED_VAT_TU_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByVatTuHoTroIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro is not null
-        defaultChiDaoTuyenShouldBeFound("vatTuHoTro.specified=true");
-
-        // Get all the chiDaoTuyenList where vatTuHoTro is null
-        defaultChiDaoTuyenShouldNotBeFound("vatTuHoTro.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByVatTuHoTroContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro contains DEFAULT_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("vatTuHoTro.contains=" + DEFAULT_VAT_TU_HO_TRO);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro contains UPDATED_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("vatTuHoTro.contains=" + UPDATED_VAT_TU_HO_TRO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByVatTuHoTroNotContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro does not contain DEFAULT_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldNotBeFound("vatTuHoTro.doesNotContain=" + DEFAULT_VAT_TU_HO_TRO);
-
-        // Get all the chiDaoTuyenList where vatTuHoTro does not contain UPDATED_VAT_TU_HO_TRO
-        defaultChiDaoTuyenShouldBeFound("vatTuHoTro.doesNotContain=" + UPDATED_VAT_TU_HO_TRO);
     }
 
     @Test
@@ -1828,84 +1319,6 @@ class ChiDaoTuyenResourceIT {
 
         // Get all the chiDaoTuyenList where soCanBoChuyenGiao does not contain UPDATED_SO_CAN_BO_CHUYEN_GIAO
         defaultChiDaoTuyenShouldBeFound("soCanBoChuyenGiao.doesNotContain=" + UPDATED_SO_CAN_BO_CHUYEN_GIAO);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKetQuaCongTacIsEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac equals to DEFAULT_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("ketQuaCongTac.equals=" + DEFAULT_KET_QUA_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac equals to UPDATED_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("ketQuaCongTac.equals=" + UPDATED_KET_QUA_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKetQuaCongTacIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac not equals to DEFAULT_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("ketQuaCongTac.notEquals=" + DEFAULT_KET_QUA_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac not equals to UPDATED_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("ketQuaCongTac.notEquals=" + UPDATED_KET_QUA_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKetQuaCongTacIsInShouldWork() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac in DEFAULT_KET_QUA_CONG_TAC or UPDATED_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("ketQuaCongTac.in=" + DEFAULT_KET_QUA_CONG_TAC + "," + UPDATED_KET_QUA_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac equals to UPDATED_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("ketQuaCongTac.in=" + UPDATED_KET_QUA_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKetQuaCongTacIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac is not null
-        defaultChiDaoTuyenShouldBeFound("ketQuaCongTac.specified=true");
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac is null
-        defaultChiDaoTuyenShouldNotBeFound("ketQuaCongTac.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKetQuaCongTacContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac contains DEFAULT_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("ketQuaCongTac.contains=" + DEFAULT_KET_QUA_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac contains UPDATED_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("ketQuaCongTac.contains=" + UPDATED_KET_QUA_CONG_TAC);
-    }
-
-    @Test
-    @Transactional
-    void getAllChiDaoTuyensByKetQuaCongTacNotContainsSomething() throws Exception {
-        // Initialize the database
-        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac does not contain DEFAULT_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldNotBeFound("ketQuaCongTac.doesNotContain=" + DEFAULT_KET_QUA_CONG_TAC);
-
-        // Get all the chiDaoTuyenList where ketQuaCongTac does not contain UPDATED_KET_QUA_CONG_TAC
-        defaultChiDaoTuyenShouldBeFound("ketQuaCongTac.doesNotContain=" + UPDATED_KET_QUA_CONG_TAC);
     }
 
     @Test
@@ -2454,6 +1867,162 @@ class ChiDaoTuyenResourceIT {
         defaultChiDaoTuyenShouldBeFound("khac.doesNotContain=" + UPDATED_KHAC);
     }
 
+    @Test
+    @Transactional
+    void getAllChiDaoTuyensByLyDoCongTacIsEqualToSomething() throws Exception {
+        // Initialize the database
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        LyDoCongTac lyDoCongTac;
+        if (TestUtil.findAll(em, LyDoCongTac.class).isEmpty()) {
+            lyDoCongTac = LyDoCongTacResourceIT.createEntity(em);
+            em.persist(lyDoCongTac);
+            em.flush();
+        } else {
+            lyDoCongTac = TestUtil.findAll(em, LyDoCongTac.class).get(0);
+        }
+        em.persist(lyDoCongTac);
+        em.flush();
+        chiDaoTuyen.setLyDoCongTac(lyDoCongTac);
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        Long lyDoCongTacId = lyDoCongTac.getId();
+
+        // Get all the chiDaoTuyenList where lyDoCongTac equals to lyDoCongTacId
+        defaultChiDaoTuyenShouldBeFound("lyDoCongTacId.equals=" + lyDoCongTacId);
+
+        // Get all the chiDaoTuyenList where lyDoCongTac equals to (lyDoCongTacId + 1)
+        defaultChiDaoTuyenShouldNotBeFound("lyDoCongTacId.equals=" + (lyDoCongTacId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllChiDaoTuyensByNoiDenCongTacIsEqualToSomething() throws Exception {
+        // Initialize the database
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        NoiDenCongTac noiDenCongTac;
+        if (TestUtil.findAll(em, NoiDenCongTac.class).isEmpty()) {
+            noiDenCongTac = NoiDenCongTacResourceIT.createEntity(em);
+            em.persist(noiDenCongTac);
+            em.flush();
+        } else {
+            noiDenCongTac = TestUtil.findAll(em, NoiDenCongTac.class).get(0);
+        }
+        em.persist(noiDenCongTac);
+        em.flush();
+        chiDaoTuyen.setNoiDenCongTac(noiDenCongTac);
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        Long noiDenCongTacId = noiDenCongTac.getId();
+
+        // Get all the chiDaoTuyenList where noiDenCongTac equals to noiDenCongTacId
+        defaultChiDaoTuyenShouldBeFound("noiDenCongTacId.equals=" + noiDenCongTacId);
+
+        // Get all the chiDaoTuyenList where noiDenCongTac equals to (noiDenCongTacId + 1)
+        defaultChiDaoTuyenShouldNotBeFound("noiDenCongTacId.equals=" + (noiDenCongTacId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllChiDaoTuyensByKetQuaCongTacIsEqualToSomething() throws Exception {
+        // Initialize the database
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        KetQuaCongTac ketQuaCongTac;
+        if (TestUtil.findAll(em, KetQuaCongTac.class).isEmpty()) {
+            ketQuaCongTac = KetQuaCongTacResourceIT.createEntity(em);
+            em.persist(ketQuaCongTac);
+            em.flush();
+        } else {
+            ketQuaCongTac = TestUtil.findAll(em, KetQuaCongTac.class).get(0);
+        }
+        em.persist(ketQuaCongTac);
+        em.flush();
+        chiDaoTuyen.setKetQuaCongTac(ketQuaCongTac);
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        Long ketQuaCongTacId = ketQuaCongTac.getId();
+
+        // Get all the chiDaoTuyenList where ketQuaCongTac equals to ketQuaCongTacId
+        defaultChiDaoTuyenShouldBeFound("ketQuaCongTacId.equals=" + ketQuaCongTacId);
+
+        // Get all the chiDaoTuyenList where ketQuaCongTac equals to (ketQuaCongTacId + 1)
+        defaultChiDaoTuyenShouldNotBeFound("ketQuaCongTacId.equals=" + (ketQuaCongTacId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllChiDaoTuyensByKyThuatHoTroIsEqualToSomething() throws Exception {
+        // Initialize the database
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        KyThuatHoTro kyThuatHoTro;
+        if (TestUtil.findAll(em, KyThuatHoTro.class).isEmpty()) {
+            kyThuatHoTro = KyThuatHoTroResourceIT.createEntity(em);
+            em.persist(kyThuatHoTro);
+            em.flush();
+        } else {
+            kyThuatHoTro = TestUtil.findAll(em, KyThuatHoTro.class).get(0);
+        }
+        em.persist(kyThuatHoTro);
+        em.flush();
+        chiDaoTuyen.setKyThuatHoTro(kyThuatHoTro);
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        Long kyThuatHoTroId = kyThuatHoTro.getId();
+
+        // Get all the chiDaoTuyenList where kyThuatHoTro equals to kyThuatHoTroId
+        defaultChiDaoTuyenShouldBeFound("kyThuatHoTroId.equals=" + kyThuatHoTroId);
+
+        // Get all the chiDaoTuyenList where kyThuatHoTro equals to (kyThuatHoTroId + 1)
+        defaultChiDaoTuyenShouldNotBeFound("kyThuatHoTroId.equals=" + (kyThuatHoTroId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllChiDaoTuyensByVatTuHoTroIsEqualToSomething() throws Exception {
+        // Initialize the database
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        VatTuHoTro vatTuHoTro;
+        if (TestUtil.findAll(em, VatTuHoTro.class).isEmpty()) {
+            vatTuHoTro = VatTuHoTroResourceIT.createEntity(em);
+            em.persist(vatTuHoTro);
+            em.flush();
+        } else {
+            vatTuHoTro = TestUtil.findAll(em, VatTuHoTro.class).get(0);
+        }
+        em.persist(vatTuHoTro);
+        em.flush();
+        chiDaoTuyen.setVatTuHoTro(vatTuHoTro);
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        Long vatTuHoTroId = vatTuHoTro.getId();
+
+        // Get all the chiDaoTuyenList where vatTuHoTro equals to vatTuHoTroId
+        defaultChiDaoTuyenShouldBeFound("vatTuHoTroId.equals=" + vatTuHoTroId);
+
+        // Get all the chiDaoTuyenList where vatTuHoTro equals to (vatTuHoTroId + 1)
+        defaultChiDaoTuyenShouldNotBeFound("vatTuHoTroId.equals=" + (vatTuHoTroId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllChiDaoTuyensByNhanVienIsEqualToSomething() throws Exception {
+        // Initialize the database
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        NhanVien nhanVien;
+        if (TestUtil.findAll(em, NhanVien.class).isEmpty()) {
+            nhanVien = NhanVienResourceIT.createEntity(em);
+            em.persist(nhanVien);
+            em.flush();
+        } else {
+            nhanVien = TestUtil.findAll(em, NhanVien.class).get(0);
+        }
+        em.persist(nhanVien);
+        em.flush();
+        chiDaoTuyen.setNhanVien(nhanVien);
+        chiDaoTuyenRepository.saveAndFlush(chiDaoTuyen);
+        Long nhanVienId = nhanVien.getId();
+
+        // Get all the chiDaoTuyenList where nhanVien equals to nhanVienId
+        defaultChiDaoTuyenShouldBeFound("nhanVienId.equals=" + nhanVienId);
+
+        // Get all the chiDaoTuyenList where nhanVien equals to (nhanVienId + 1)
+        defaultChiDaoTuyenShouldNotBeFound("nhanVienId.equals=" + (nhanVienId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -2464,23 +2033,17 @@ class ChiDaoTuyenResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(chiDaoTuyen.getId().intValue())))
             .andExpect(jsonPath("$.[*].soQuyetDinh").value(hasItem(DEFAULT_SO_QUYET_DINH)))
-            .andExpect(jsonPath("$.[*].ngayQuyetDinh").value(hasItem(sameInstant(DEFAULT_NGAY_QUYET_DINH))))
+            .andExpect(jsonPath("$.[*].ngayQuyetDinh").value(hasItem(DEFAULT_NGAY_QUYET_DINH.toString())))
             .andExpect(jsonPath("$.[*].soHD").value(hasItem(DEFAULT_SO_HD)))
-            .andExpect(jsonPath("$.[*].ngayHD").value(hasItem(sameInstant(DEFAULT_NGAY_HD))))
-            .andExpect(jsonPath("$.[*].lyDoCongTac").value(hasItem(DEFAULT_LY_DO_CONG_TAC)))
+            .andExpect(jsonPath("$.[*].ngayHD").value(hasItem(DEFAULT_NGAY_HD.toString())))
             .andExpect(jsonPath("$.[*].noiDung").value(hasItem(DEFAULT_NOI_DUNG)))
-            .andExpect(jsonPath("$.[*].noiDenCongTac").value(hasItem(DEFAULT_NOI_DEN_CONG_TAC)))
-            .andExpect(jsonPath("$.[*].ngayBatDau").value(hasItem(sameInstant(DEFAULT_NGAY_BAT_DAU))))
-            .andExpect(jsonPath("$.[*].ngayKetThuc").value(hasItem(sameInstant(DEFAULT_NGAY_KET_THUC))))
+            .andExpect(jsonPath("$.[*].ngayBatDau").value(hasItem(DEFAULT_NGAY_BAT_DAU.toString())))
+            .andExpect(jsonPath("$.[*].ngayKetThuc").value(hasItem(DEFAULT_NGAY_KET_THUC.toString())))
             .andExpect(jsonPath("$.[*].ghiChu").value(hasItem(DEFAULT_GHI_CHU)))
-            .andExpect(jsonPath("$.[*].ngayTao").value(hasItem(sameInstant(DEFAULT_NGAY_TAO))))
-            .andExpect(jsonPath("$.[*].nhanVien").value(hasItem(DEFAULT_NHAN_VIEN)))
-            .andExpect(jsonPath("$.[*].kyThuatHoTro").value(hasItem(DEFAULT_KY_THUAT_HO_TRO)))
-            .andExpect(jsonPath("$.[*].vatTuHoTro").value(hasItem(DEFAULT_VAT_TU_HO_TRO)))
+            .andExpect(jsonPath("$.[*].ngayTao").value(hasItem(DEFAULT_NGAY_TAO.toString())))
             .andExpect(jsonPath("$.[*].soBnKhamDieuTri").value(hasItem(DEFAULT_SO_BN_KHAM_DIEU_TRI)))
             .andExpect(jsonPath("$.[*].soBnPhauThuat").value(hasItem(DEFAULT_SO_BN_PHAU_THUAT)))
             .andExpect(jsonPath("$.[*].soCanBoChuyenGiao").value(hasItem(DEFAULT_SO_CAN_BO_CHUYEN_GIAO)))
-            .andExpect(jsonPath("$.[*].ketQuaCongTac").value(hasItem(DEFAULT_KET_QUA_CONG_TAC)))
             .andExpect(jsonPath("$.[*].luuTru").value(hasItem(DEFAULT_LUU_TRU)))
             .andExpect(jsonPath("$.[*].tienAn").value(hasItem(DEFAULT_TIEN_AN)))
             .andExpect(jsonPath("$.[*].tienO").value(hasItem(DEFAULT_TIEN_O)))
@@ -2540,20 +2103,14 @@ class ChiDaoTuyenResourceIT {
             .ngayQuyetDinh(UPDATED_NGAY_QUYET_DINH)
             .soHD(UPDATED_SO_HD)
             .ngayHD(UPDATED_NGAY_HD)
-            .lyDoCongTac(UPDATED_LY_DO_CONG_TAC)
             .noiDung(UPDATED_NOI_DUNG)
-            .noiDenCongTac(UPDATED_NOI_DEN_CONG_TAC)
             .ngayBatDau(UPDATED_NGAY_BAT_DAU)
             .ngayKetThuc(UPDATED_NGAY_KET_THUC)
             .ghiChu(UPDATED_GHI_CHU)
             .ngayTao(UPDATED_NGAY_TAO)
-            .nhanVien(UPDATED_NHAN_VIEN)
-            .kyThuatHoTro(UPDATED_KY_THUAT_HO_TRO)
-            .vatTuHoTro(UPDATED_VAT_TU_HO_TRO)
             .soBnKhamDieuTri(UPDATED_SO_BN_KHAM_DIEU_TRI)
             .soBnPhauThuat(UPDATED_SO_BN_PHAU_THUAT)
             .soCanBoChuyenGiao(UPDATED_SO_CAN_BO_CHUYEN_GIAO)
-            .ketQuaCongTac(UPDATED_KET_QUA_CONG_TAC)
             .luuTru(UPDATED_LUU_TRU)
             .tienAn(UPDATED_TIEN_AN)
             .tienO(UPDATED_TIEN_O)
@@ -2561,13 +2118,14 @@ class ChiDaoTuyenResourceIT {
             .taiLieu(UPDATED_TAI_LIEU)
             .giangDay(UPDATED_GIANG_DAY)
             .khac(UPDATED_KHAC);
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(updatedChiDaoTuyen);
 
         restChiDaoTuyenMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedChiDaoTuyen.getId())
+                put(ENTITY_API_URL_ID, chiDaoTuyenDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedChiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isOk());
 
@@ -2579,20 +2137,14 @@ class ChiDaoTuyenResourceIT {
         assertThat(testChiDaoTuyen.getNgayQuyetDinh()).isEqualTo(UPDATED_NGAY_QUYET_DINH);
         assertThat(testChiDaoTuyen.getSoHD()).isEqualTo(UPDATED_SO_HD);
         assertThat(testChiDaoTuyen.getNgayHD()).isEqualTo(UPDATED_NGAY_HD);
-        assertThat(testChiDaoTuyen.getLyDoCongTac()).isEqualTo(UPDATED_LY_DO_CONG_TAC);
         assertThat(testChiDaoTuyen.getNoiDung()).isEqualTo(UPDATED_NOI_DUNG);
-        assertThat(testChiDaoTuyen.getNoiDenCongTac()).isEqualTo(UPDATED_NOI_DEN_CONG_TAC);
         assertThat(testChiDaoTuyen.getNgayBatDau()).isEqualTo(UPDATED_NGAY_BAT_DAU);
         assertThat(testChiDaoTuyen.getNgayKetThuc()).isEqualTo(UPDATED_NGAY_KET_THUC);
         assertThat(testChiDaoTuyen.getGhiChu()).isEqualTo(UPDATED_GHI_CHU);
         assertThat(testChiDaoTuyen.getNgayTao()).isEqualTo(UPDATED_NGAY_TAO);
-        assertThat(testChiDaoTuyen.getNhanVien()).isEqualTo(UPDATED_NHAN_VIEN);
-        assertThat(testChiDaoTuyen.getKyThuatHoTro()).isEqualTo(UPDATED_KY_THUAT_HO_TRO);
-        assertThat(testChiDaoTuyen.getVatTuHoTro()).isEqualTo(UPDATED_VAT_TU_HO_TRO);
         assertThat(testChiDaoTuyen.getSoBnKhamDieuTri()).isEqualTo(UPDATED_SO_BN_KHAM_DIEU_TRI);
         assertThat(testChiDaoTuyen.getSoBnPhauThuat()).isEqualTo(UPDATED_SO_BN_PHAU_THUAT);
         assertThat(testChiDaoTuyen.getSoCanBoChuyenGiao()).isEqualTo(UPDATED_SO_CAN_BO_CHUYEN_GIAO);
-        assertThat(testChiDaoTuyen.getKetQuaCongTac()).isEqualTo(UPDATED_KET_QUA_CONG_TAC);
         assertThat(testChiDaoTuyen.getLuuTru()).isEqualTo(UPDATED_LUU_TRU);
         assertThat(testChiDaoTuyen.getTienAn()).isEqualTo(UPDATED_TIEN_AN);
         assertThat(testChiDaoTuyen.getTienO()).isEqualTo(UPDATED_TIEN_O);
@@ -2608,13 +2160,16 @@ class ChiDaoTuyenResourceIT {
         int databaseSizeBeforeUpdate = chiDaoTuyenRepository.findAll().size();
         chiDaoTuyen.setId(count.incrementAndGet());
 
+        // Create the ChiDaoTuyen
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restChiDaoTuyenMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, chiDaoTuyen.getId())
+                put(ENTITY_API_URL_ID, chiDaoTuyenDTO.getId())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -2629,13 +2184,16 @@ class ChiDaoTuyenResourceIT {
         int databaseSizeBeforeUpdate = chiDaoTuyenRepository.findAll().size();
         chiDaoTuyen.setId(count.incrementAndGet());
 
+        // Create the ChiDaoTuyen
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restChiDaoTuyenMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -2650,13 +2208,16 @@ class ChiDaoTuyenResourceIT {
         int databaseSizeBeforeUpdate = chiDaoTuyenRepository.findAll().size();
         chiDaoTuyen.setId(count.incrementAndGet());
 
+        // Create the ChiDaoTuyen
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restChiDaoTuyenMockMvc
             .perform(
                 put(ENTITY_API_URL)
                     .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -2680,17 +2241,13 @@ class ChiDaoTuyenResourceIT {
         partialUpdatedChiDaoTuyen
             .soHD(UPDATED_SO_HD)
             .ngayHD(UPDATED_NGAY_HD)
-            .lyDoCongTac(UPDATED_LY_DO_CONG_TAC)
-            .noiDenCongTac(UPDATED_NOI_DEN_CONG_TAC)
-            .ngayBatDau(UPDATED_NGAY_BAT_DAU)
-            .ngayTao(UPDATED_NGAY_TAO)
-            .kyThuatHoTro(UPDATED_KY_THUAT_HO_TRO)
-            .soCanBoChuyenGiao(UPDATED_SO_CAN_BO_CHUYEN_GIAO)
+            .noiDung(UPDATED_NOI_DUNG)
+            .ngayKetThuc(UPDATED_NGAY_KET_THUC)
+            .ghiChu(UPDATED_GHI_CHU)
+            .soBnPhauThuat(UPDATED_SO_BN_PHAU_THUAT)
             .luuTru(UPDATED_LUU_TRU)
-            .tienAn(UPDATED_TIEN_AN)
-            .tienO(UPDATED_TIEN_O)
             .taiLieu(UPDATED_TAI_LIEU)
-            .giangDay(UPDATED_GIANG_DAY);
+            .khac(UPDATED_KHAC);
 
         restChiDaoTuyenMockMvc
             .perform(
@@ -2709,27 +2266,21 @@ class ChiDaoTuyenResourceIT {
         assertThat(testChiDaoTuyen.getNgayQuyetDinh()).isEqualTo(DEFAULT_NGAY_QUYET_DINH);
         assertThat(testChiDaoTuyen.getSoHD()).isEqualTo(UPDATED_SO_HD);
         assertThat(testChiDaoTuyen.getNgayHD()).isEqualTo(UPDATED_NGAY_HD);
-        assertThat(testChiDaoTuyen.getLyDoCongTac()).isEqualTo(UPDATED_LY_DO_CONG_TAC);
-        assertThat(testChiDaoTuyen.getNoiDung()).isEqualTo(DEFAULT_NOI_DUNG);
-        assertThat(testChiDaoTuyen.getNoiDenCongTac()).isEqualTo(UPDATED_NOI_DEN_CONG_TAC);
-        assertThat(testChiDaoTuyen.getNgayBatDau()).isEqualTo(UPDATED_NGAY_BAT_DAU);
-        assertThat(testChiDaoTuyen.getNgayKetThuc()).isEqualTo(DEFAULT_NGAY_KET_THUC);
-        assertThat(testChiDaoTuyen.getGhiChu()).isEqualTo(DEFAULT_GHI_CHU);
-        assertThat(testChiDaoTuyen.getNgayTao()).isEqualTo(UPDATED_NGAY_TAO);
-        assertThat(testChiDaoTuyen.getNhanVien()).isEqualTo(DEFAULT_NHAN_VIEN);
-        assertThat(testChiDaoTuyen.getKyThuatHoTro()).isEqualTo(UPDATED_KY_THUAT_HO_TRO);
-        assertThat(testChiDaoTuyen.getVatTuHoTro()).isEqualTo(DEFAULT_VAT_TU_HO_TRO);
+        assertThat(testChiDaoTuyen.getNoiDung()).isEqualTo(UPDATED_NOI_DUNG);
+        assertThat(testChiDaoTuyen.getNgayBatDau()).isEqualTo(DEFAULT_NGAY_BAT_DAU);
+        assertThat(testChiDaoTuyen.getNgayKetThuc()).isEqualTo(UPDATED_NGAY_KET_THUC);
+        assertThat(testChiDaoTuyen.getGhiChu()).isEqualTo(UPDATED_GHI_CHU);
+        assertThat(testChiDaoTuyen.getNgayTao()).isEqualTo(DEFAULT_NGAY_TAO);
         assertThat(testChiDaoTuyen.getSoBnKhamDieuTri()).isEqualTo(DEFAULT_SO_BN_KHAM_DIEU_TRI);
-        assertThat(testChiDaoTuyen.getSoBnPhauThuat()).isEqualTo(DEFAULT_SO_BN_PHAU_THUAT);
-        assertThat(testChiDaoTuyen.getSoCanBoChuyenGiao()).isEqualTo(UPDATED_SO_CAN_BO_CHUYEN_GIAO);
-        assertThat(testChiDaoTuyen.getKetQuaCongTac()).isEqualTo(DEFAULT_KET_QUA_CONG_TAC);
+        assertThat(testChiDaoTuyen.getSoBnPhauThuat()).isEqualTo(UPDATED_SO_BN_PHAU_THUAT);
+        assertThat(testChiDaoTuyen.getSoCanBoChuyenGiao()).isEqualTo(DEFAULT_SO_CAN_BO_CHUYEN_GIAO);
         assertThat(testChiDaoTuyen.getLuuTru()).isEqualTo(UPDATED_LUU_TRU);
-        assertThat(testChiDaoTuyen.getTienAn()).isEqualTo(UPDATED_TIEN_AN);
-        assertThat(testChiDaoTuyen.getTienO()).isEqualTo(UPDATED_TIEN_O);
+        assertThat(testChiDaoTuyen.getTienAn()).isEqualTo(DEFAULT_TIEN_AN);
+        assertThat(testChiDaoTuyen.getTienO()).isEqualTo(DEFAULT_TIEN_O);
         assertThat(testChiDaoTuyen.getTienDiLai()).isEqualTo(DEFAULT_TIEN_DI_LAI);
         assertThat(testChiDaoTuyen.getTaiLieu()).isEqualTo(UPDATED_TAI_LIEU);
-        assertThat(testChiDaoTuyen.getGiangDay()).isEqualTo(UPDATED_GIANG_DAY);
-        assertThat(testChiDaoTuyen.getKhac()).isEqualTo(DEFAULT_KHAC);
+        assertThat(testChiDaoTuyen.getGiangDay()).isEqualTo(DEFAULT_GIANG_DAY);
+        assertThat(testChiDaoTuyen.getKhac()).isEqualTo(UPDATED_KHAC);
     }
 
     @Test
@@ -2749,20 +2300,14 @@ class ChiDaoTuyenResourceIT {
             .ngayQuyetDinh(UPDATED_NGAY_QUYET_DINH)
             .soHD(UPDATED_SO_HD)
             .ngayHD(UPDATED_NGAY_HD)
-            .lyDoCongTac(UPDATED_LY_DO_CONG_TAC)
             .noiDung(UPDATED_NOI_DUNG)
-            .noiDenCongTac(UPDATED_NOI_DEN_CONG_TAC)
             .ngayBatDau(UPDATED_NGAY_BAT_DAU)
             .ngayKetThuc(UPDATED_NGAY_KET_THUC)
             .ghiChu(UPDATED_GHI_CHU)
             .ngayTao(UPDATED_NGAY_TAO)
-            .nhanVien(UPDATED_NHAN_VIEN)
-            .kyThuatHoTro(UPDATED_KY_THUAT_HO_TRO)
-            .vatTuHoTro(UPDATED_VAT_TU_HO_TRO)
             .soBnKhamDieuTri(UPDATED_SO_BN_KHAM_DIEU_TRI)
             .soBnPhauThuat(UPDATED_SO_BN_PHAU_THUAT)
             .soCanBoChuyenGiao(UPDATED_SO_CAN_BO_CHUYEN_GIAO)
-            .ketQuaCongTac(UPDATED_KET_QUA_CONG_TAC)
             .luuTru(UPDATED_LUU_TRU)
             .tienAn(UPDATED_TIEN_AN)
             .tienO(UPDATED_TIEN_O)
@@ -2788,20 +2333,14 @@ class ChiDaoTuyenResourceIT {
         assertThat(testChiDaoTuyen.getNgayQuyetDinh()).isEqualTo(UPDATED_NGAY_QUYET_DINH);
         assertThat(testChiDaoTuyen.getSoHD()).isEqualTo(UPDATED_SO_HD);
         assertThat(testChiDaoTuyen.getNgayHD()).isEqualTo(UPDATED_NGAY_HD);
-        assertThat(testChiDaoTuyen.getLyDoCongTac()).isEqualTo(UPDATED_LY_DO_CONG_TAC);
         assertThat(testChiDaoTuyen.getNoiDung()).isEqualTo(UPDATED_NOI_DUNG);
-        assertThat(testChiDaoTuyen.getNoiDenCongTac()).isEqualTo(UPDATED_NOI_DEN_CONG_TAC);
         assertThat(testChiDaoTuyen.getNgayBatDau()).isEqualTo(UPDATED_NGAY_BAT_DAU);
         assertThat(testChiDaoTuyen.getNgayKetThuc()).isEqualTo(UPDATED_NGAY_KET_THUC);
         assertThat(testChiDaoTuyen.getGhiChu()).isEqualTo(UPDATED_GHI_CHU);
         assertThat(testChiDaoTuyen.getNgayTao()).isEqualTo(UPDATED_NGAY_TAO);
-        assertThat(testChiDaoTuyen.getNhanVien()).isEqualTo(UPDATED_NHAN_VIEN);
-        assertThat(testChiDaoTuyen.getKyThuatHoTro()).isEqualTo(UPDATED_KY_THUAT_HO_TRO);
-        assertThat(testChiDaoTuyen.getVatTuHoTro()).isEqualTo(UPDATED_VAT_TU_HO_TRO);
         assertThat(testChiDaoTuyen.getSoBnKhamDieuTri()).isEqualTo(UPDATED_SO_BN_KHAM_DIEU_TRI);
         assertThat(testChiDaoTuyen.getSoBnPhauThuat()).isEqualTo(UPDATED_SO_BN_PHAU_THUAT);
         assertThat(testChiDaoTuyen.getSoCanBoChuyenGiao()).isEqualTo(UPDATED_SO_CAN_BO_CHUYEN_GIAO);
-        assertThat(testChiDaoTuyen.getKetQuaCongTac()).isEqualTo(UPDATED_KET_QUA_CONG_TAC);
         assertThat(testChiDaoTuyen.getLuuTru()).isEqualTo(UPDATED_LUU_TRU);
         assertThat(testChiDaoTuyen.getTienAn()).isEqualTo(UPDATED_TIEN_AN);
         assertThat(testChiDaoTuyen.getTienO()).isEqualTo(UPDATED_TIEN_O);
@@ -2817,13 +2356,16 @@ class ChiDaoTuyenResourceIT {
         int databaseSizeBeforeUpdate = chiDaoTuyenRepository.findAll().size();
         chiDaoTuyen.setId(count.incrementAndGet());
 
+        // Create the ChiDaoTuyen
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restChiDaoTuyenMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, chiDaoTuyen.getId())
+                patch(ENTITY_API_URL_ID, chiDaoTuyenDTO.getId())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -2838,13 +2380,16 @@ class ChiDaoTuyenResourceIT {
         int databaseSizeBeforeUpdate = chiDaoTuyenRepository.findAll().size();
         chiDaoTuyen.setId(count.incrementAndGet());
 
+        // Create the ChiDaoTuyen
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restChiDaoTuyenMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -2859,13 +2404,16 @@ class ChiDaoTuyenResourceIT {
         int databaseSizeBeforeUpdate = chiDaoTuyenRepository.findAll().size();
         chiDaoTuyen.setId(count.incrementAndGet());
 
+        // Create the ChiDaoTuyen
+        ChiDaoTuyenDTO chiDaoTuyenDTO = chiDaoTuyenMapper.toDto(chiDaoTuyen);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restChiDaoTuyenMockMvc
             .perform(
                 patch(ENTITY_API_URL)
                     .with(csrf())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyen))
+                    .content(TestUtil.convertObjectToJsonBytes(chiDaoTuyenDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

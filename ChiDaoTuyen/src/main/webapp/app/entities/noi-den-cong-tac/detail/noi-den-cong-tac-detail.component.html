@@ -26,12 +26,6 @@
         <dd>
           <span>{{ noiDenCongTac.thuTuSX }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.noiDenCongTac.chiDaoTuyen">Chi Dao Tuyen</span></dt>
-        <dd>
-          <div *ngIf="noiDenCongTac.chiDaoTuyen">
-            <a [routerLink]="['/chi-dao-tuyen', noiDenCongTac.chiDaoTuyen?.id, 'view']">{{ noiDenCongTac.chiDaoTuyen?.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

@@ -1,16 +1,18 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.domain.ChiDaoTuyen;
 import com.mycompany.myapp.repository.ChiDaoTuyenRepository;
 import com.mycompany.myapp.service.ChiDaoTuyenQueryService;
 import com.mycompany.myapp.service.ChiDaoTuyenService;
 import com.mycompany.myapp.service.criteria.ChiDaoTuyenCriteria;
+import com.mycompany.myapp.service.dto.ChiDaoTuyenDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,17 +59,17 @@ public class ChiDaoTuyenResource {
     /**
      * {@code POST  /chi-dao-tuyens} : Create a new chiDaoTuyen.
      *
-     * @param chiDaoTuyen the chiDaoTuyen to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new chiDaoTuyen, or with status {@code 400 (Bad Request)} if the chiDaoTuyen has already an ID.
+     * @param chiDaoTuyenDTO the chiDaoTuyenDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new chiDaoTuyenDTO, or with status {@code 400 (Bad Request)} if the chiDaoTuyen has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/chi-dao-tuyens")
-    public ResponseEntity<ChiDaoTuyen> createChiDaoTuyen(@RequestBody ChiDaoTuyen chiDaoTuyen) throws URISyntaxException {
-        log.debug("REST request to save ChiDaoTuyen : {}", chiDaoTuyen);
-        if (chiDaoTuyen.getId() != null) {
+    public ResponseEntity<ChiDaoTuyenDTO> createChiDaoTuyen(@Valid @RequestBody ChiDaoTuyenDTO chiDaoTuyenDTO) throws URISyntaxException {
+        log.debug("REST request to save ChiDaoTuyen : {}", chiDaoTuyenDTO);
+        if (chiDaoTuyenDTO.getId() != null) {
             throw new BadRequestAlertException("A new chiDaoTuyen cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ChiDaoTuyen result = chiDaoTuyenService.save(chiDaoTuyen);
+        ChiDaoTuyenDTO result = chiDaoTuyenService.save(chiDaoTuyenDTO);
         return ResponseEntity
             .created(new URI("/api/chi-dao-tuyens/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -77,23 +79,23 @@ public class ChiDaoTuyenResource {
     /**
      * {@code PUT  /chi-dao-tuyens/:id} : Updates an existing chiDaoTuyen.
      *
-     * @param id the id of the chiDaoTuyen to save.
-     * @param chiDaoTuyen the chiDaoTuyen to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated chiDaoTuyen,
-     * or with status {@code 400 (Bad Request)} if the chiDaoTuyen is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the chiDaoTuyen couldn't be updated.
+     * @param id the id of the chiDaoTuyenDTO to save.
+     * @param chiDaoTuyenDTO the chiDaoTuyenDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated chiDaoTuyenDTO,
+     * or with status {@code 400 (Bad Request)} if the chiDaoTuyenDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the chiDaoTuyenDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/chi-dao-tuyens/{id}")
-    public ResponseEntity<ChiDaoTuyen> updateChiDaoTuyen(
+    public ResponseEntity<ChiDaoTuyenDTO> updateChiDaoTuyen(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody ChiDaoTuyen chiDaoTuyen
+        @Valid @RequestBody ChiDaoTuyenDTO chiDaoTuyenDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update ChiDaoTuyen : {}, {}", id, chiDaoTuyen);
-        if (chiDaoTuyen.getId() == null) {
+        log.debug("REST request to update ChiDaoTuyen : {}, {}", id, chiDaoTuyenDTO);
+        if (chiDaoTuyenDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, chiDaoTuyen.getId())) {
+        if (!Objects.equals(id, chiDaoTuyenDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -101,34 +103,34 @@ public class ChiDaoTuyenResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        ChiDaoTuyen result = chiDaoTuyenService.update(chiDaoTuyen);
+        ChiDaoTuyenDTO result = chiDaoTuyenService.update(chiDaoTuyenDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, chiDaoTuyen.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, chiDaoTuyenDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /chi-dao-tuyens/:id} : Partial updates given fields of an existing chiDaoTuyen, field will ignore if it is null
      *
-     * @param id the id of the chiDaoTuyen to save.
-     * @param chiDaoTuyen the chiDaoTuyen to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated chiDaoTuyen,
-     * or with status {@code 400 (Bad Request)} if the chiDaoTuyen is not valid,
-     * or with status {@code 404 (Not Found)} if the chiDaoTuyen is not found,
-     * or with status {@code 500 (Internal Server Error)} if the chiDaoTuyen couldn't be updated.
+     * @param id the id of the chiDaoTuyenDTO to save.
+     * @param chiDaoTuyenDTO the chiDaoTuyenDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated chiDaoTuyenDTO,
+     * or with status {@code 400 (Bad Request)} if the chiDaoTuyenDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the chiDaoTuyenDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the chiDaoTuyenDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/chi-dao-tuyens/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<ChiDaoTuyen> partialUpdateChiDaoTuyen(
+    public ResponseEntity<ChiDaoTuyenDTO> partialUpdateChiDaoTuyen(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody ChiDaoTuyen chiDaoTuyen
+        @NotNull @RequestBody ChiDaoTuyenDTO chiDaoTuyenDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update ChiDaoTuyen partially : {}, {}", id, chiDaoTuyen);
-        if (chiDaoTuyen.getId() == null) {
+        log.debug("REST request to partial update ChiDaoTuyen partially : {}, {}", id, chiDaoTuyenDTO);
+        if (chiDaoTuyenDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, chiDaoTuyen.getId())) {
+        if (!Objects.equals(id, chiDaoTuyenDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -136,11 +138,11 @@ public class ChiDaoTuyenResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<ChiDaoTuyen> result = chiDaoTuyenService.partialUpdate(chiDaoTuyen);
+        Optional<ChiDaoTuyenDTO> result = chiDaoTuyenService.partialUpdate(chiDaoTuyenDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, chiDaoTuyen.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, chiDaoTuyenDTO.getId().toString())
         );
     }
 
@@ -152,12 +154,12 @@ public class ChiDaoTuyenResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of chiDaoTuyens in body.
      */
     @GetMapping("/chi-dao-tuyens")
-    public ResponseEntity<List<ChiDaoTuyen>> getAllChiDaoTuyens(
+    public ResponseEntity<List<ChiDaoTuyenDTO>> getAllChiDaoTuyens(
         ChiDaoTuyenCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get ChiDaoTuyens by criteria: {}", criteria);
-        Page<ChiDaoTuyen> page = chiDaoTuyenQueryService.findByCriteria(criteria, pageable);
+        Page<ChiDaoTuyenDTO> page = chiDaoTuyenQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -177,20 +179,20 @@ public class ChiDaoTuyenResource {
     /**
      * {@code GET  /chi-dao-tuyens/:id} : get the "id" chiDaoTuyen.
      *
-     * @param id the id of the chiDaoTuyen to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the chiDaoTuyen, or with status {@code 404 (Not Found)}.
+     * @param id the id of the chiDaoTuyenDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the chiDaoTuyenDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/chi-dao-tuyens/{id}")
-    public ResponseEntity<ChiDaoTuyen> getChiDaoTuyen(@PathVariable Long id) {
+    public ResponseEntity<ChiDaoTuyenDTO> getChiDaoTuyen(@PathVariable Long id) {
         log.debug("REST request to get ChiDaoTuyen : {}", id);
-        Optional<ChiDaoTuyen> chiDaoTuyen = chiDaoTuyenService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(chiDaoTuyen);
+        Optional<ChiDaoTuyenDTO> chiDaoTuyenDTO = chiDaoTuyenService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(chiDaoTuyenDTO);
     }
 
     /**
      * {@code DELETE  /chi-dao-tuyens/:id} : delete the "id" chiDaoTuyen.
      *
-     * @param id the id of the chiDaoTuyen to delete.
+     * @param id the id of the chiDaoTuyenDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/chi-dao-tuyens/{id}")

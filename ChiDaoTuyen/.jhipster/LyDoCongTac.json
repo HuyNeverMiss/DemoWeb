@@ -1,17 +1,19 @@
 {
   "applications": "*",
-  "changelogDate": "20220621064323",
-  "dto": "no",
+  "changelogDate": "20220623051413",
+  "dto": "mapstruct",
   "embedded": false,
   "entityTableName": "ly_do_cong_tac",
   "fields": [
     {
       "fieldName": "maLyDo",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "tenLyDo",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "thuTuSX",
@@ -27,9 +29,8 @@
     {
       "otherEntityName": "chiDaoTuyen",
       "otherEntityRelationshipName": "lyDoCongTac",
-      "ownerSide": true,
       "relationshipName": "chiDaoTuyen",
-      "relationshipType": "one-to-one"
+      "relationshipType": "one-to-many"
     }
   ],
   "service": "serviceImpl"

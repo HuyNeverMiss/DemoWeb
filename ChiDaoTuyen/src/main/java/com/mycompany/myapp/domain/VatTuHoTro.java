@@ -1,7 +1,11 @@
 package com.mycompany.myapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,18 +25,24 @@ public class VatTuHoTro implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "ma_vat_tu")
+    @NotNull
+    @Column(name = "ma_vat_tu", nullable = false)
     private String maVatTu;
 
-    @Column(name = "ten_vat_tu")
+    @NotNull
+    @Column(name = "ten_vat_tu", nullable = false)
     private String tenVatTu;
 
     @Column(name = "thu_tu_sx")
     private String thuTuSX;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private ChiDaoTuyen chiDaoTuyen;
+    @OneToMany(mappedBy = "vatTuHoTro")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(
+        value = { "lyDoCongTac", "noiDenCongTac", "ketQuaCongTac", "kyThuatHoTro", "vatTuHoTro", "nhanVien" },
+        allowSetters = true
+    )
+    private Set<ChiDaoTuyen> chiDaoTuyens = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -88,16 +98,34 @@ public class VatTuHoTro implements Serializable {
         this.thuTuSX = thuTuSX;
     }
 
-    public ChiDaoTuyen getChiDaoTuyen() {
-        return this.chiDaoTuyen;
+    public Set<ChiDaoTuyen> getChiDaoTuyens() {
+        return this.chiDaoTuyens;
     }
 
-    public void setChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
-        this.chiDaoTuyen = chiDaoTuyen;
+    public void setChiDaoTuyens(Set<ChiDaoTuyen> chiDaoTuyens) {
+        if (this.chiDaoTuyens != null) {
+            this.chiDaoTuyens.forEach(i -> i.setVatTuHoTro(null));
+        }
+        if (chiDaoTuyens != null) {
+            chiDaoTuyens.forEach(i -> i.setVatTuHoTro(this));
+        }
+        this.chiDaoTuyens = chiDaoTuyens;
     }
 
-    public VatTuHoTro chiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
-        this.setChiDaoTuyen(chiDaoTuyen);
+    public VatTuHoTro chiDaoTuyens(Set<ChiDaoTuyen> chiDaoTuyens) {
+        this.setChiDaoTuyens(chiDaoTuyens);
+        return this;
+    }
+
+    public VatTuHoTro addChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyens.add(chiDaoTuyen);
+        chiDaoTuyen.setVatTuHoTro(this);
+        return this;
+    }
+
+    public VatTuHoTro removeChiDaoTuyen(ChiDaoTuyen chiDaoTuyen) {
+        this.chiDaoTuyens.remove(chiDaoTuyen);
+        chiDaoTuyen.setVatTuHoTro(null);
         return this;
     }
 

@@ -4,6 +4,8 @@ import com.mycompany.myapp.domain.*; // for static metamodels
 import com.mycompany.myapp.domain.NoiDenCongTac;
 import com.mycompany.myapp.repository.NoiDenCongTacRepository;
 import com.mycompany.myapp.service.criteria.NoiDenCongTacCriteria;
+import com.mycompany.myapp.service.dto.NoiDenCongTacDTO;
+import com.mycompany.myapp.service.mapper.NoiDenCongTacMapper;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.slf4j.Logger;
@@ -19,7 +21,7 @@ import tech.jhipster.service.QueryService;
  * Service for executing complex queries for {@link NoiDenCongTac} entities in the database.
  * The main input is a {@link NoiDenCongTacCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link NoiDenCongTac} or a {@link Page} of {@link NoiDenCongTac} which fulfills the criteria.
+ * It returns a {@link List} of {@link NoiDenCongTacDTO} or a {@link Page} of {@link NoiDenCongTacDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -29,33 +31,36 @@ public class NoiDenCongTacQueryService extends QueryService<NoiDenCongTac> {
 
     private final NoiDenCongTacRepository noiDenCongTacRepository;
 
-    public NoiDenCongTacQueryService(NoiDenCongTacRepository noiDenCongTacRepository) {
+    private final NoiDenCongTacMapper noiDenCongTacMapper;
+
+    public NoiDenCongTacQueryService(NoiDenCongTacRepository noiDenCongTacRepository, NoiDenCongTacMapper noiDenCongTacMapper) {
         this.noiDenCongTacRepository = noiDenCongTacRepository;
+        this.noiDenCongTacMapper = noiDenCongTacMapper;
     }
 
     /**
-     * Return a {@link List} of {@link NoiDenCongTac} which matches the criteria from the database.
+     * Return a {@link List} of {@link NoiDenCongTacDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public List<NoiDenCongTac> findByCriteria(NoiDenCongTacCriteria criteria) {
+    public List<NoiDenCongTacDTO> findByCriteria(NoiDenCongTacCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
         final Specification<NoiDenCongTac> specification = createSpecification(criteria);
-        return noiDenCongTacRepository.findAll(specification);
+        return noiDenCongTacMapper.toDto(noiDenCongTacRepository.findAll(specification));
     }
 
     /**
-     * Return a {@link Page} of {@link NoiDenCongTac} which matches the criteria from the database.
+     * Return a {@link Page} of {@link NoiDenCongTacDTO} which matches the criteria from the database.
      * @param criteria The object which holds all the filters, which the entities should match.
      * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
-    public Page<NoiDenCongTac> findByCriteria(NoiDenCongTacCriteria criteria, Pageable page) {
+    public Page<NoiDenCongTacDTO> findByCriteria(NoiDenCongTacCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<NoiDenCongTac> specification = createSpecification(criteria);
-        return noiDenCongTacRepository.findAll(specification, page);
+        return noiDenCongTacRepository.findAll(specification, page).map(noiDenCongTacMapper::toDto);
     }
 
     /**
@@ -99,7 +104,7 @@ public class NoiDenCongTacQueryService extends QueryService<NoiDenCongTac> {
                     specification.and(
                         buildSpecification(
                             criteria.getChiDaoTuyenId(),
-                            root -> root.join(NoiDenCongTac_.chiDaoTuyen, JoinType.LEFT).get(ChiDaoTuyen_.id)
+                            root -> root.join(NoiDenCongTac_.chiDaoTuyens, JoinType.LEFT).get(ChiDaoTuyen_.id)
                         )
                     );
             }

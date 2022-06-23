@@ -9,22 +9,19 @@
     <!--
         Added the entity LyDoCongTac.
     -->
-    <changeSet id="20220621064323-1" author="jhipster">
+    <changeSet id="20220623051413-1" author="jhipster">
         <createTable tableName="ly_do_cong_tac">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ma_ly_do" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="ten_ly_do" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="thu_tu_sx" type="varchar(255)">
                 <constraints nullable="true" />
-            </column>
-            <column name="chi_dao_tuyen_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_ly_do_cong_tac__chi_dao_tuyen_id" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -40,7 +37,7 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20220621064323-1-data" author="jhipster" context="faker">
+    <changeSet id="20220623051413-1-data" author="jhipster" context="faker">
         <loadData
                   file="config/liquibase/fake-data/ly_do_cong_tac.csv"
                   separator=";"

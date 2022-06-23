@@ -1,37 +1,37 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.domain.LyDoCongTac;
+import com.mycompany.myapp.service.dto.LyDoCongTacDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link LyDoCongTac}.
+ * Service Interface for managing {@link com.mycompany.myapp.domain.LyDoCongTac}.
  */
 public interface LyDoCongTacService {
     /**
      * Save a lyDoCongTac.
      *
-     * @param lyDoCongTac the entity to save.
+     * @param lyDoCongTacDTO the entity to save.
      * @return the persisted entity.
      */
-    LyDoCongTac save(LyDoCongTac lyDoCongTac);
+    LyDoCongTacDTO save(LyDoCongTacDTO lyDoCongTacDTO);
 
     /**
      * Updates a lyDoCongTac.
      *
-     * @param lyDoCongTac the entity to update.
+     * @param lyDoCongTacDTO the entity to update.
      * @return the persisted entity.
      */
-    LyDoCongTac update(LyDoCongTac lyDoCongTac);
+    LyDoCongTacDTO update(LyDoCongTacDTO lyDoCongTacDTO);
 
     /**
      * Partially updates a lyDoCongTac.
      *
-     * @param lyDoCongTac the entity to update partially.
+     * @param lyDoCongTacDTO the entity to update partially.
      * @return the persisted entity.
      */
-    Optional<LyDoCongTac> partialUpdate(LyDoCongTac lyDoCongTac);
+    Optional<LyDoCongTacDTO> partialUpdate(LyDoCongTacDTO lyDoCongTacDTO);
 
     /**
      * Get all the lyDoCongTacs.
@@ -39,7 +39,7 @@ public interface LyDoCongTacService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<LyDoCongTac> findAll(Pageable pageable);
+    Page<LyDoCongTacDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" lyDoCongTac.
@@ -47,7 +47,7 @@ public interface LyDoCongTacService {
      * @param id the id of the entity.
      * @return the entity.
      */
-    Optional<LyDoCongTac> findOne(Long id);
+    Optional<LyDoCongTacDTO> findOne(Long id);
 
     /**
      * Delete the "id" lyDoCongTac.

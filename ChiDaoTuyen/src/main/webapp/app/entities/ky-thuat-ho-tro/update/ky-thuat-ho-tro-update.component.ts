@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { IKyThuatHoTro, KyThuatHoTro } from '../ky-thuat-ho-tro.model';
 import { KyThuatHoTroService } from '../service/ky-thuat-ho-tro.service';
-import { IChiDaoTuyen } from 'app/entities/chi-dao-tuyen/chi-dao-tuyen.model';
-import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-tuyen.service';
 
 @Component({
   selector: 'jhi-ky-thuat-ho-tro-update',
@@ -17,28 +15,18 @@ import { ChiDaoTuyenService } from 'app/entities/chi-dao-tuyen/service/chi-dao-t
 export class KyThuatHoTroUpdateComponent implements OnInit {
   isSaving = false;
 
-  chiDaoTuyensCollection: IChiDaoTuyen[] = [];
-
   editForm = this.fb.group({
     id: [],
-    maKyThuat: [],
-    tenKyThuat: [],
+    maKyThuat: [null, [Validators.required]],
+    tenKyThuat: [null, [Validators.required]],
     thuTuSX: [],
-    chiDaoTuyen: [],
   });
 
-  constructor(
-    protected kyThuatHoTroService: KyThuatHoTroService,
-    protected chiDaoTuyenService: ChiDaoTuyenService,
-    protected activatedRoute: ActivatedRoute,
-    protected fb: FormBuilder
-  ) {}
+  constructor(protected kyThuatHoTroService: KyThuatHoTroService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ kyThuatHoTro }) => {
       this.updateForm(kyThuatHoTro);
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -54,10 +42,6 @@ export class KyThuatHoTroUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.kyThuatHoTroService.create(kyThuatHoTro));
     }
-  }
-
-  trackChiDaoTuyenById(_index: number, item: IChiDaoTuyen): number {
-    return item.id!;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IKyThuatHoTro>>): void {
@@ -85,25 +69,7 @@ export class KyThuatHoTroUpdateComponent implements OnInit {
       maKyThuat: kyThuatHoTro.maKyThuat,
       tenKyThuat: kyThuatHoTro.tenKyThuat,
       thuTuSX: kyThuatHoTro.thuTuSX,
-      chiDaoTuyen: kyThuatHoTro.chiDaoTuyen,
     });
-
-    this.chiDaoTuyensCollection = this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(
-      this.chiDaoTuyensCollection,
-      kyThuatHoTro.chiDaoTuyen
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.chiDaoTuyenService
-      .query({ 'kyThuatHoTroId.specified': 'false' })
-      .pipe(map((res: HttpResponse<IChiDaoTuyen[]>) => res.body ?? []))
-      .pipe(
-        map((chiDaoTuyens: IChiDaoTuyen[]) =>
-          this.chiDaoTuyenService.addChiDaoTuyenToCollectionIfMissing(chiDaoTuyens, this.editForm.get('chiDaoTuyen')!.value)
-        )
-      )
-      .subscribe((chiDaoTuyens: IChiDaoTuyen[]) => (this.chiDaoTuyensCollection = chiDaoTuyens));
   }
 
   protected createFromForm(): IKyThuatHoTro {
@@ -113,7 +79,6 @@ export class KyThuatHoTroUpdateComponent implements OnInit {
       maKyThuat: this.editForm.get(['maKyThuat'])!.value,
       tenKyThuat: this.editForm.get(['tenKyThuat'])!.value,
       thuTuSX: this.editForm.get(['thuTuSX'])!.value,
-      chiDaoTuyen: this.editForm.get(['chiDaoTuyen'])!.value,
     };
   }
 }

@@ -9,52 +9,37 @@
     <!--
         Added the entity ChiDaoTuyen.
     -->
-    <changeSet id="20220621064328-1" author="jhipster">
+    <changeSet id="20220623051419-1" author="jhipster">
         <createTable tableName="chi_dao_tuyen">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="so_quyet_dinh" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="ngay_quyet_dinh" type="${datetimeType}">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="so_hd" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="ngay_hd" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="ly_do_cong_tac" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="noi_dung" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="noi_den_cong_tac" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="ngay_bat_dau" type="${datetimeType}">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="ngay_ket_thuc" type="${datetimeType}">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="ghi_chu" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="ngay_tao" type="${datetimeType}">
-                <constraints nullable="true" />
-            </column>
-            <column name="nhan_vien" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="ky_thuat_ho_tro" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="vat_tu_ho_tro" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="so_bn_kham_dieu_tri" type="varchar(255)">
                 <constraints nullable="true" />
@@ -63,9 +48,6 @@
                 <constraints nullable="true" />
             </column>
             <column name="so_can_bo_chuyen_giao" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="ket_qua_cong_tac" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="luu_tru" type="varchar(255)">
@@ -89,6 +71,24 @@
             <column name="khac" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="ly_do_cong_tac_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="noi_den_cong_tac_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="ket_qua_cong_tac_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="ky_thuat_ho_tro_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="vat_tu_ho_tro_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="nhan_vien_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="chi_dao_tuyen" columnName="ngay_quyet_dinh" columnDataType="${datetimeType}"/>
@@ -108,7 +108,7 @@
           This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
           Spring Boot configuration key.
     -->
-    <changeSet id="20220621064328-1-data" author="jhipster" context="faker">
+    <changeSet id="20220623051419-1-data" author="jhipster" context="faker">
         <loadData
                   file="config/liquibase/fake-data/chi_dao_tuyen.csv"
                   separator=";"
@@ -119,20 +119,14 @@
             <column name="ngay_quyet_dinh" type="date"/>
             <column name="so_hd" type="string"/>
             <column name="ngay_hd" type="date"/>
-            <column name="ly_do_cong_tac" type="string"/>
             <column name="noi_dung" type="string"/>
-            <column name="noi_den_cong_tac" type="string"/>
             <column name="ngay_bat_dau" type="date"/>
             <column name="ngay_ket_thuc" type="date"/>
             <column name="ghi_chu" type="string"/>
             <column name="ngay_tao" type="date"/>
-            <column name="nhan_vien" type="string"/>
-            <column name="ky_thuat_ho_tro" type="string"/>
-            <column name="vat_tu_ho_tro" type="string"/>
             <column name="so_bn_kham_dieu_tri" type="string"/>
             <column name="so_bn_phau_thuat" type="string"/>
             <column name="so_can_bo_chuyen_giao" type="string"/>
-            <column name="ket_qua_cong_tac" type="string"/>
             <column name="luu_tru" type="string"/>
             <column name="tien_an" type="string"/>
             <column name="tien_o" type="string"/>

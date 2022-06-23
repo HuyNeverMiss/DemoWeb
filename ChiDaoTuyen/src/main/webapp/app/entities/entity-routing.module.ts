@@ -30,6 +30,11 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./vat-tu-ho-tro/vat-tu-ho-tro.module').then(m => m.VatTuHoTroModule),
       },
       {
+        path: 'nhan-vien',
+        data: { pageTitle: 'chiDaoTuyenApp.nhanVien.home.title' },
+        loadChildren: () => import('./nhan-vien/nhan-vien.module').then(m => m.NhanVienModule),
+      },
+      {
         path: 'chi-dao-tuyen',
         data: { pageTitle: 'chiDaoTuyenApp.chiDaoTuyen.home.title' },
         loadChildren: () => import('./chi-dao-tuyen/chi-dao-tuyen.module').then(m => m.ChiDaoTuyenModule),

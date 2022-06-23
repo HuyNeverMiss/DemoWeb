@@ -1,16 +1,18 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.domain.VatTuHoTro;
 import com.mycompany.myapp.repository.VatTuHoTroRepository;
 import com.mycompany.myapp.service.VatTuHoTroQueryService;
 import com.mycompany.myapp.service.VatTuHoTroService;
 import com.mycompany.myapp.service.criteria.VatTuHoTroCriteria;
+import com.mycompany.myapp.service.dto.VatTuHoTroDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,17 +59,17 @@ public class VatTuHoTroResource {
     /**
      * {@code POST  /vat-tu-ho-tros} : Create a new vatTuHoTro.
      *
-     * @param vatTuHoTro the vatTuHoTro to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new vatTuHoTro, or with status {@code 400 (Bad Request)} if the vatTuHoTro has already an ID.
+     * @param vatTuHoTroDTO the vatTuHoTroDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new vatTuHoTroDTO, or with status {@code 400 (Bad Request)} if the vatTuHoTro has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/vat-tu-ho-tros")
-    public ResponseEntity<VatTuHoTro> createVatTuHoTro(@RequestBody VatTuHoTro vatTuHoTro) throws URISyntaxException {
-        log.debug("REST request to save VatTuHoTro : {}", vatTuHoTro);
-        if (vatTuHoTro.getId() != null) {
+    public ResponseEntity<VatTuHoTroDTO> createVatTuHoTro(@Valid @RequestBody VatTuHoTroDTO vatTuHoTroDTO) throws URISyntaxException {
+        log.debug("REST request to save VatTuHoTro : {}", vatTuHoTroDTO);
+        if (vatTuHoTroDTO.getId() != null) {
             throw new BadRequestAlertException("A new vatTuHoTro cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        VatTuHoTro result = vatTuHoTroService.save(vatTuHoTro);
+        VatTuHoTroDTO result = vatTuHoTroService.save(vatTuHoTroDTO);
         return ResponseEntity
             .created(new URI("/api/vat-tu-ho-tros/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -77,23 +79,23 @@ public class VatTuHoTroResource {
     /**
      * {@code PUT  /vat-tu-ho-tros/:id} : Updates an existing vatTuHoTro.
      *
-     * @param id the id of the vatTuHoTro to save.
-     * @param vatTuHoTro the vatTuHoTro to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vatTuHoTro,
-     * or with status {@code 400 (Bad Request)} if the vatTuHoTro is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the vatTuHoTro couldn't be updated.
+     * @param id the id of the vatTuHoTroDTO to save.
+     * @param vatTuHoTroDTO the vatTuHoTroDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vatTuHoTroDTO,
+     * or with status {@code 400 (Bad Request)} if the vatTuHoTroDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the vatTuHoTroDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/vat-tu-ho-tros/{id}")
-    public ResponseEntity<VatTuHoTro> updateVatTuHoTro(
+    public ResponseEntity<VatTuHoTroDTO> updateVatTuHoTro(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody VatTuHoTro vatTuHoTro
+        @Valid @RequestBody VatTuHoTroDTO vatTuHoTroDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update VatTuHoTro : {}, {}", id, vatTuHoTro);
-        if (vatTuHoTro.getId() == null) {
+        log.debug("REST request to update VatTuHoTro : {}, {}", id, vatTuHoTroDTO);
+        if (vatTuHoTroDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, vatTuHoTro.getId())) {
+        if (!Objects.equals(id, vatTuHoTroDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -101,34 +103,34 @@ public class VatTuHoTroResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        VatTuHoTro result = vatTuHoTroService.update(vatTuHoTro);
+        VatTuHoTroDTO result = vatTuHoTroService.update(vatTuHoTroDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vatTuHoTro.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vatTuHoTroDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /vat-tu-ho-tros/:id} : Partial updates given fields of an existing vatTuHoTro, field will ignore if it is null
      *
-     * @param id the id of the vatTuHoTro to save.
-     * @param vatTuHoTro the vatTuHoTro to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vatTuHoTro,
-     * or with status {@code 400 (Bad Request)} if the vatTuHoTro is not valid,
-     * or with status {@code 404 (Not Found)} if the vatTuHoTro is not found,
-     * or with status {@code 500 (Internal Server Error)} if the vatTuHoTro couldn't be updated.
+     * @param id the id of the vatTuHoTroDTO to save.
+     * @param vatTuHoTroDTO the vatTuHoTroDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vatTuHoTroDTO,
+     * or with status {@code 400 (Bad Request)} if the vatTuHoTroDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the vatTuHoTroDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the vatTuHoTroDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/vat-tu-ho-tros/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<VatTuHoTro> partialUpdateVatTuHoTro(
+    public ResponseEntity<VatTuHoTroDTO> partialUpdateVatTuHoTro(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody VatTuHoTro vatTuHoTro
+        @NotNull @RequestBody VatTuHoTroDTO vatTuHoTroDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update VatTuHoTro partially : {}, {}", id, vatTuHoTro);
-        if (vatTuHoTro.getId() == null) {
+        log.debug("REST request to partial update VatTuHoTro partially : {}, {}", id, vatTuHoTroDTO);
+        if (vatTuHoTroDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, vatTuHoTro.getId())) {
+        if (!Objects.equals(id, vatTuHoTroDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -136,11 +138,11 @@ public class VatTuHoTroResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<VatTuHoTro> result = vatTuHoTroService.partialUpdate(vatTuHoTro);
+        Optional<VatTuHoTroDTO> result = vatTuHoTroService.partialUpdate(vatTuHoTroDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vatTuHoTro.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vatTuHoTroDTO.getId().toString())
         );
     }
 
@@ -152,12 +154,12 @@ public class VatTuHoTroResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vatTuHoTros in body.
      */
     @GetMapping("/vat-tu-ho-tros")
-    public ResponseEntity<List<VatTuHoTro>> getAllVatTuHoTros(
+    public ResponseEntity<List<VatTuHoTroDTO>> getAllVatTuHoTros(
         VatTuHoTroCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get VatTuHoTros by criteria: {}", criteria);
-        Page<VatTuHoTro> page = vatTuHoTroQueryService.findByCriteria(criteria, pageable);
+        Page<VatTuHoTroDTO> page = vatTuHoTroQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -177,20 +179,20 @@ public class VatTuHoTroResource {
     /**
      * {@code GET  /vat-tu-ho-tros/:id} : get the "id" vatTuHoTro.
      *
-     * @param id the id of the vatTuHoTro to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vatTuHoTro, or with status {@code 404 (Not Found)}.
+     * @param id the id of the vatTuHoTroDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vatTuHoTroDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/vat-tu-ho-tros/{id}")
-    public ResponseEntity<VatTuHoTro> getVatTuHoTro(@PathVariable Long id) {
+    public ResponseEntity<VatTuHoTroDTO> getVatTuHoTro(@PathVariable Long id) {
         log.debug("REST request to get VatTuHoTro : {}", id);
-        Optional<VatTuHoTro> vatTuHoTro = vatTuHoTroService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(vatTuHoTro);
+        Optional<VatTuHoTroDTO> vatTuHoTroDTO = vatTuHoTroService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(vatTuHoTroDTO);
     }
 
     /**
      * {@code DELETE  /vat-tu-ho-tros/:id} : delete the "id" vatTuHoTro.
      *
-     * @param id the id of the vatTuHoTro to delete.
+     * @param id the id of the vatTuHoTroDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/vat-tu-ho-tros/{id}")

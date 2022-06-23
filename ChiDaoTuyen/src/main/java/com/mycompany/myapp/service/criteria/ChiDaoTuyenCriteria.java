@@ -8,10 +8,10 @@ import tech.jhipster.service.filter.BooleanFilter;
 import tech.jhipster.service.filter.DoubleFilter;
 import tech.jhipster.service.filter.Filter;
 import tech.jhipster.service.filter.FloatFilter;
+import tech.jhipster.service.filter.InstantFilter;
 import tech.jhipster.service.filter.IntegerFilter;
 import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
-import tech.jhipster.service.filter.ZonedDateTimeFilter;
 
 /**
  * Criteria class for the {@link com.mycompany.myapp.domain.ChiDaoTuyen} entity. This class is used
@@ -31,39 +31,27 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
 
     private StringFilter soQuyetDinh;
 
-    private ZonedDateTimeFilter ngayQuyetDinh;
+    private InstantFilter ngayQuyetDinh;
 
     private StringFilter soHD;
 
-    private ZonedDateTimeFilter ngayHD;
-
-    private StringFilter lyDoCongTac;
+    private InstantFilter ngayHD;
 
     private StringFilter noiDung;
 
-    private StringFilter noiDenCongTac;
+    private InstantFilter ngayBatDau;
 
-    private ZonedDateTimeFilter ngayBatDau;
-
-    private ZonedDateTimeFilter ngayKetThuc;
+    private InstantFilter ngayKetThuc;
 
     private StringFilter ghiChu;
 
-    private ZonedDateTimeFilter ngayTao;
-
-    private StringFilter nhanVien;
-
-    private StringFilter kyThuatHoTro;
-
-    private StringFilter vatTuHoTro;
+    private InstantFilter ngayTao;
 
     private StringFilter soBnKhamDieuTri;
 
     private StringFilter soBnPhauThuat;
 
     private StringFilter soCanBoChuyenGiao;
-
-    private StringFilter ketQuaCongTac;
 
     private StringFilter luuTru;
 
@@ -79,6 +67,18 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
 
     private StringFilter khac;
 
+    private LongFilter lyDoCongTacId;
+
+    private LongFilter noiDenCongTacId;
+
+    private LongFilter ketQuaCongTacId;
+
+    private LongFilter kyThuatHoTroId;
+
+    private LongFilter vatTuHoTroId;
+
+    private LongFilter nhanVienId;
+
     private Boolean distinct;
 
     public ChiDaoTuyenCriteria() {}
@@ -89,20 +89,14 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
         this.ngayQuyetDinh = other.ngayQuyetDinh == null ? null : other.ngayQuyetDinh.copy();
         this.soHD = other.soHD == null ? null : other.soHD.copy();
         this.ngayHD = other.ngayHD == null ? null : other.ngayHD.copy();
-        this.lyDoCongTac = other.lyDoCongTac == null ? null : other.lyDoCongTac.copy();
         this.noiDung = other.noiDung == null ? null : other.noiDung.copy();
-        this.noiDenCongTac = other.noiDenCongTac == null ? null : other.noiDenCongTac.copy();
         this.ngayBatDau = other.ngayBatDau == null ? null : other.ngayBatDau.copy();
         this.ngayKetThuc = other.ngayKetThuc == null ? null : other.ngayKetThuc.copy();
         this.ghiChu = other.ghiChu == null ? null : other.ghiChu.copy();
         this.ngayTao = other.ngayTao == null ? null : other.ngayTao.copy();
-        this.nhanVien = other.nhanVien == null ? null : other.nhanVien.copy();
-        this.kyThuatHoTro = other.kyThuatHoTro == null ? null : other.kyThuatHoTro.copy();
-        this.vatTuHoTro = other.vatTuHoTro == null ? null : other.vatTuHoTro.copy();
         this.soBnKhamDieuTri = other.soBnKhamDieuTri == null ? null : other.soBnKhamDieuTri.copy();
         this.soBnPhauThuat = other.soBnPhauThuat == null ? null : other.soBnPhauThuat.copy();
         this.soCanBoChuyenGiao = other.soCanBoChuyenGiao == null ? null : other.soCanBoChuyenGiao.copy();
-        this.ketQuaCongTac = other.ketQuaCongTac == null ? null : other.ketQuaCongTac.copy();
         this.luuTru = other.luuTru == null ? null : other.luuTru.copy();
         this.tienAn = other.tienAn == null ? null : other.tienAn.copy();
         this.tienO = other.tienO == null ? null : other.tienO.copy();
@@ -110,6 +104,12 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
         this.taiLieu = other.taiLieu == null ? null : other.taiLieu.copy();
         this.giangDay = other.giangDay == null ? null : other.giangDay.copy();
         this.khac = other.khac == null ? null : other.khac.copy();
+        this.lyDoCongTacId = other.lyDoCongTacId == null ? null : other.lyDoCongTacId.copy();
+        this.noiDenCongTacId = other.noiDenCongTacId == null ? null : other.noiDenCongTacId.copy();
+        this.ketQuaCongTacId = other.ketQuaCongTacId == null ? null : other.ketQuaCongTacId.copy();
+        this.kyThuatHoTroId = other.kyThuatHoTroId == null ? null : other.kyThuatHoTroId.copy();
+        this.vatTuHoTroId = other.vatTuHoTroId == null ? null : other.vatTuHoTroId.copy();
+        this.nhanVienId = other.nhanVienId == null ? null : other.nhanVienId.copy();
         this.distinct = other.distinct;
     }
 
@@ -148,18 +148,18 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
         this.soQuyetDinh = soQuyetDinh;
     }
 
-    public ZonedDateTimeFilter getNgayQuyetDinh() {
+    public InstantFilter getNgayQuyetDinh() {
         return ngayQuyetDinh;
     }
 
-    public ZonedDateTimeFilter ngayQuyetDinh() {
+    public InstantFilter ngayQuyetDinh() {
         if (ngayQuyetDinh == null) {
-            ngayQuyetDinh = new ZonedDateTimeFilter();
+            ngayQuyetDinh = new InstantFilter();
         }
         return ngayQuyetDinh;
     }
 
-    public void setNgayQuyetDinh(ZonedDateTimeFilter ngayQuyetDinh) {
+    public void setNgayQuyetDinh(InstantFilter ngayQuyetDinh) {
         this.ngayQuyetDinh = ngayQuyetDinh;
     }
 
@@ -178,34 +178,19 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
         this.soHD = soHD;
     }
 
-    public ZonedDateTimeFilter getNgayHD() {
+    public InstantFilter getNgayHD() {
         return ngayHD;
     }
 
-    public ZonedDateTimeFilter ngayHD() {
+    public InstantFilter ngayHD() {
         if (ngayHD == null) {
-            ngayHD = new ZonedDateTimeFilter();
+            ngayHD = new InstantFilter();
         }
         return ngayHD;
     }
 
-    public void setNgayHD(ZonedDateTimeFilter ngayHD) {
+    public void setNgayHD(InstantFilter ngayHD) {
         this.ngayHD = ngayHD;
-    }
-
-    public StringFilter getLyDoCongTac() {
-        return lyDoCongTac;
-    }
-
-    public StringFilter lyDoCongTac() {
-        if (lyDoCongTac == null) {
-            lyDoCongTac = new StringFilter();
-        }
-        return lyDoCongTac;
-    }
-
-    public void setLyDoCongTac(StringFilter lyDoCongTac) {
-        this.lyDoCongTac = lyDoCongTac;
     }
 
     public StringFilter getNoiDung() {
@@ -223,48 +208,33 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
         this.noiDung = noiDung;
     }
 
-    public StringFilter getNoiDenCongTac() {
-        return noiDenCongTac;
-    }
-
-    public StringFilter noiDenCongTac() {
-        if (noiDenCongTac == null) {
-            noiDenCongTac = new StringFilter();
-        }
-        return noiDenCongTac;
-    }
-
-    public void setNoiDenCongTac(StringFilter noiDenCongTac) {
-        this.noiDenCongTac = noiDenCongTac;
-    }
-
-    public ZonedDateTimeFilter getNgayBatDau() {
+    public InstantFilter getNgayBatDau() {
         return ngayBatDau;
     }
 
-    public ZonedDateTimeFilter ngayBatDau() {
+    public InstantFilter ngayBatDau() {
         if (ngayBatDau == null) {
-            ngayBatDau = new ZonedDateTimeFilter();
+            ngayBatDau = new InstantFilter();
         }
         return ngayBatDau;
     }
 
-    public void setNgayBatDau(ZonedDateTimeFilter ngayBatDau) {
+    public void setNgayBatDau(InstantFilter ngayBatDau) {
         this.ngayBatDau = ngayBatDau;
     }
 
-    public ZonedDateTimeFilter getNgayKetThuc() {
+    public InstantFilter getNgayKetThuc() {
         return ngayKetThuc;
     }
 
-    public ZonedDateTimeFilter ngayKetThuc() {
+    public InstantFilter ngayKetThuc() {
         if (ngayKetThuc == null) {
-            ngayKetThuc = new ZonedDateTimeFilter();
+            ngayKetThuc = new InstantFilter();
         }
         return ngayKetThuc;
     }
 
-    public void setNgayKetThuc(ZonedDateTimeFilter ngayKetThuc) {
+    public void setNgayKetThuc(InstantFilter ngayKetThuc) {
         this.ngayKetThuc = ngayKetThuc;
     }
 
@@ -283,64 +253,19 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
         this.ghiChu = ghiChu;
     }
 
-    public ZonedDateTimeFilter getNgayTao() {
+    public InstantFilter getNgayTao() {
         return ngayTao;
     }
 
-    public ZonedDateTimeFilter ngayTao() {
+    public InstantFilter ngayTao() {
         if (ngayTao == null) {
-            ngayTao = new ZonedDateTimeFilter();
+            ngayTao = new InstantFilter();
         }
         return ngayTao;
     }
 
-    public void setNgayTao(ZonedDateTimeFilter ngayTao) {
+    public void setNgayTao(InstantFilter ngayTao) {
         this.ngayTao = ngayTao;
-    }
-
-    public StringFilter getNhanVien() {
-        return nhanVien;
-    }
-
-    public StringFilter nhanVien() {
-        if (nhanVien == null) {
-            nhanVien = new StringFilter();
-        }
-        return nhanVien;
-    }
-
-    public void setNhanVien(StringFilter nhanVien) {
-        this.nhanVien = nhanVien;
-    }
-
-    public StringFilter getKyThuatHoTro() {
-        return kyThuatHoTro;
-    }
-
-    public StringFilter kyThuatHoTro() {
-        if (kyThuatHoTro == null) {
-            kyThuatHoTro = new StringFilter();
-        }
-        return kyThuatHoTro;
-    }
-
-    public void setKyThuatHoTro(StringFilter kyThuatHoTro) {
-        this.kyThuatHoTro = kyThuatHoTro;
-    }
-
-    public StringFilter getVatTuHoTro() {
-        return vatTuHoTro;
-    }
-
-    public StringFilter vatTuHoTro() {
-        if (vatTuHoTro == null) {
-            vatTuHoTro = new StringFilter();
-        }
-        return vatTuHoTro;
-    }
-
-    public void setVatTuHoTro(StringFilter vatTuHoTro) {
-        this.vatTuHoTro = vatTuHoTro;
     }
 
     public StringFilter getSoBnKhamDieuTri() {
@@ -386,21 +311,6 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
 
     public void setSoCanBoChuyenGiao(StringFilter soCanBoChuyenGiao) {
         this.soCanBoChuyenGiao = soCanBoChuyenGiao;
-    }
-
-    public StringFilter getKetQuaCongTac() {
-        return ketQuaCongTac;
-    }
-
-    public StringFilter ketQuaCongTac() {
-        if (ketQuaCongTac == null) {
-            ketQuaCongTac = new StringFilter();
-        }
-        return ketQuaCongTac;
-    }
-
-    public void setKetQuaCongTac(StringFilter ketQuaCongTac) {
-        this.ketQuaCongTac = ketQuaCongTac;
     }
 
     public StringFilter getLuuTru() {
@@ -508,6 +418,96 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
         this.khac = khac;
     }
 
+    public LongFilter getLyDoCongTacId() {
+        return lyDoCongTacId;
+    }
+
+    public LongFilter lyDoCongTacId() {
+        if (lyDoCongTacId == null) {
+            lyDoCongTacId = new LongFilter();
+        }
+        return lyDoCongTacId;
+    }
+
+    public void setLyDoCongTacId(LongFilter lyDoCongTacId) {
+        this.lyDoCongTacId = lyDoCongTacId;
+    }
+
+    public LongFilter getNoiDenCongTacId() {
+        return noiDenCongTacId;
+    }
+
+    public LongFilter noiDenCongTacId() {
+        if (noiDenCongTacId == null) {
+            noiDenCongTacId = new LongFilter();
+        }
+        return noiDenCongTacId;
+    }
+
+    public void setNoiDenCongTacId(LongFilter noiDenCongTacId) {
+        this.noiDenCongTacId = noiDenCongTacId;
+    }
+
+    public LongFilter getKetQuaCongTacId() {
+        return ketQuaCongTacId;
+    }
+
+    public LongFilter ketQuaCongTacId() {
+        if (ketQuaCongTacId == null) {
+            ketQuaCongTacId = new LongFilter();
+        }
+        return ketQuaCongTacId;
+    }
+
+    public void setKetQuaCongTacId(LongFilter ketQuaCongTacId) {
+        this.ketQuaCongTacId = ketQuaCongTacId;
+    }
+
+    public LongFilter getKyThuatHoTroId() {
+        return kyThuatHoTroId;
+    }
+
+    public LongFilter kyThuatHoTroId() {
+        if (kyThuatHoTroId == null) {
+            kyThuatHoTroId = new LongFilter();
+        }
+        return kyThuatHoTroId;
+    }
+
+    public void setKyThuatHoTroId(LongFilter kyThuatHoTroId) {
+        this.kyThuatHoTroId = kyThuatHoTroId;
+    }
+
+    public LongFilter getVatTuHoTroId() {
+        return vatTuHoTroId;
+    }
+
+    public LongFilter vatTuHoTroId() {
+        if (vatTuHoTroId == null) {
+            vatTuHoTroId = new LongFilter();
+        }
+        return vatTuHoTroId;
+    }
+
+    public void setVatTuHoTroId(LongFilter vatTuHoTroId) {
+        this.vatTuHoTroId = vatTuHoTroId;
+    }
+
+    public LongFilter getNhanVienId() {
+        return nhanVienId;
+    }
+
+    public LongFilter nhanVienId() {
+        if (nhanVienId == null) {
+            nhanVienId = new LongFilter();
+        }
+        return nhanVienId;
+    }
+
+    public void setNhanVienId(LongFilter nhanVienId) {
+        this.nhanVienId = nhanVienId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -531,20 +531,14 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
             Objects.equals(ngayQuyetDinh, that.ngayQuyetDinh) &&
             Objects.equals(soHD, that.soHD) &&
             Objects.equals(ngayHD, that.ngayHD) &&
-            Objects.equals(lyDoCongTac, that.lyDoCongTac) &&
             Objects.equals(noiDung, that.noiDung) &&
-            Objects.equals(noiDenCongTac, that.noiDenCongTac) &&
             Objects.equals(ngayBatDau, that.ngayBatDau) &&
             Objects.equals(ngayKetThuc, that.ngayKetThuc) &&
             Objects.equals(ghiChu, that.ghiChu) &&
             Objects.equals(ngayTao, that.ngayTao) &&
-            Objects.equals(nhanVien, that.nhanVien) &&
-            Objects.equals(kyThuatHoTro, that.kyThuatHoTro) &&
-            Objects.equals(vatTuHoTro, that.vatTuHoTro) &&
             Objects.equals(soBnKhamDieuTri, that.soBnKhamDieuTri) &&
             Objects.equals(soBnPhauThuat, that.soBnPhauThuat) &&
             Objects.equals(soCanBoChuyenGiao, that.soCanBoChuyenGiao) &&
-            Objects.equals(ketQuaCongTac, that.ketQuaCongTac) &&
             Objects.equals(luuTru, that.luuTru) &&
             Objects.equals(tienAn, that.tienAn) &&
             Objects.equals(tienO, that.tienO) &&
@@ -552,6 +546,12 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
             Objects.equals(taiLieu, that.taiLieu) &&
             Objects.equals(giangDay, that.giangDay) &&
             Objects.equals(khac, that.khac) &&
+            Objects.equals(lyDoCongTacId, that.lyDoCongTacId) &&
+            Objects.equals(noiDenCongTacId, that.noiDenCongTacId) &&
+            Objects.equals(ketQuaCongTacId, that.ketQuaCongTacId) &&
+            Objects.equals(kyThuatHoTroId, that.kyThuatHoTroId) &&
+            Objects.equals(vatTuHoTroId, that.vatTuHoTroId) &&
+            Objects.equals(nhanVienId, that.nhanVienId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -564,20 +564,14 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
             ngayQuyetDinh,
             soHD,
             ngayHD,
-            lyDoCongTac,
             noiDung,
-            noiDenCongTac,
             ngayBatDau,
             ngayKetThuc,
             ghiChu,
             ngayTao,
-            nhanVien,
-            kyThuatHoTro,
-            vatTuHoTro,
             soBnKhamDieuTri,
             soBnPhauThuat,
             soCanBoChuyenGiao,
-            ketQuaCongTac,
             luuTru,
             tienAn,
             tienO,
@@ -585,6 +579,12 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
             taiLieu,
             giangDay,
             khac,
+            lyDoCongTacId,
+            noiDenCongTacId,
+            ketQuaCongTacId,
+            kyThuatHoTroId,
+            vatTuHoTroId,
+            nhanVienId,
             distinct
         );
     }
@@ -598,20 +598,14 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
             (ngayQuyetDinh != null ? "ngayQuyetDinh=" + ngayQuyetDinh + ", " : "") +
             (soHD != null ? "soHD=" + soHD + ", " : "") +
             (ngayHD != null ? "ngayHD=" + ngayHD + ", " : "") +
-            (lyDoCongTac != null ? "lyDoCongTac=" + lyDoCongTac + ", " : "") +
             (noiDung != null ? "noiDung=" + noiDung + ", " : "") +
-            (noiDenCongTac != null ? "noiDenCongTac=" + noiDenCongTac + ", " : "") +
             (ngayBatDau != null ? "ngayBatDau=" + ngayBatDau + ", " : "") +
             (ngayKetThuc != null ? "ngayKetThuc=" + ngayKetThuc + ", " : "") +
             (ghiChu != null ? "ghiChu=" + ghiChu + ", " : "") +
             (ngayTao != null ? "ngayTao=" + ngayTao + ", " : "") +
-            (nhanVien != null ? "nhanVien=" + nhanVien + ", " : "") +
-            (kyThuatHoTro != null ? "kyThuatHoTro=" + kyThuatHoTro + ", " : "") +
-            (vatTuHoTro != null ? "vatTuHoTro=" + vatTuHoTro + ", " : "") +
             (soBnKhamDieuTri != null ? "soBnKhamDieuTri=" + soBnKhamDieuTri + ", " : "") +
             (soBnPhauThuat != null ? "soBnPhauThuat=" + soBnPhauThuat + ", " : "") +
             (soCanBoChuyenGiao != null ? "soCanBoChuyenGiao=" + soCanBoChuyenGiao + ", " : "") +
-            (ketQuaCongTac != null ? "ketQuaCongTac=" + ketQuaCongTac + ", " : "") +
             (luuTru != null ? "luuTru=" + luuTru + ", " : "") +
             (tienAn != null ? "tienAn=" + tienAn + ", " : "") +
             (tienO != null ? "tienO=" + tienO + ", " : "") +
@@ -619,6 +613,12 @@ public class ChiDaoTuyenCriteria implements Serializable, Criteria {
             (taiLieu != null ? "taiLieu=" + taiLieu + ", " : "") +
             (giangDay != null ? "giangDay=" + giangDay + ", " : "") +
             (khac != null ? "khac=" + khac + ", " : "") +
+            (lyDoCongTacId != null ? "lyDoCongTacId=" + lyDoCongTacId + ", " : "") +
+            (noiDenCongTacId != null ? "noiDenCongTacId=" + noiDenCongTacId + ", " : "") +
+            (ketQuaCongTacId != null ? "ketQuaCongTacId=" + ketQuaCongTacId + ", " : "") +
+            (kyThuatHoTroId != null ? "kyThuatHoTroId=" + kyThuatHoTroId + ", " : "") +
+            (vatTuHoTroId != null ? "vatTuHoTroId=" + vatTuHoTroId + ", " : "") +
+            (nhanVienId != null ? "nhanVienId=" + nhanVienId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

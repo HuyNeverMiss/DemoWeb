@@ -26,12 +26,6 @@
         <dd>
           <span>{{ vatTuHoTro.thuTuSX }}</span>
         </dd>
-        <dt><span jhiTranslate="chiDaoTuyenApp.vatTuHoTro.chiDaoTuyen">Chi Dao Tuyen</span></dt>
-        <dd>
-          <div *ngIf="vatTuHoTro.chiDaoTuyen">
-            <a [routerLink]="['/chi-dao-tuyen', vatTuHoTro.chiDaoTuyen?.id, 'view']">{{ vatTuHoTro.chiDaoTuyen?.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

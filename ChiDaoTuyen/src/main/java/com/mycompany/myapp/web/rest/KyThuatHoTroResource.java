@@ -1,16 +1,18 @@
 package com.mycompany.myapp.web.rest;
 
-import com.mycompany.myapp.domain.KyThuatHoTro;
 import com.mycompany.myapp.repository.KyThuatHoTroRepository;
 import com.mycompany.myapp.service.KyThuatHoTroQueryService;
 import com.mycompany.myapp.service.KyThuatHoTroService;
 import com.mycompany.myapp.service.criteria.KyThuatHoTroCriteria;
+import com.mycompany.myapp.service.dto.KyThuatHoTroDTO;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,17 +59,18 @@ public class KyThuatHoTroResource {
     /**
      * {@code POST  /ky-thuat-ho-tros} : Create a new kyThuatHoTro.
      *
-     * @param kyThuatHoTro the kyThuatHoTro to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new kyThuatHoTro, or with status {@code 400 (Bad Request)} if the kyThuatHoTro has already an ID.
+     * @param kyThuatHoTroDTO the kyThuatHoTroDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new kyThuatHoTroDTO, or with status {@code 400 (Bad Request)} if the kyThuatHoTro has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/ky-thuat-ho-tros")
-    public ResponseEntity<KyThuatHoTro> createKyThuatHoTro(@RequestBody KyThuatHoTro kyThuatHoTro) throws URISyntaxException {
-        log.debug("REST request to save KyThuatHoTro : {}", kyThuatHoTro);
-        if (kyThuatHoTro.getId() != null) {
+    public ResponseEntity<KyThuatHoTroDTO> createKyThuatHoTro(@Valid @RequestBody KyThuatHoTroDTO kyThuatHoTroDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save KyThuatHoTro : {}", kyThuatHoTroDTO);
+        if (kyThuatHoTroDTO.getId() != null) {
             throw new BadRequestAlertException("A new kyThuatHoTro cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        KyThuatHoTro result = kyThuatHoTroService.save(kyThuatHoTro);
+        KyThuatHoTroDTO result = kyThuatHoTroService.save(kyThuatHoTroDTO);
         return ResponseEntity
             .created(new URI("/api/ky-thuat-ho-tros/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -77,23 +80,23 @@ public class KyThuatHoTroResource {
     /**
      * {@code PUT  /ky-thuat-ho-tros/:id} : Updates an existing kyThuatHoTro.
      *
-     * @param id the id of the kyThuatHoTro to save.
-     * @param kyThuatHoTro the kyThuatHoTro to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated kyThuatHoTro,
-     * or with status {@code 400 (Bad Request)} if the kyThuatHoTro is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the kyThuatHoTro couldn't be updated.
+     * @param id the id of the kyThuatHoTroDTO to save.
+     * @param kyThuatHoTroDTO the kyThuatHoTroDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated kyThuatHoTroDTO,
+     * or with status {@code 400 (Bad Request)} if the kyThuatHoTroDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the kyThuatHoTroDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/ky-thuat-ho-tros/{id}")
-    public ResponseEntity<KyThuatHoTro> updateKyThuatHoTro(
+    public ResponseEntity<KyThuatHoTroDTO> updateKyThuatHoTro(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody KyThuatHoTro kyThuatHoTro
+        @Valid @RequestBody KyThuatHoTroDTO kyThuatHoTroDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update KyThuatHoTro : {}, {}", id, kyThuatHoTro);
-        if (kyThuatHoTro.getId() == null) {
+        log.debug("REST request to update KyThuatHoTro : {}, {}", id, kyThuatHoTroDTO);
+        if (kyThuatHoTroDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, kyThuatHoTro.getId())) {
+        if (!Objects.equals(id, kyThuatHoTroDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -101,34 +104,34 @@ public class KyThuatHoTroResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        KyThuatHoTro result = kyThuatHoTroService.update(kyThuatHoTro);
+        KyThuatHoTroDTO result = kyThuatHoTroService.update(kyThuatHoTroDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kyThuatHoTro.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kyThuatHoTroDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /ky-thuat-ho-tros/:id} : Partial updates given fields of an existing kyThuatHoTro, field will ignore if it is null
      *
-     * @param id the id of the kyThuatHoTro to save.
-     * @param kyThuatHoTro the kyThuatHoTro to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated kyThuatHoTro,
-     * or with status {@code 400 (Bad Request)} if the kyThuatHoTro is not valid,
-     * or with status {@code 404 (Not Found)} if the kyThuatHoTro is not found,
-     * or with status {@code 500 (Internal Server Error)} if the kyThuatHoTro couldn't be updated.
+     * @param id the id of the kyThuatHoTroDTO to save.
+     * @param kyThuatHoTroDTO the kyThuatHoTroDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated kyThuatHoTroDTO,
+     * or with status {@code 400 (Bad Request)} if the kyThuatHoTroDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the kyThuatHoTroDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the kyThuatHoTroDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/ky-thuat-ho-tros/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<KyThuatHoTro> partialUpdateKyThuatHoTro(
+    public ResponseEntity<KyThuatHoTroDTO> partialUpdateKyThuatHoTro(
         @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody KyThuatHoTro kyThuatHoTro
+        @NotNull @RequestBody KyThuatHoTroDTO kyThuatHoTroDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update KyThuatHoTro partially : {}, {}", id, kyThuatHoTro);
-        if (kyThuatHoTro.getId() == null) {
+        log.debug("REST request to partial update KyThuatHoTro partially : {}, {}", id, kyThuatHoTroDTO);
+        if (kyThuatHoTroDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, kyThuatHoTro.getId())) {
+        if (!Objects.equals(id, kyThuatHoTroDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -136,11 +139,11 @@ public class KyThuatHoTroResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<KyThuatHoTro> result = kyThuatHoTroService.partialUpdate(kyThuatHoTro);
+        Optional<KyThuatHoTroDTO> result = kyThuatHoTroService.partialUpdate(kyThuatHoTroDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kyThuatHoTro.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, kyThuatHoTroDTO.getId().toString())
         );
     }
 
@@ -152,12 +155,12 @@ public class KyThuatHoTroResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of kyThuatHoTros in body.
      */
     @GetMapping("/ky-thuat-ho-tros")
-    public ResponseEntity<List<KyThuatHoTro>> getAllKyThuatHoTros(
+    public ResponseEntity<List<KyThuatHoTroDTO>> getAllKyThuatHoTros(
         KyThuatHoTroCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get KyThuatHoTros by criteria: {}", criteria);
-        Page<KyThuatHoTro> page = kyThuatHoTroQueryService.findByCriteria(criteria, pageable);
+        Page<KyThuatHoTroDTO> page = kyThuatHoTroQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -177,20 +180,20 @@ public class KyThuatHoTroResource {
     /**
      * {@code GET  /ky-thuat-ho-tros/:id} : get the "id" kyThuatHoTro.
      *
-     * @param id the id of the kyThuatHoTro to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the kyThuatHoTro, or with status {@code 404 (Not Found)}.
+     * @param id the id of the kyThuatHoTroDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the kyThuatHoTroDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/ky-thuat-ho-tros/{id}")
-    public ResponseEntity<KyThuatHoTro> getKyThuatHoTro(@PathVariable Long id) {
+    public ResponseEntity<KyThuatHoTroDTO> getKyThuatHoTro(@PathVariable Long id) {
         log.debug("REST request to get KyThuatHoTro : {}", id);
-        Optional<KyThuatHoTro> kyThuatHoTro = kyThuatHoTroService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(kyThuatHoTro);
+        Optional<KyThuatHoTroDTO> kyThuatHoTroDTO = kyThuatHoTroService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(kyThuatHoTroDTO);
     }
 
     /**
      * {@code DELETE  /ky-thuat-ho-tros/:id} : delete the "id" kyThuatHoTro.
      *
-     * @param id the id of the kyThuatHoTro to delete.
+     * @param id the id of the kyThuatHoTroDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/ky-thuat-ho-tros/{id}")
