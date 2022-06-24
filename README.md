@@ -518,3 +518,48 @@ sẽ bị xóa khỏi CSDL.
 > <img src="https://scontent.fsgn3-1.fna.fbcdn.net/v/t1.15752-9/287059320_982233159120262_5101214496782636012_n.png?_nc_cat=104&ccb=1-7&_nc_sid=ae9488&_nc_ohc=R7QGACQ58GQAX9RnzOQ&_nc_ht=scontent.fsgn3-1.fna&oh=03_AVJqJj6gzXODScg6cv2_3gzxHrz-xRNCBg4xPr6V7TH4Uw&oe=62CF9232">
 > 
 > File này sẽ thực hiện các nghiệp vụ thêm, sữa, xóa, tìm theo id hoặc tìm tất cả, của file LyDoCongTacService.java sử dụng phương thức Override.
+
+***Diệp Thanh Huy***
+<h1>Báo cáo thực tập tuần 5</h1>
+    
+**Tìm hiểu về DTO**
+    
+DTO hay tên gọi đầy đủ là Data Tranfer Object là một design pattern lần đầu tiên được giới thiệu bởi Martin Fowler trong cuốn sách EAA. Mục đích sử dụng chính của DTO đó là giảm số lần gọi các method giữa các tiến trình xử lý.
+    
+DTO là một cấu trúc dữ liệu phẳng và không chứa business logic trong đó chỉ dùng để lưu trữ dữ liệu, các method cho phép cập dữ liệu và sử dụng trong quá trình serialization or deserialization. Dữ liệu được ánh xạ từ domain model sang DTO và ngược lại thông qua một thành phần gọi là Mapper được đặt trong presentation hoặc facade layer.   
+
+Các dto sẽ tương ứng với các entity được đề cập ở trên nhưng sẽ khác bằng việc thay các entity bằng tên khóa chính của entity đó thông qua mapper.
+
+<img src="https://shareprogramming.net/wp-content/uploads/2021/09/layers-4.svg">
+
+***Domain model và DTO***
+
+Chúng ta cần phân biệt giữa Domain model và DTO để tránh nhầm lẫn. Domain model là các Entity class dùng để ánh xạ một table trong database còn DTO là một object kết hợp nhiều tham số thành một đặt trong một DTO class.
+
+    
+ **Các dạng data**
+    
+ * Data trong ứng dụng Spring Boot được chia thành 2 loại chính:
+ - Public: nghĩa là để trao đổi, chia sẻ với bên ngoài qua REST API hoặc giao tiếp với các service khác trong microservice. Data lúc này ở dạng DTO.
+    
+ - Private: các data dùng trong nội bộ ứng dụng, bên ngoài không nên biết. Data lúc này nằm trong các Domain model hoặc Entity.
+    
+Từ 2 loại Public và Private trên, chúng ta có 3 dạng data:
+    
+ -DTO (Data transfer object): là các class đóng gói data để chuyển giữa client - server hoặc giữa các service trong microservice. Mục đích tạo ra DTO là để giảm bớt lượng info không cần thiết phải chuyển đi, và cũng tăng cường độ bảo mật.
+    
+-Domain model: là các class đại diện cho các domain, hiểu là các đối tượng thuộc business như Client, Report, Department,... chẳng hạn. Trong ứng dụng thực, các class đại diện cho kết quả tính toán, các class làm tham số đầu vào cho service tính toán,... được coi là domain model.
+    
+-Entity: cũng là domain model nhưng tương ứng với table trong DB, có thể map vào DB được. Lưu ý chỉ có entity mới có thể đại diện cho data trong DB.
+    
+ ***Nên sử dụng DTO vì:***
+    
+- Trước đây data chỉ có 1 dạng, nhưng có nhiều layer, mỗi layer hành xử khác nhau với data nên data đã thực hiện nhiều nhiệm vụ. Điều này vi phạm vào Single responsibility, nên chúng ta cần chia nhỏ thành nhiều dạng data.
+
+- Nếu data chỉ có một dạng thì sẽ bị leak (lộ) các dữ liệu nhạy cảm. Lấy ví dụ chức năng tìm kiếm bạn bè của Facebook, đúng ra chỉ trên trả về data chỉ có các info cơ bản (avatar, tên,...). Nếu chỉ có một dạng data thì toàn bộ thông tin sẽ được trả về. Mặc dù client chỉ hiển thị những info cần thiết, nhưng việc trả về toàn bộ thì kẻ xấu có thể lợi dụng để chôm các info nhạy cảm.
+     
+**Getters và Setters trong Java**
+> Trong java, getter và setter là hai phương thức thông thường được sử dụng để truy xuất và cập nhật giá trị của một biến.
+   
+**Tại sao lại cần Getter và Setter?**
+> Bằng cách sử dụng getter và setter, lập trình viên có thể kiểm soát cách các biến quan trọng của họ được truy cập và cập nhật theo cách thích hợp, chẳng hạn như thay đổi giá trị của một biến trong một phạm vi xác định. 
