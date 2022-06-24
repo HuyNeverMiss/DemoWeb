@@ -2,20 +2,20 @@
   "chiDaoTuyenApp": {
     "chiDaoTuyen": {
       "home": {
-        "title": "Chi Dao Tuyens",
+        "title": "Chỉ Đạo Tuyến",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Thêm mới một Chi Dao Tuyen",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Chi Dao Tuyen",
-        "notFound": "No Chi Dao Tuyens found"
+        "createLabel": "Thêm mới một Chỉ Đạo Tuyến",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Chỉ Đạo Tuyến",
+        "notFound": "No Chỉ Đạo Tuyến found"
       },
-      "created": "Một Chi Dao Tuyen mới được tạo với định danh {{ param }}",
-      "updated": "Một Chi Dao Tuyen cập nhật với định danh {{ param }}",
-      "deleted": "Một Chi Dao Tuyen đã xóa với định danh {{ param }}",
+      "created": "Một Chỉ Đạo Tuyến mới được tạo với định danh {{ param }}",
+      "updated": "Một Chỉ Đạo Tuyến cập nhật với định danh {{ param }}",
+      "deleted": "Một Chỉ Đạo Tuyến đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Chi Dao Tuyen {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Chỉ Đạo Tuyến {{ id }}?"
       },
       "detail": {
-        "title": "Chi Dao Tuyen"
+        "title": "Chỉ Đạo Tuyến"
       },
       "id": "ID",
       "soQuyetDinh": "So Quyet Dinh",

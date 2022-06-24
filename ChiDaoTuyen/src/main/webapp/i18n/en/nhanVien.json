@@ -2,11 +2,11 @@
   "chiDaoTuyenApp": {
     "nhanVien": {
       "home": {
-        "title": "Nhan Viens",
+        "title": "Nhan Vien",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Nhan Vien",
         "createOrEditLabel": "Create or edit a Nhan Vien",
-        "notFound": "No Nhan Viens found"
+        "notFound": "No Nhan Vien found"
       },
       "created": "A new Nhan Vien is created with identifier {{ param }}",
       "updated": "A Nhan Vien is updated with identifier {{ param }}",

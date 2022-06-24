@@ -16,13 +16,25 @@ Navbar
 }
 
 .navbar {
-  padding: 0.2rem 1rem;
+  padding: 0.2rem 0rem;
 
   a.nav-link {
     font-weight: 400;
   }
 }
 
+.navbar-dark .navbar-nav .nav-link {
+  color: #f9fafb;
+}
+
+.navbar-brand {
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  margin-right: 1rem;
+  font-size: 1rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
 /* ==========================================================================
 Logo styles
 ========================================================================== */
@@ -31,6 +43,6 @@ Logo styles
   width: 45px;
   display: inline-block;
   vertical-align: middle;
-  background: url('../../../content/images/logo-jhipster.png') no-repeat center center;
+  background: url('../../../content/images/icon-vnpt.png') no-repeat center center;
   background-size: contain;
 }

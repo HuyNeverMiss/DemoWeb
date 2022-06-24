@@ -2,20 +2,20 @@
   "chiDaoTuyenApp": {
     "noiDenCongTac": {
       "home": {
-        "title": "Noi Den Cong Tacs",
+        "title": "Nơi Đến Công Tác",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Thêm mới một Noi Den Cong Tac",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Noi Den Cong Tac",
-        "notFound": "No Noi Den Cong Tacs found"
+        "createLabel": "Thêm mới một Nơi Đến Công Tác",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Nơi Đến Công Tác",
+        "notFound": "No Nơi Đến Công Tác found"
       },
-      "created": "Một Noi Den Cong Tac mới được tạo với định danh {{ param }}",
-      "updated": "Một Noi Den Cong Tac cập nhật với định danh {{ param }}",
-      "deleted": "Một Noi Den Cong Tac đã xóa với định danh {{ param }}",
+      "created": "Một Nơi Đến Công Tác mới được tạo với định danh {{ param }}",
+      "updated": "Một Nơi Đến Công Tác cập nhật với định danh {{ param }}",
+      "deleted": "Một Nơi Đến Công Tác đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Noi Den Cong Tac {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Nơi Đến Công Tác {{ id }}?"
       },
       "detail": {
-        "title": "Noi Den Cong Tac"
+        "title": "Nơi Đến Công Tác"
       },
       "id": "ID",
       "maNoiDen": "Ma Noi Den",

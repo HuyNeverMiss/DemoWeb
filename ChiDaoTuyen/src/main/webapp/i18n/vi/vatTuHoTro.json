@@ -2,20 +2,20 @@
   "chiDaoTuyenApp": {
     "vatTuHoTro": {
       "home": {
-        "title": "Vat Tu Ho Tros",
+        "title": "Vật Tư Hỗ Trợ",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Thêm mới một Vat Tu Ho Tro",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Vat Tu Ho Tro",
-        "notFound": "No Vat Tu Ho Tros found"
+        "createLabel": "Thêm mới một Vật Tư Hỗ Trợ",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Vật Tư Hỗ Trợ",
+        "notFound": "No Vật Tư Hỗ Trợ found"
       },
-      "created": "Một Vat Tu Ho Tro mới được tạo với định danh {{ param }}",
-      "updated": "Một Vat Tu Ho Tro cập nhật với định danh {{ param }}",
-      "deleted": "Một Vat Tu Ho Tro đã xóa với định danh {{ param }}",
+      "created": "Một Vật Tư Hỗ Trợ mới được tạo với định danh {{ param }}",
+      "updated": "Một Vật Tư Hỗ Trợ cập nhật với định danh {{ param }}",
+      "deleted": "Một Vật Tư Hỗ Trợ đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Vat Tu Ho Tro {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Vật Tư Hỗ Trợ {{ id }}?"
       },
       "detail": {
-        "title": "Vat Tu Ho Tro"
+        "title": "Vật Tư Hỗ Trợ"
       },
       "id": "ID",
       "maVatTu": "Ma Vat Tu",

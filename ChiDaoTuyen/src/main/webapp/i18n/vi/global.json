@@ -1,19 +1,19 @@
 {
   "global": {
-    "title": "ChiDaoTuyen",
+    "title": "VNPT-HIS<p>PHẦN MỀM QUẢN LÝ BỆNH VIỆN</p>",
     "browsehappy": "Bạn đang sử dụng một trình duyệt <strong>quá cũ</strong>. Vui lòng <a href=\"http://browsehappy.com/?locale=en\">nâng cấp trình duyệt</a> của bạn để có trải nghiệm tốt nhất.",
     "menu": {
       "home": "Trang chủ",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
-        "main": "Thực thể",
-        "lyDoCongTac": "Ly Do Cong Tac",
-        "ketQuaCongTac": "Ket Qua Cong Tac",
-        "kyThuatHoTro": "Ky Thuat Ho Tro",
-        "noiDenCongTac": "Noi Den Cong Tac",
-        "vatTuHoTro": "Vat Tu Ho Tro",
-        "nhanVien": "Nhan Vien",
-        "chiDaoTuyen": "Chi Dao Tuyen",
+        "main": "Chỉ Đạo Tuyến",
+        "lyDoCongTac": "Lý Do Công Tác",
+        "ketQuaCongTac": "Kết Quả Công Tác",
+        "kyThuatHoTro": "Kỹ Thuật Hỗ Trợ",
+        "noiDenCongTac": "Nơi Đến Công Tác",
+        "vatTuHoTro": "Vật Tư Hỗ Trợ",
+        "nhanVien": "Nhân Viên",
+        "chiDaoTuyen": "Chỉ Đạo Tuyến",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

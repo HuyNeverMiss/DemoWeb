@@ -2,20 +2,20 @@
   "chiDaoTuyenApp": {
     "ketQuaCongTac": {
       "home": {
-        "title": "Ket Qua Cong Tacs",
+        "title": "Kết Quả Công Tác",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Thêm mới một Ket Qua Cong Tac",
-        "createOrEditLabel": "Thêm mới hoặc cập nhật Ket Qua Cong Tac",
-        "notFound": "No Ket Qua Cong Tacs found"
+        "createLabel": "Thêm mới một Kết Quả Công Tác",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Kết Quả Công Tác",
+        "notFound": "No Kết Quả Công Tác found"
       },
-      "created": "Một Ket Qua Cong Tac mới được tạo với định danh {{ param }}",
-      "updated": "Một Ket Qua Cong Tac cập nhật với định danh {{ param }}",
-      "deleted": "Một Ket Qua Cong Tac đã xóa với định danh {{ param }}",
+      "created": "Một Kết Quả Công Tác mới được tạo với định danh {{ param }}",
+      "updated": "Một Kết Quả Công Tác cập nhật với định danh {{ param }}",
+      "deleted": "Một Kết Quả Công Tác đã xóa với định danh {{ param }}",
       "delete": {
-        "question": "Bạn có chắc là muốn xóa Ket Qua Cong Tac {{ id }}?"
+        "question": "Bạn có chắc là muốn xóa Kết Quả Công Tác {{ id }}?"
       },
       "detail": {
-        "title": "Ket Qua Cong Tac"
+        "title": "Kết Quả Công Tác"
       },
       "id": "ID",
       "maKetQua": "Ma Ket Qua",
