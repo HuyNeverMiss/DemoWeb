@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="LyDoCongTacHeading">
     <span jhiTranslate="chiDaoTuyenApp.lyDoCongTac.home.title">Ly Do Cong Tacs</span>
 
@@ -103,4 +103,186 @@
       ></ngb-pagination>
     </div>
   </div>
-</div>
+</div> -->
+
+<span jhiTranslate="chiDaoTuyenApp.lyDoCongTac.home.title" style = "font-weight: bold; font-size: 30px;">Ly Do Cong Tacs</span> 
+  <div class="container" > 
+    <jhi-alert-error></jhi-alert-error> 
+    <jhi-alert></jhi-alert> 
+    <div class="row" > 
+      <div class="col"  > 
+        <div class="table-responsive" id="entities" *ngIf="lyDoCongTacs && lyDoCongTacs.length > 0" > 
+          <table class="table table-striped " aria-describedby="page-heading" > 
+            <thead style="border: 2px solid black"> 
+              <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()"  style="background-color: #6495ed"> 
+                <!-- <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th> --> 
+                <th></th> 
+                <th scope="col" jhiSortBy="maLyDo"> 
+                  <span jhiTranslate="chiDaoTuyenApp.lyDoCongTac.maLyDo">Ma Ly Do</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+                <th scope="col" jhiSortBy="tenLyDo"> 
+                  <span jhiTranslate="chiDaoTuyenApp.lyDoCongTac.tenLyDo">Ten Ly Do</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+                <th scope="col" jhiSortBy="thuTuSX"> 
+                  <span jhiTranslate="chiDaoTuyenApp.lyDoCongTac.thuTuSX">Thu Tu SX</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+                <!-- <th scope="col" jhiSortBy="chiDaoTuyen.id"> 
+                  <span jhiTranslate="chiDaoTuyenApp.lyDoCongTac.chiDaoTuyen">Chi Dao Tuyen</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+                <th scope="col"></th> --> 
+              </tr> 
+            </thead> 
+ 
+ 
+            <tbody> 
+              <tr> 
+                <td> 
+ 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+ 
+              </tr> 
+              <tr (click)="showInfor(lyDoCongTac.id, lyDoCongTac.maLyDo ?? '', lyDoCongTac.tenLyDo ?? '', lyDoCongTac.thuTuSX ?? '')" *ngFor="let lyDoCongTac of lyDoCongTacs; trackBy: trackId" data-cy="entityTable"> 
+                <td> 
+                  <a [routerLink]="['/ly-do-cong-tac', lyDoCongTac.id, 'view']">{{ lyDoCongTac.id }}</a> 
+                </td> 
+                <td>{{ lyDoCongTac.maLyDo }}</td> 
+                <td>{{ lyDoCongTac.tenLyDo }}</td> 
+                <td>{{ lyDoCongTac.thuTuSX }}</td> 
+                <!-- <td> 
+                  <div *ngIf="lyDoCongTac.chiDaoTuyen"> 
+                    <a [routerLink]="['/chi-dao-tuyen', lyDoCongTac.chiDaoTuyen?.id, 'view']">{{ lyDoCongTac.chiDaoTuyen?.id }}</a> 
+                  </div> 
+                </td> --> 
+            </tbody> 
+             
+          </table> 
+        </div> 
+ 
+ 
+ 
+ 
+        <!-- <div *ngIf="lyDoCongTacs && lyDoCongTacs.length > 0"> 
+          <div class="d-flex justify-content-center"> 
+            <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count> 
+          </div> 
+ 
+          <div class="d-flex justify-content-center"> 
+            <ngb-pagination 
+              [collectionSize]="totalItems" 
+              [(page)]="ngbPaginationPage" 
+              [pageSize]="itemsPerPage" 
+              [maxSize]="5" 
+              [rotate]="true" 
+              [boundaryLinks]="true" 
+              (pageChange)="loadPage($event)" 
+            ></ngb-pagination> 
+          </div> 
+        </div> --> 
+ 
+ 
+      </div> 
+      <div class="col"   > 
+        <form > 
+          <div style="background-color: #6495ed; align-items: center; height: 44px; border: 3px solid black; " > 
+            <div style="margin-left: 10px; font-weight: bold;">Thông Tin Lý Do Công Tác</div> 
+          </div> 
+          <br> 
+ 
+          <form name="editForm" role ="form" [formGroup] = "editForm"> 
+            <div class="form-group">
+
+<div style="margin-left: 10px;">Mã Lý Do</div> 
+              <input  type="input" value= "{{maLyDos}}" [(ngModel)] = "maLyDo1" required NOT NULL formControlName="maLyDo" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> 
+              <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --> 
+            </div> 
+            <div class="form-group"> 
+              <div style="margin-left: 10px;">Tên Lý Do</div> 
+              <input type="input" value="{{tenLyDos}}" [(ngModel)] = "tenLyDo1" required NOT NULL class="form-control" formControlName="tenLyDo" id="exampleInputPassword1" > 
+            </div> 
+            <div class="form-group"> 
+              <div style="margin-left: 10px;">Thứ Tự SX</div> 
+              <input type="input" value="{{thuTuSXs}}"[(ngModel)] = "thuTuSX1" class="form-control" formControlName="thuTuSX" id="exampleInputPassword1" > 
+            </div> 
+            <!-- <div class="form-group"> 
+              <label for="exampleInputPassword1">Chỉ Đạo Tuyến</label> 
+              <input type="input" class="form-control" [(ngModel)] = "maLyDo1" formControlName="chiDaoTuyen" id="exampleInputPassword1" placeholder="Password"> 
+            </div> --> 
+            <br> 
+ 
+ 
+ 
+ 
+            <td class="text-end"> 
+              <div class="btn-group"> 
+ 
+                <button 
+                  type="submit" 
+                  id="save-entity" 
+                  data-cy="entityCreateSaveButton" 
+                  (click)="create()" 
+                  [disabled]="editForm.invalid || isSaving" 
+                  class="btn btn-primary" 
+                > 
+                  <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.create">Create</span> 
+                </button> 
+ 
+ 
+                <button 
+                  type="submit" 
+                  class="btn btn-primary" 
+                  (click)="save()" 
+                  data-cy="entityCreateButton" 
+                  style= "margin-left:5px" 
+                  > 
+                  <fa-icon icon="pencil-alt"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span> 
+                </button> 
+ 
+ 
+                <button type="submit" class="btn btn-danger " data-cy="entityDeleteButton" (click)="delete()" style= "margin-left:5px"> 
+                  <fa-icon icon="times"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span> 
+                </button> 
+ 
+                <button type="submit" class="btn btn-primary" (click)="cancel()" style="margin-left: 5px;"> 
+                  <fa-icon icon="ban"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.cancel">Cancel</span> 
+                </button> 
+ 
+                <!-- <button background = "yellow" type="submit" [routerLink]="['/ly-do-cong-tac', 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton"> 
+                  <fa-icon icon="eye"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span> 
+                </button> --> 
+              </div> 
+            </td> 
+ 
+ 
+          </form> 
+ 
+ 
+ 
+        </form> 
+ 
+      </div> 
+    </div> 
+  </div> 
+ 
+<!-- </div> --> 
+<!-- <style> 
+.btn-group{ 
+ 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  background-color: blueviolet; 
+} 
+</style> -->
