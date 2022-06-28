@@ -2,13 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IKetQuaCongTac } from '../ket-qua-cong-tac.model';
+import { IKetQuaCongTac, KetQuaCongTac } from '../ket-qua-cong-tac.model';
 
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { KetQuaCongTacService } from '../service/ket-qua-cong-tac.service';
 import { KetQuaCongTacDeleteDialogComponent } from '../delete/ket-qua-cong-tac-delete-dialog.component';
+
+import { FormBuilder, Validators } from '@angular/forms';
+import { finalize, map } from 'rxjs/operators';
 
 @Component({
   selector: 'jhi-ket-qua-cong-tac',
@@ -23,12 +27,29 @@ export class KetQuaCongTacComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  ids?: number;
+  maKetQuas?: string;
+  tenKetQuas?: string;
+  thuTuSXs?: string;
+  isSaving = false;
+  id1: any;
+  maKetQua1 = '';
+  tenKetQua1 = '';
+  thuTuSX1 = '';
+
+  editForm = this.fb.group({
+    id: [],
+    maKetQua: [null, [Validators.required]],
+    tenKetQua: [null, [Validators.required]],
+    thuTuSX: [],
+  });
 
   constructor(
     protected ketQuaCongTacService: KetQuaCongTacService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected fb: FormBuilder
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -61,15 +82,86 @@ export class KetQuaCongTacComponent implements OnInit {
     return item.id!;
   }
 
-  delete(ketQuaCongTac: IKetQuaCongTac): void {
+  delete(): void {
+    const deleteKetQuaCongTac = this.createFromForm();
+    deleteKetQuaCongTac.id = this.ids;
+    deleteKetQuaCongTac.maKetQua = this.maKetQuas;
+    deleteKetQuaCongTac.tenKetQua = this.tenKetQuas;
+    deleteKetQuaCongTac.thuTuSX = this.thuTuSXs;
     const modalRef = this.modalService.open(KetQuaCongTacDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.ketQuaCongTac = ketQuaCongTac;
+    modalRef.componentInstance.ketQuaCongTac = deleteKetQuaCongTac;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
         this.loadPage();
       }
     });
+    this.ids = undefined;
+    this.maKetQuas = '';
+    this.tenKetQuas = '';
+    this.thuTuSXs = '';
+  }
+
+  showInfor(id?: number, maKetQua?: string, tenKetQua?: string, thuTuSX?: string): void {
+    // eslint-disable-next-line no-console
+    this.ids = id;
+    this.maKetQuas = maKetQua;
+    this.tenKetQuas = tenKetQua;
+    this.thuTuSXs = thuTuSX;
+  }
+
+  create(): void {
+    this.isSaving = true;
+    const createKetQuaCongTac = this.createFromForm();
+    this.subscribeToSaveResponse(this.ketQuaCongTacService.create(createKetQuaCongTac));
+    this.ids = undefined;
+    this.maKetQuas = '';
+    this.tenKetQuas = '';
+    this.thuTuSXs = '';
+  }
+  cancel(): void {
+    this.ids = undefined;
+    this.maKetQuas = '';
+    this.tenKetQuas = '';
+    this.thuTuSXs = '';
+  }
+  save(): void {
+    this.isSaving = true;
+    const ketQuaCongTac = this.createFromForm();
+    ketQuaCongTac.id = this.id1 || this.ids;
+    ketQuaCongTac.maKetQua = this.maKetQua1 || this.maKetQuas;
+    ketQuaCongTac.tenKetQua = this.tenKetQua1 || this.tenKetQuas;
+    ketQuaCongTac.thuTuSX = this.thuTuSX1 || this.thuTuSXs;
+    // eslint-disable-next-line no-console
+    console.log(KetQuaCongTac);
+    this.subscribeToSaveResponse(this.ketQuaCongTacService.update(ketQuaCongTac));
+    this.ids = undefined;
+    this.maKetQuas = '';
+    this.tenKetQuas = '';
+    this.thuTuSXs = '';
+  }
+
+  previousState(): void {
+    this.loadPage();
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IKetQuaCongTac>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
+  }
+
+  protected onSaveSuccess(): void {
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(): void {
+    this.isSaving = false;
   }
 
   protected sort(): string[] {
@@ -113,5 +205,24 @@ export class KetQuaCongTacComponent implements OnInit {
 
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
+  }
+
+  protected updateForm(ketQuaCongTac: IKetQuaCongTac): void {
+    this.editForm.patchValue({
+      id: ketQuaCongTac.id,
+      maKetQua: ketQuaCongTac.maKetQua,
+      tenKetQua: ketQuaCongTac.tenKetQua,
+      thuTuSX: ketQuaCongTac.thuTuSX,
+    });
+  }
+
+  protected createFromForm(): IKetQuaCongTac {
+    return {
+      ...new KetQuaCongTac(),
+      id: this.editForm.get(['id'])!.value,
+      maKetQua: this.editForm.get(['maKetQua'])!.value,
+      tenKetQua: this.editForm.get(['tenKetQua'])!.value,
+      thuTuSX: this.editForm.get(['thuTuSX'])!.value,
+    };
   }
 }

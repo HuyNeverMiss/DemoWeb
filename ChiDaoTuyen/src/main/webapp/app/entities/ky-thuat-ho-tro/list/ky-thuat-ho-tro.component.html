@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="KyThuatHoTroHeading">
     <span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.home.title">Ky Thuat Ho Tros</span>
 
@@ -103,4 +103,152 @@
       ></ngb-pagination>
     </div>
   </div>
-</div>
+</div> -->
+
+
+<span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.home.title" style = "font-weight: bold; font-size: 30px;">Ky Thuat Ho Tros</span> 
+  <div class="container" > 
+    <jhi-alert-error></jhi-alert-error> 
+    <jhi-alert></jhi-alert> 
+    <div class="row" > 
+      <div class="col"  > 
+        <div class="table-responsive" id="entities" *ngIf="kyThuatHoTros && kyThuatHoTros.length > 0" > 
+          <table class="table table-striped " aria-describedby="page-heading" > 
+            <thead style="border: 2px solid black"> 
+              <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()"  style="background-color: #6495ed"> 
+                <th></th> 
+                <th scope="col" jhiSortBy="maKyThuat"> 
+                  <span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.maKyThuat">Ma Ky Thuat</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+                <th scope="col" jhiSortBy="tenKyThuat"> 
+                  <span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.tenKyThuat">Ten Ky Thuat</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+                <th scope="col" jhiSortBy="thuTuSX"> 
+                  <span jhiTranslate="chiDaoTuyenApp.kyThuatHoTro.thuTuSX">Thu Tu SX</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+              </tr> 
+            </thead> 
+ 
+ 
+            <tbody> 
+              <tr> 
+                <td> 
+ 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+ 
+              </tr> 
+              <tr (click)="showInfor(kyThuatHoTro.id, kyThuatHoTro.maKyThuat ?? '', kyThuatHoTro.tenKyThuat ?? '', kyThuatHoTro.thuTuSX ?? ''
+              )" *ngFor="let kyThuatHoTro of kyThuatHoTros; trackBy: trackId" data-cy="entityTable">
+                <td>
+                  <a [routerLink]="['/ky-thuat-ho-tro', kyThuatHoTro.id, 'view']">{{ kyThuatHoTro.id }}</a>
+                </td>
+                <td>{{ kyThuatHoTro.maKyThuat }}</td>
+                <td>{{ kyThuatHoTro.tenKyThuat }}</td>
+                <td>{{ kyThuatHoTro.thuTuSX }}</td> 
+            </tbody> 
+             
+          </table> 
+        </div> 
+        <!-- <div *ngIf="ketQuaCongTacs && ketQuaCongTacs.length > 0"> 
+          <div class="d-flex justify-content-center"> 
+            <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count> 
+          </div> 
+ 
+          <div class="d-flex justify-content-center"> 
+            <ngb-pagination 
+              [collectionSize]="totalItems" 
+              [(page)]="ngbPaginationPage" 
+              [pageSize]="itemsPerPage" 
+              [maxSize]="5" 
+              [rotate]="true" 
+              [boundaryLinks]="true" 
+              (pageChange)="loadPage($event)" 
+            ></ngb-pagination> 
+          </div> 
+        </div>  -->
+      </div> 
+      <div class="col"   > 
+        <form > 
+          <div style="background-color: #6495ed; align-items: center; height: 44px; border: 3px solid black; " > 
+            <div style="margin-left: 10px; font-weight: bold;">Thông Tin Kỹ Thuật Hỗ Trợ</div> 
+          </div> 
+          <br> 
+ 
+          <form name="editForm" role ="form" [formGroup] = "editForm"> 
+            <div class="form-group">
+
+<div style="margin-left: 10px;">Mã Kỹ Thuật</div> 
+              <input  type="input" value= "{{maKyThuats}}" [(ngModel)] = "maKyThuat1" required NOT NULL formControlName="maKyThuat" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> 
+              <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --> 
+            </div> 
+            <div class="form-group"> 
+              <div style="margin-left: 10px;">Tên Kỹ Thuật</div> 
+              <input type="input" value="{{tenKyThuats}}" [(ngModel)] = "tenKyThuat1" required NOT NULL class="form-control" formControlName="tenKyThuat" id="exampleInputPassword1" > 
+            </div> 
+            <div class="form-group"> 
+              <div style="margin-left: 10px;">Thứ Tự SX</div> 
+              <input type="input" value="{{thuTuSXs}}"[(ngModel)] = "thuTuSX1" class="form-control" formControlName="thuTuSX" id="exampleInputPassword1" > 
+            </div> 
+            <br> 
+ 
+ 
+ 
+ 
+            <td class="text-end"> 
+              <div class="btn-group"> 
+ 
+                <button 
+                  type="submit" 
+                  id="save-entity" 
+                  data-cy="entityCreateSaveButton" 
+                  (click)="create()" 
+                  [disabled]="editForm.invalid || isSaving" 
+                  class="btn btn-primary" 
+                > 
+                  <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.create">Create</span> 
+                </button> 
+ 
+ 
+                <button 
+                  type="submit" 
+                  class="btn btn-primary" 
+                  (click)="save()" 
+                  data-cy="entityCreateButton" 
+                  style= "margin-left:5px" 
+                  > 
+                  <fa-icon icon="pencil-alt"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span> 
+                </button> 
+ 
+ 
+                <button type="submit" class="btn btn-danger " data-cy="entityDeleteButton" (click)="delete()" style= "margin-left:5px"> 
+                  <fa-icon icon="times"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span> 
+                </button>
+ 
+                <button type="submit" class="btn btn-primary" (click)="cancel()" style="margin-left: 5px;"> 
+                  <fa-icon icon="ban"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.cancel">Cancel</span> 
+                </button> 
+              </div> 
+            </td> 
+ 
+ 
+          </form> 
+ 
+ 
+ 
+        </form> 
+ 
+      </div> 
+    </div> 
+  </div> 

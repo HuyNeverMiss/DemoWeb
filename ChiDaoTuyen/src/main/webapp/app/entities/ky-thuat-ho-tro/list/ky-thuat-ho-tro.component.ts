@@ -1,15 +1,17 @@
+import { IKyThuatHoTro, KyThuatHoTro } from './../ky-thuat-ho-tro.model';
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-import { IKyThuatHoTro } from '../ky-thuat-ho-tro.model';
 
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/config/pagination.constants';
 import { KyThuatHoTroService } from '../service/ky-thuat-ho-tro.service';
 import { KyThuatHoTroDeleteDialogComponent } from '../delete/ky-thuat-ho-tro-delete-dialog.component';
 
+import { FormBuilder, Validators } from '@angular/forms';
+import { finalize, map } from 'rxjs/operators';
 @Component({
   selector: 'jhi-ky-thuat-ho-tro',
   templateUrl: './ky-thuat-ho-tro.component.html',
@@ -24,11 +26,29 @@ export class KyThuatHoTroComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
+  ids?: number;
+  maKyThuats?: string;
+  tenKyThuats?: string;
+  thuTuSXs?: string;
+  isSaving = false;
+  id1: any;
+  maKyThuat1 = '';
+  tenKyThuat1 = '';
+  thuTuSX1 = '';
+
+  editForm = this.fb.group({
+    id: [],
+    maKyThuat: [null, [Validators.required]],
+    tenKyThuat: [null, [Validators.required]],
+    thuTuSX: [],
+  });
+
   constructor(
     protected kyThuatHoTroService: KyThuatHoTroService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected fb: FormBuilder
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -61,15 +81,66 @@ export class KyThuatHoTroComponent implements OnInit {
     return item.id!;
   }
 
-  delete(kyThuatHoTro: IKyThuatHoTro): void {
+  delete(): void {
+    const deleteKyThuatHoTro = this.createFromForm();
+    deleteKyThuatHoTro.id = this.ids;
+    deleteKyThuatHoTro.maKyThuat = this.maKyThuats;
+    deleteKyThuatHoTro.tenKyThuat = this.tenKyThuats;
+    deleteKyThuatHoTro.thuTuSX = this.thuTuSXs;
     const modalRef = this.modalService.open(KyThuatHoTroDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.kyThuatHoTro = kyThuatHoTro;
+    modalRef.componentInstance.kyThuatHoTro = deleteKyThuatHoTro;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
         this.loadPage();
       }
     });
+    this.ids = undefined;
+    this.maKyThuats = '';
+    this.tenKyThuats = '';
+    this.thuTuSXs = '';
+  }
+
+  showInfor(id?: number, maKyThuat?: string, tenKyThuat?: string, thuTuSX?: string): void {
+    // eslint-disable-next-line no-console
+    this.ids = id;
+    this.maKyThuats = maKyThuat;
+    this.tenKyThuats = tenKyThuat;
+    this.thuTuSXs = thuTuSX;
+  }
+
+  create(): void {
+    this.isSaving = true;
+    const createKyThuatHoTro = this.createFromForm();
+    this.subscribeToSaveResponse(this.kyThuatHoTroService.create(createKyThuatHoTro));
+    this.ids = undefined;
+    this.maKyThuats = '';
+    this.tenKyThuats = '';
+    this.thuTuSXs = '';
+  }
+  cancel(): void {
+    this.ids = undefined;
+    this.maKyThuats = '';
+    this.tenKyThuats = '';
+    this.thuTuSXs = '';
+  }
+  save(): void {
+    this.isSaving = true;
+    const kyThuatHoTro = this.createFromForm();
+    kyThuatHoTro.id = this.id1 || this.ids;
+    kyThuatHoTro.maKyThuat = this.maKyThuat1 || this.maKyThuats;
+    kyThuatHoTro.tenKyThuat = this.tenKyThuat1 || this.tenKyThuats;
+    kyThuatHoTro.thuTuSX = this.thuTuSX1 || this.thuTuSXs;
+    // eslint-disable-next-line no-console
+    this.subscribeToSaveResponse(this.kyThuatHoTroService.update(kyThuatHoTro));
+    this.ids = undefined;
+    this.maKyThuats = '';
+    this.tenKyThuats = '';
+    this.thuTuSXs = '';
+  }
+
+  previousState(): void {
+    this.loadPage();
   }
 
   protected sort(): string[] {
@@ -113,5 +184,43 @@ export class KyThuatHoTroComponent implements OnInit {
 
   protected onError(): void {
     this.ngbPaginationPage = this.page ?? 1;
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IKyThuatHoTro>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
+  }
+
+  protected onSaveSuccess(): void {
+    this.previousState();
+  }
+
+  protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(): void {
+    this.isSaving = false;
+  }
+
+  protected updateForm(kyThuatHoTro: IKyThuatHoTro): void {
+    this.editForm.patchValue({
+      id: kyThuatHoTro.id,
+      maKyThuat: kyThuatHoTro.maKyThuat,
+      tenKyThuat: kyThuatHoTro.tenKyThuat,
+      thuTuSX: kyThuatHoTro.thuTuSX,
+    });
+  }
+
+  protected createFromForm(): IKyThuatHoTro {
+    return {
+      ...new KyThuatHoTro(),
+      id: this.editForm.get(['id'])!.value,
+      maKyThuat: this.editForm.get(['maKyThuat'])!.value,
+      tenKyThuat: this.editForm.get(['tenKyThuat'])!.value,
+      thuTuSX: this.editForm.get(['thuTuSX'])!.value,
+    };
   }
 }

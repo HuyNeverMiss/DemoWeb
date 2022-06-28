@@ -22,7 +22,10 @@ export class KetQuaCongTacUpdateComponent implements OnInit {
     thuTuSX: [],
   });
 
-  constructor(protected ketQuaCongTacService: KetQuaCongTacService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
+  constructor(
+    protected ketQuaCongTacService: KetQuaCongTacService, 
+    protected activatedRoute: ActivatedRoute, 
+    protected fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ ketQuaCongTac }) => {

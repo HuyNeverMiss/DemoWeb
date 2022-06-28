@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="NhanVienHeading">
     <span jhiTranslate="chiDaoTuyenApp.nhanVien.home.title">Nhan Viens</span>
 
@@ -99,4 +99,140 @@
       ></ngb-pagination>
     </div>
   </div>
-</div>
+</div> -->
+
+<span jhiTranslate="chiDaoTuyenApp.nhanVien.home.title" style = "font-weight: bold; font-size: 30px;">Nhan Viens</span> 
+  <div class="container" > 
+    <jhi-alert-error></jhi-alert-error> 
+    <jhi-alert></jhi-alert> 
+    <div class="row" > 
+      <div class="col"  > 
+        <div class="table-responsive" id="entities" *ngIf="nhanViens && nhanViens.length > 0" > 
+          <table class="table table-striped " aria-describedby="page-heading" > 
+            <thead style="border: 2px solid black"> 
+              <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()"  style="background-color: #6495ed"> 
+                <th></th> 
+                <th scope="col" jhiSortBy="maNhanVien"> 
+                  <span jhiTranslate="chiDaoTuyenApp.nhanVien.maNhanVien">Ma Nhan Vien</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+                <th scope="col" jhiSortBy="chuVu"> 
+                  <span jhiTranslate="chiDaoTuyenApp.nhanVien.chucVu">Chuc Vu</span> <fa-icon icon="sort"></fa-icon> 
+                </th> 
+              </tr> 
+            </thead> 
+ 
+ 
+            <tbody> 
+              <tr> 
+                <td> 
+ 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+                <td> 
+                  <input type="text"> 
+                </td> 
+ 
+              </tr> 
+              <tr (click)="showInfor(nhanVien.id, nhanVien.maNhanVien ?? '', nhanVien.chucVu ?? ''
+              )" *ngFor="let nhanVien of nhanViens; trackBy: trackId" data-cy="entityTable">
+                <td>
+                  <a [routerLink]="['/nhan-vien', nhanVien.id, 'view']">{{ nhanVien.id }}</a>
+                </td>
+                <td>{{ nhanVien.maNhanVien }}</td>
+                <td>{{ nhanVien.chucVu }}</td>
+            </tbody> 
+             
+          </table> 
+        </div> 
+        <!-- <div *ngIf="ketQuaCongTacs && ketQuaCongTacs.length > 0"> 
+          <div class="d-flex justify-content-center"> 
+            <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count> 
+          </div> 
+ 
+          <div class="d-flex justify-content-center"> 
+            <ngb-pagination 
+              [collectionSize]="totalItems" 
+              [(page)]="ngbPaginationPage" 
+              [pageSize]="itemsPerPage" 
+              [maxSize]="5" 
+              [rotate]="true" 
+              [boundaryLinks]="true" 
+              (pageChange)="loadPage($event)" 
+            ></ngb-pagination> 
+          </div> 
+        </div>  -->
+      </div> 
+      <div class="col"   > 
+        <form > 
+          <div style="background-color: #6495ed; align-items: center; height: 44px; border: 3px solid black; " > 
+            <div style="margin-left: 10px; font-weight: bold;">Thông Tin Nhân Viên</div> 
+          </div> 
+          <br> 
+ 
+          <form name="editForm" role ="form" [formGroup] = "editForm"> 
+            <div class="form-group">
+
+<div style="margin-left: 10px;">Mã Nhân Viên</div> 
+              <input  type="input" value= "{{maNhanViens}}" [(ngModel)] = "maNhanVien1" required NOT NULL formControlName="maNhanVien" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> 
+              <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --> 
+            </div> 
+            <div class="form-group"> 
+              <div style="margin-left: 10px;">Chức Vụ</div> 
+              <input type="input" value="{{chucVus}}" [(ngModel)] = "chucVu1" required NOT NULL class="form-control" formControlName="chucVu" id="exampleInputPassword1" > 
+            </div> 
+            <br> 
+ 
+ 
+ 
+ 
+            <td class="text-end"> 
+              <div class="btn-group"> 
+ 
+                <button 
+                  type="submit" 
+                  id="save-entity" 
+                  data-cy="entityCreateSaveButton" 
+                  (click)="create()" 
+                  [disabled]="editForm.invalid || isSaving" 
+                  class="btn btn-primary" 
+                > 
+                  <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.create">Create</span> 
+                </button> 
+ 
+ 
+                <button 
+                  type="submit" 
+                  class="btn btn-primary" 
+                  (click)="save()" 
+                  data-cy="entityCreateButton" 
+                  style= "margin-left:5px" 
+                  > 
+                  <fa-icon icon="pencil-alt"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span> 
+                </button> 
+ 
+ 
+                <button type="submit" class="btn btn-danger " data-cy="entityDeleteButton" (click)="delete()" style= "margin-left:5px"> 
+                  <fa-icon icon="times"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span> 
+                </button>
+ 
+                <button type="submit" class="btn btn-primary" (click)="cancel()" style="margin-left: 5px;"> 
+                  <fa-icon icon="ban"></fa-icon> 
+                  <span class="d-none d-md-inline" jhiTranslate="entity.action.cancel">Cancel</span> 
+                </button> 
+              </div> 
+            </td> 
+ 
+ 
+          </form> 
+ 
+ 
+ 
+        </form> 
+ 
+      </div> 
+    </div> 
+  </div>
