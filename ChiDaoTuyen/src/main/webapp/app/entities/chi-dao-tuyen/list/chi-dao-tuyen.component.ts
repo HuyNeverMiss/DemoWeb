@@ -1,3 +1,4 @@
+import { VatTuHoTro } from './../../vat-tu-ho-tro/vat-tu-ho-tro.model';
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,69 +44,6 @@ export class ChiDaoTuyenComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
-  ids?: number;
-  soQuyetDinhs?: string;
-  ngayQuyetDinhs?: dayjs.Dayjs;
-  soHDs?: string;
-  ngayHDs?: dayjs.Dayjs;
-  noiDungs?: string;
-  ngayBatDaus?: dayjs.Dayjs;
-  ngayKetThucs?: dayjs.Dayjs;
-  ghiChus?: string | null;
-  ngayTaos?: dayjs.Dayjs;
-  soBnKhamDieuTris?: string | null;
-  soBnPhauThuats?: string | null;
-  soCanBoChuyenGiaos?: string | null;
-  luuTrus?: string | null;
-  tienAns?: string | null;
-  tienOs?: string | null;
-  tienDiLais?: string | null;
-  taiLieus?: string | null;
-  giangDays?: string | null;
-  khacs?: string | null;
-  lyDoCongTacs?: string | null;
-  noiDenCongTacs?: string | null;
-  ketQuaCongTacs?: string | null;
-  kyThuatHoTros?: string | null;
-  vatTuHoTros?: string | null;
-  nhanViens?: string| null;
-
-  id1: any;
-  soQuyetDinh1 = '';
-  ngayQuyetDinh1 = '';
-  soHD1 = '';
-  ngayHD1 = '';
-  noiDung1 = '';
-  ngayBatDau1 = '';
-  ngayKetThuc1 = '';
-  ghiChu1 = '';
-  ngayTao1 = '';
-  soBnKhamDieuTri1 = '';
-  soBnPhauThuat1 = '';
-  soCanBoChuyenGiao1 = '';
-  luuTru1 = '';
-  tienAn1 = '';
-  tienO1 = '';
-  tienDiLai1 = '';
-  taiLieu1 = '';
-  giangDay1 = '';
-  khac1 = '';
-  lyDoCongTac1 = '';
-  noiDenCongTac1 = '';
-  ketQuaCongTac1 = '';
-  kyThuatHoTro1 = '';
-  vatTuHoTro1 = '';
-  nhanVien1 = '';
-
-  isSaving = false;
-
-  lyDoCongTacsSharedCollection: ILyDoCongTac[] = [];
-  noiDenCongTacsSharedCollection: INoiDenCongTac[] = [];
-  ketQuaCongTacsSharedCollection: IKetQuaCongTac[] = [];
-  kyThuatHoTrosSharedCollection: IKyThuatHoTro[] = [];
-  vatTuHoTrosSharedCollection: IVatTuHoTro[] = [];
-  nhanViensSharedCollection: INhanVien[] = [];
-
   editForm = this.fb.group({
     id: [],
     soQuyetDinh: [null, [Validators.required]],
@@ -134,6 +72,77 @@ export class ChiDaoTuyenComponent implements OnInit {
     vatTuHoTro: [],
     nhanVien: [],
   });
+  vatTuHoTros: number | undefined;
+  lyDoCongTacs: number | undefined;
+  noiDenCongTacs: number | undefined;
+  ketQuaCongTacs: number | undefined;
+  kyThuatHoTros: number | undefined;
+  nhanViens: number | undefined;
+
+  ids?: number;
+  soQuyetDinhs?: string;
+  ngayQuyetDinhs? = dayjs(this.editForm.get(['ngayQuyetDinh'])!.value, DATE_TIME_FORMAT);
+  soHDs?: string;
+  ngayHDs? = dayjs(this.editForm.get(['ngayHD'])!.value, DATE_TIME_FORMAT);
+  noiDungs?: string;
+  ngayBatDaus = dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_TIME_FORMAT);
+  ngayKetThucs = dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_TIME_FORMAT);
+  ghiChus?: string;
+  ngayTaos = dayjs(this.editForm.get(['ngayTao'])!.value, DATE_TIME_FORMAT);
+  soBnKhamDieuTris?: string;
+  soBnPhauThuats?: string;
+  soCanBoChuyenGiaos?: string;
+  luuTrus?: string;
+  tienAns?: string;
+  tienOs?: string;
+  tienDiLais?: string;
+  taiLieus?: string;
+  giangDays?: string;
+  khacs?: string;
+  lyDoCongTac = this.editForm.get(['lyDoCongTac'])!.value;
+  noiDenCongTac = this.editForm.get(['noiDenCongTac'])!.value;
+  ketQuaCongTac = this.editForm.get(['ketQuaCongTac'])!.value;
+  kyThuatHoTro = this.editForm.get(['kyThuatHoTro'])!.value;
+  nhanVien = this.editForm.get(['nhanVien'])!.value;
+  vatTuHoTro = this.editForm.get(['vatTuHoTro'])!.value;
+
+  id1: any;
+  soQuyetDinh1 = '';
+  ngayQuyetDinh1 = '';
+  soHD1 = '';
+  ngayHD1 = '';
+  noiDung1 = '';
+  ngayBatDau1 = '';
+  ngayKetThuc1 = '';
+  ghiChu1 = '';
+  ngayTao1 = '';
+  soBnKhamDieuTri1 = '';
+  soBnPhauThuat1 = '';
+  soCanBoChuyenGiao1 = '';
+  luuTru1 = '';
+  tienAn1 = '';
+  tienO1 = '';
+  tienDiLai1 = '';
+  taiLieu1 = '';
+  giangDay1 = '';
+  khac1 = '';
+  lyDoCongTac1 = this.editForm.get(['lyDoCongTac'])!.value;
+  noiDenCongTac1 = this.editForm.get(['noiDenCongTac'])!.value;
+  ketQuaCongTac1 = this.editForm.get(['ketQuaCongTac'])!.value;
+  kyThuatHoTro1 = this.editForm.get(['kyThuatHoTro'])!.value;
+  vatTuHoTro1 = this.editForm.get(['vatTuHoTro'])!.value;
+  nhanVien1 = this.editForm.get(['nhanVien'])!.value;
+
+  isSaving = false;
+
+  lyDoCongTacsSharedCollection: ILyDoCongTac[] = [];
+  noiDenCongTacsSharedCollection: INoiDenCongTac[] = [];
+  ketQuaCongTacsSharedCollection: IKetQuaCongTac[] = [];
+  kyThuatHoTrosSharedCollection: IKyThuatHoTro[] = [];
+  vatTuHoTrosSharedCollection: IVatTuHoTro[] = [];
+  nhanViensSharedCollection: INhanVien[] = [];
+
+
 
   constructor(
     protected router: Router,
@@ -191,20 +200,20 @@ export class ChiDaoTuyenComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    this.loadPage();
   }
 
   showInfor(
     id?: number,
     soQuyetDinh?: string,
-    ngayQuyetDinh?: dayjs.Dayjs,
-    soHD? : string,
-    ngayHD?: dayjs.Dayjs,
+    ngayQuyetDinh = dayjs(this.editForm.get(['ngayQuyetDinh'])!.value, DATE_TIME_FORMAT),
+    soHD?: string,
+    ngayHD = dayjs(this.editForm.get(['ngayHD'])!.value, DATE_TIME_FORMAT),
     noiDung?: string,
-    ngayBatDau?: dayjs.Dayjs,
-    ngayKetThuc?: dayjs.Dayjs,
+    ngayBatDau = dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_TIME_FORMAT),
+    ngayKetThuc = dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_TIME_FORMAT),
     ghiChu?: string,
-    ngayTao?: dayjs.Dayjs,
+    ngayTao = dayjs(this.editForm.get(['ngayTao'])!.value, DATE_TIME_FORMAT),
     soBnKhamDieuTri?: string,
     soBnPhauThuat?: string,
     soCanBoChuyenGiao?: string,
@@ -215,15 +224,16 @@ export class ChiDaoTuyenComponent implements OnInit {
     taiLieu?: string,
     giangDay?: string,
     khac?: string,
-    lyDoCongTac?: string,
-    noiDenCongTac?: string,
-    ketQuaCongTac?: string,
-    kyThuatHoTro?: string,
-    vatTuHoTro?: string,
-    nhanVien?: string
+    lyDoCongTac = this.editForm.get(['lyDoCongTac'])!.value,
+    noiDenCongTac = this.editForm.get(['noiDenCongTac'])!.value,
+    ketQuaCongTac = this.editForm.get(['ketQuaCongTac'])!.value,
+    kyThuatHoTro = this.editForm.get(['kyThuatHoTro'])!.value,
+    vatTuHoTro = this.editForm.get(['vatTuHoTro'])!.value,
+    nhanVien = this.editForm.get(['nhanVien'])!.value
+    
   ): void {
     // eslint-disable-next-line no-console
-    this.ids = id ;
+    this.ids = id;
     this.soQuyetDinhs = soQuyetDinh;
     this.ngayQuyetDinhs = ngayQuyetDinh;
     this.soHDs = soHD;
@@ -249,7 +259,7 @@ export class ChiDaoTuyenComponent implements OnInit {
     this.kyThuatHoTros = kyThuatHoTro;
     this.vatTuHoTros = vatTuHoTro;
     this.nhanViens = nhanVien;
-
+    
   }
 
   save(): void {
