@@ -562,4 +562,973 @@ Từ 2 loại Public và Private trên, chúng ta có 3 dạng data:
 > Trong java, getter và setter là hai phương thức thông thường được sử dụng để truy xuất và cập nhật giá trị của một biến.
    
 **Tại sao lại cần Getter và Setter?**
-> Bằng cách sử dụng getter và setter, lập trình viên có thể kiểm soát cách các biến quan trọng của họ được truy cập và cập nhật theo cách thích hợp, chẳng hạn như thay đổi giá trị của một biến trong một phạm vi xác định. 
+> Bằng cách sử dụng getter và setter, lập trình viên có thể kiểm soát cách các biến quan trọng của họ được truy cập và cập nhật theo cách thích hợp, chẳng hạn như thay đổi giá trị của một biến trong một phạm vi xác định.
+
+### Tạo bảng (liquibase, dao, dto, các service, repository, resource ...)
+
+Do Jhipster có hỗ trợ một công cụ generate liquibase để tạo bảng và gần như toàn bộ các công cụ có liên quan cho việc lập trình nên để giảm thời gian tạo tay thì chúng ta sẽ tạo 1 file json với cấu trúc tương tự như sau:
+
+```json
+{
+  "applications": "*",
+  "changelogDate": "20220623051414",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "ket_qua_cong_tac",
+  "fields": [
+    {
+      "fieldName": "maKetQua",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tenKetQua",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "thuTuSX",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "KetQuaCongTac",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "chiDaoTuyen",
+      "otherEntityRelationshipName": "ketQuaCongTac",
+      "relationshipName": "chiDaoTuyen",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}
+
+```
+
+- Sau khi đã có file json trên chạy lệnh `jhipster entityName` để jshiper tự tạo các thứ cần thiết để làm việc với bảng đó.
+- Do giới hạn ký tự tên bảng và jhispter khác nhau nên có thể tên bảng sẽ phải thu gọn lại khi gọi lệnh trên. Nhưng sau đó có thể đổi lại tên bảng ở `@Table(name ="")` ở Entity và ``tableName`` ở file liquibase. Sau khi tất
+cả đã ổn chạy ``liquibaseUpdate`` từ gradle để tiến hành tạo bảng và constraint, có thể comment phần fake-data để không có dữ liệu ảo.
+- Sau khi đã generate ra thì đây là cấu trúc thư mục được khởi tạo:
+
+### 1. Domain
+```java
+/**
+ * A ChiDaoTuyen.
+ */
+@Entity
+@Table(name = "chi_dao_tuyen")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class ChiDaoTuyen implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
+    private Long id;
+
+    @NotNull
+    @Column(name = "so_quyet_dinh", nullable = false)
+    private String soQuyetDinh;
+
+    @NotNull
+    @Column(name = "ngay_quyet_dinh", nullable = false)
+    private Instant ngayQuyetDinh;
+
+    @NotNull
+    @Column(name = "so_hd", nullable = false)
+    private String soHD;
+
+    @NotNull
+    @Column(name = "ngay_hd", nullable = false)
+    private Instant ngayHD;
+
+    @NotNull
+    @Column(name = "noi_dung", nullable = false)
+    private String noiDung;
+
+    @NotNull
+    @Column(name = "ngay_bat_dau", nullable = false)
+    private Instant ngayBatDau;
+
+    @NotNull
+    @Column(name = "ngay_ket_thuc", nullable = false)
+    private Instant ngayKetThuc;
+
+    @Column(name = "ghi_chu")
+    private String ghiChu;
+
+    @NotNull
+    @Column(name = "ngay_tao", nullable = false)
+    private Instant ngayTao;
+
+    @Column(name = "so_bn_kham_dieu_tri")
+    private String soBnKhamDieuTri;
+
+    @Column(name = "so_bn_phau_thuat")
+    private String soBnPhauThuat;
+
+    @Column(name = "so_can_bo_chuyen_giao")
+    private String soCanBoChuyenGiao;
+
+    @Column(name = "luu_tru")
+    private String luuTru;
+
+    @Column(name = "tien_an")
+    private String tienAn;
+
+    @Column(name = "tien_o")
+    private String tienO;
+
+    @Column(name = "tien_di_lai")
+    private String tienDiLai;
+
+    @Column(name = "tai_lieu")
+    private String taiLieu;
+
+    @Column(name = "giang_day")
+    private String giangDay;
+
+    @Column(name = "khac")
+    private String khac;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
+    private LyDoCongTac lyDoCongTac;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
+    private NoiDenCongTac noiDenCongTac;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
+    private KetQuaCongTac ketQuaCongTac;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
+    private KyThuatHoTro kyThuatHoTro;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
+    private VatTuHoTro vatTuHoTro;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "chiDaoTuyens" }, allowSetters = true)
+    private NhanVien nhanVien;
+
+//Getter,Setter...
+```
+- Một Entity (Domain) là ánh xạ của 1 bảng ở db vào java, với ``@Column(name = "tencotdb")``
+- Đối với các mối quan hệ Many to One, One to many, thì khóa ngoại sẽ được thể hiện qua việc các
+dựa trên entity này chứa entity khác. Như ví dụ thì trong bảng ``chi_dao_tuyen`` có chứa 6 foreign key từ
+  bảng lyDoCongTac, noiDenCongTac, ketQuaCongTac, kyThuatHoTro, vatTuHoTro và nhanVien. Mặc định các entity kia Spring sẽ tự hiểu thông qua các Mapper do
+  trong DTO tương ứng với entity đó các khóa ngoại sẽ được thể hiện ở dạng 1 trường id chứ không còn
+  là entity lồng nhau nữa ví dụ: ``lyDoCongTac`` sẽ được thay bằng ``LyDoCongTacDTO lyDoCongTac``
+- Ở 1 số trường hợp sẽ dùng ``@JoinColumn`` để map các khóa ngoại lại với nhau ở [JoinColumn Explain]
+- Ngoài ra còn 1 thứ quan trọng sẽ tác động hiệu năng khi lấy dữ liệu từ db ánh xạ lên entity đó là
+kiểu ``Fetch`` của Entity, đại loại như ví dụ trên khi ta lấy dữ liệu từ bảng ``chi_dao_tuyen`` thì
+Spring sẽ lấy luôn dữ liệu của các dòng dữ liệu khóa ngoại như ``lyDoCongTac``, ``noiDenCongTac`` lên
+nếu như ta để mặc định hoặc ``Fetch.Eager``. Tham khảo thêm tại [Fetch của entity](https://www.baeldung.com/hibernate-lazy-eager-loading).  
+- Các thuộc tính đi kèm trong ``@Column`` như ``nullable``, ``length`` sẽ được tự tạo khi file jhipster của
+entity được generate.
+
+### 2. Repository
+```java
+package com.mycompany.myapp.repository;
+
+import com.mycompany.myapp.domain.ChiDaoTuyen;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.stereotype.Repository;
+
+/**
+ * Spring Data SQL repository for the ChiDaoTuyen entity.
+ */
+@SuppressWarnings("unused")
+@Repository
+public interface ChiDaoTuyenRepository extends JpaRepository<ChiDaoTuyen, Long>, JpaSpecificationExecutor<ChiDaoTuyen> {}
+
+```
+- Repository là 1 Interface được định nghĩa với @Repository, đại loại có thể hiểu repository là 1 kho lưu trữ, truy xuất dữ liệu trung gian giữa các entity và 
+database. Chi tiết  (https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html)
+
+### 3.DTO
+- Các dto sẽ tương ứng với các entity được đề cập ở trên nhưng sẽ khác bằng việc thay các entity bằng tên khóa chính của entity đó thông qua mapper.
+Ví dụ như 1 DTO của Entity ``chi_dao_tuyen`` (việc có các trường do người dùng tự định nghĩa để ra qua api sẽ không ảnh hưởng) sẽ có cấu trúc như sau:
+```java
+/**
+ * A DTO for the {@link com.mycompany.myapp.domain.ChiDaoTuyen} entity.
+ */
+public class ChiDaoTuyenDTO implements Serializable {
+
+    private Long id;
+
+    @NotNull
+    private String soQuyetDinh;
+
+    @NotNull
+    private Instant ngayQuyetDinh;
+
+    @NotNull
+    private String soHD;
+
+    @NotNull
+    private Instant ngayHD;
+
+    @NotNull
+    private String noiDung;
+
+    @NotNull
+    private Instant ngayBatDau;
+
+    @NotNull
+    private Instant ngayKetThuc;
+
+    private String ghiChu;
+
+    @NotNull
+    private Instant ngayTao;
+
+    private String soBnKhamDieuTri;
+
+    private String soBnPhauThuat;
+
+    private String soCanBoChuyenGiao;
+
+    private String luuTru;
+
+    private String tienAn;
+
+    private String tienO;
+
+    private String tienDiLai;
+
+    private String taiLieu;
+
+    private String giangDay;
+
+    private String khac;
+
+    private LyDoCongTacDTO lyDoCongTac;
+
+    private NoiDenCongTacDTO noiDenCongTac;
+
+    private KetQuaCongTacDTO ketQuaCongTac;
+
+    private KyThuatHoTroDTO kyThuatHoTro;
+
+    private VatTuHoTroDTO vatTuHoTro;
+
+    private NhanVienDTO nhanVien;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSoQuyetDinh() {
+        return soQuyetDinh;
+    }
+
+    public void setSoQuyetDinh(String soQuyetDinh) {
+        this.soQuyetDinh = soQuyetDinh;
+    }
+
+    public Instant getNgayQuyetDinh() {
+        return ngayQuyetDinh;
+    }
+
+    public void setNgayQuyetDinh(Instant ngayQuyetDinh) {
+        this.ngayQuyetDinh = ngayQuyetDinh;
+    }
+
+    public String getSoHD() {
+        return soHD;
+    }
+
+    public void setSoHD(String soHD) {
+        this.soHD = soHD;
+    }
+
+    public Instant getNgayHD() {
+        return ngayHD;
+    }
+
+    public void setNgayHD(Instant ngayHD) {
+        this.ngayHD = ngayHD;
+    }
+
+    public String getNoiDung() {
+        return noiDung;
+    }
+
+    public void setNoiDung(String noiDung) {
+        this.noiDung = noiDung;
+    }
+
+    public Instant getNgayBatDau() {
+        return ngayBatDau;
+    }
+
+    public void setNgayBatDau(Instant ngayBatDau) {
+        this.ngayBatDau = ngayBatDau;
+    }
+
+    public Instant getNgayKetThuc() {
+        return ngayKetThuc;
+    }
+
+    public void setNgayKetThuc(Instant ngayKetThuc) {
+        this.ngayKetThuc = ngayKetThuc;
+    }
+
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+
+    public Instant getNgayTao() {
+        return ngayTao;
+    }
+
+    public void setNgayTao(Instant ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
+    public String getSoBnKhamDieuTri() {
+        return soBnKhamDieuTri;
+    }
+
+    public void setSoBnKhamDieuTri(String soBnKhamDieuTri) {
+        this.soBnKhamDieuTri = soBnKhamDieuTri;
+    }
+
+    public String getSoBnPhauThuat() {
+        return soBnPhauThuat;
+    }
+
+    public void setSoBnPhauThuat(String soBnPhauThuat) {
+        this.soBnPhauThuat = soBnPhauThuat;
+    }
+
+    public String getSoCanBoChuyenGiao() {
+        return soCanBoChuyenGiao;
+    }
+
+    public void setSoCanBoChuyenGiao(String soCanBoChuyenGiao) {
+        this.soCanBoChuyenGiao = soCanBoChuyenGiao;
+    }
+
+    public String getLuuTru() {
+        return luuTru;
+    }
+
+    public void setLuuTru(String luuTru) {
+        this.luuTru = luuTru;
+    }
+
+    public String getTienAn() {
+        return tienAn;
+    }
+
+    public void setTienAn(String tienAn) {
+        this.tienAn = tienAn;
+    }
+
+    public String getTienO() {
+        return tienO;
+    }
+
+    public void setTienO(String tienO) {
+        this.tienO = tienO;
+    }
+
+    public String getTienDiLai() {
+        return tienDiLai;
+    }
+
+    public void setTienDiLai(String tienDiLai) {
+        this.tienDiLai = tienDiLai;
+    }
+
+    public String getTaiLieu() {
+        return taiLieu;
+    }
+
+    public void setTaiLieu(String taiLieu) {
+        this.taiLieu = taiLieu;
+    }
+
+    public String getGiangDay() {
+        return giangDay;
+    }
+
+    public void setGiangDay(String giangDay) {
+        this.giangDay = giangDay;
+    }
+
+    public String getKhac() {
+        return khac;
+    }
+
+    public void setKhac(String khac) {
+        this.khac = khac;
+    }
+
+    public LyDoCongTacDTO getLyDoCongTac() {
+        return lyDoCongTac;
+    }
+
+    public void setLyDoCongTac(LyDoCongTacDTO lyDoCongTac) {
+        this.lyDoCongTac = lyDoCongTac;
+    }
+
+    public NoiDenCongTacDTO getNoiDenCongTac() {
+        return noiDenCongTac;
+    }
+
+    public void setNoiDenCongTac(NoiDenCongTacDTO noiDenCongTac) {
+        this.noiDenCongTac = noiDenCongTac;
+    }
+
+    public KetQuaCongTacDTO getKetQuaCongTac() {
+        return ketQuaCongTac;
+    }
+
+    public void setKetQuaCongTac(KetQuaCongTacDTO ketQuaCongTac) {
+        this.ketQuaCongTac = ketQuaCongTac;
+    }
+
+    public KyThuatHoTroDTO getKyThuatHoTro() {
+        return kyThuatHoTro;
+    }
+
+    public void setKyThuatHoTro(KyThuatHoTroDTO kyThuatHoTro) {
+        this.kyThuatHoTro = kyThuatHoTro;
+    }
+
+    public VatTuHoTroDTO getVatTuHoTro() {
+        return vatTuHoTro;
+    }
+
+    public void setVatTuHoTro(VatTuHoTroDTO vatTuHoTro) {
+        this.vatTuHoTro = vatTuHoTro;
+    }
+
+    public NhanVienDTO getNhanVien() {
+        return nhanVien;
+    }
+
+    public void setNhanVien(NhanVienDTO nhanVien) {
+        this.nhanVien = nhanVien;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ChiDaoTuyenDTO)) {
+            return false;
+        }
+
+        ChiDaoTuyenDTO chiDaoTuyenDTO = (ChiDaoTuyenDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, chiDaoTuyenDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "ChiDaoTuyenDTO{" +
+            "id=" + getId() +
+            ", soQuyetDinh='" + getSoQuyetDinh() + "'" +
+            ", ngayQuyetDinh='" + getNgayQuyetDinh() + "'" +
+            ", soHD='" + getSoHD() + "'" +
+            ", ngayHD='" + getNgayHD() + "'" +
+            ", noiDung='" + getNoiDung() + "'" +
+            ", ngayBatDau='" + getNgayBatDau() + "'" +
+            ", ngayKetThuc='" + getNgayKetThuc() + "'" +
+            ", ghiChu='" + getGhiChu() + "'" +
+            ", ngayTao='" + getNgayTao() + "'" +
+            ", soBnKhamDieuTri='" + getSoBnKhamDieuTri() + "'" +
+            ", soBnPhauThuat='" + getSoBnPhauThuat() + "'" +
+            ", soCanBoChuyenGiao='" + getSoCanBoChuyenGiao() + "'" +
+            ", luuTru='" + getLuuTru() + "'" +
+            ", tienAn='" + getTienAn() + "'" +
+            ", tienO='" + getTienO() + "'" +
+            ", tienDiLai='" + getTienDiLai() + "'" +
+            ", taiLieu='" + getTaiLieu() + "'" +
+            ", giangDay='" + getGiangDay() + "'" +
+            ", khac='" + getKhac() + "'" +
+            ", lyDoCongTac=" + getLyDoCongTac() +
+            ", noiDenCongTac=" + getNoiDenCongTac() +
+            ", ketQuaCongTac=" + getKetQuaCongTac() +
+            ", kyThuatHoTro=" + getKyThuatHoTro() +
+            ", vatTuHoTro=" + getVatTuHoTro() +
+            ", nhanVien=" + getNhanVien() +
+            "}";
+    }
+}
+```
+- Như chúng ta thấy entity ``LyDoCongTac lyDoCongTac`` và ``NoiDenCongTac noiDenCongTac`` đã được thay thế thành 
+``LyDoCongTacDTO lyDoCongTac và NoiDenCongTacDTO noiDenCongTac``. Sở dĩ Repository có thể hiểu được là nhờ vào mapper.
+
+### 4.Mapper (Mapstruct)
+- [Mapstruct](https://viblo.asia/p/huong-dan-su-dung-mapstruct-de-mapping-giua-cac-java-bean-trong-java-gDVK22PwKLj) thường được sử dụng để map các thuộc tính giữa các object với nhau. 
+- Code ví dụ (Map các thuộc tính giữa entity và DTO của nó):
+```java
+
+/**
+ * Mapper for the entity {@link ChiDaoTuyen} and its DTO {@link ChiDaoTuyenDTO}.
+ */
+@Mapper(componentModel = "spring")
+public interface ChiDaoTuyenMapper extends EntityMapper<ChiDaoTuyenDTO, ChiDaoTuyen> {
+    @Mapping(target = "lyDoCongTac", source = "lyDoCongTac", qualifiedByName = "lyDoCongTacId")
+    @Mapping(target = "noiDenCongTac", source = "noiDenCongTac", qualifiedByName = "noiDenCongTacId")
+    @Mapping(target = "ketQuaCongTac", source = "ketQuaCongTac", qualifiedByName = "ketQuaCongTacId")
+    @Mapping(target = "kyThuatHoTro", source = "kyThuatHoTro", qualifiedByName = "kyThuatHoTroId")
+    @Mapping(target = "vatTuHoTro", source = "vatTuHoTro", qualifiedByName = "vatTuHoTroId")
+    @Mapping(target = "nhanVien", source = "nhanVien", qualifiedByName = "nhanVienId")
+    ChiDaoTuyenDTO toDto(ChiDaoTuyen s);
+
+    @Named("lyDoCongTacId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    LyDoCongTacDTO toDtoLyDoCongTacId(LyDoCongTac lyDoCongTac);
+
+    @Named("noiDenCongTacId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    NoiDenCongTacDTO toDtoNoiDenCongTacId(NoiDenCongTac noiDenCongTac);
+
+    @Named("ketQuaCongTacId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    KetQuaCongTacDTO toDtoKetQuaCongTacId(KetQuaCongTac ketQuaCongTac);
+
+    @Named("kyThuatHoTroId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    KyThuatHoTroDTO toDtoKyThuatHoTroId(KyThuatHoTro kyThuatHoTro);
+
+    @Named("vatTuHoTroId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    VatTuHoTroDTO toDtoVatTuHoTroId(VatTuHoTro vatTuHoTro);
+
+    @Named("nhanVienId")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    NhanVienDTO toDtoNhanVienId(NhanVien nhanVien);
+}
+
+```
+- ChiDaoTuyenMapper sẽ tự ``Autowired`` các mapper của những entitty có liên quan để sử dụng
+mà không cần phải khai báo lại.
+
+### 5.Criteria
+- [Criteria](https://www.jhipster.tech/entities-filtering/) là 1 class sử dụng thư viên criteria do jhipster hỗ trợ. Các thuộc tính sẽ tương ứng với các thuộc tính trong DTo
+nhưng kiểu dữ liệu sẽ kèm theo ``Filer`` ví dụ: ``Integer = IntegerFilter``
+- Các Filter sẽ hỗ trợ tùy theo như ``setEquals, setContains(StringFilter), greaterThanOrEquals(LocalDateFilter, ZonedDateTimeFilter)...``
+các thuộc tính này sẽ được sử dụng trong phần ``createSpecification`` ở QueryService để build các câu truy vấn sẽ được đề cấp sau đây
+- Code mẫu: 
+```java
+/**
+ * Criteria class for the {@link com.mycompany.myapp.domain.ChiDaoTuyen} entity. This class is used
+ * in {@link com.mycompany.myapp.web.rest.ChiDaoTuyenResource} to receive all the possible filtering options from
+ * the Http GET request parameters.
+ * For example the following could be a valid request:
+ * {@code /chi-dao-tuyens?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
+ * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
+ * fix type specific filters.
+ */
+@ParameterObject
+public class ChiDaoTuyenCriteria implements Serializable, Criteria {
+
+    private static final long serialVersionUID = 1L;
+
+    private LongFilter id;
+
+    private StringFilter soQuyetDinh;
+
+    private InstantFilter ngayQuyetDinh;
+
+    private StringFilter soHD;
+
+    private InstantFilter ngayHD;
+
+    private StringFilter noiDung;
+
+    private InstantFilter ngayBatDau;
+
+    private InstantFilter ngayKetThuc;
+
+    private StringFilter ghiChu;
+
+    private InstantFilter ngayTao;
+
+    private StringFilter soBnKhamDieuTri;
+
+    private StringFilter soBnPhauThuat;
+
+    private StringFilter soCanBoChuyenGiao;
+
+    private StringFilter luuTru;
+
+    private StringFilter tienAn;
+
+    private StringFilter tienO;
+
+    private StringFilter tienDiLai;
+
+    private StringFilter taiLieu;
+
+    private StringFilter giangDay;
+
+    private StringFilter khac;
+
+    private LongFilter lyDoCongTacId;
+
+    private LongFilter noiDenCongTacId;
+
+    private LongFilter ketQuaCongTacId;
+
+    private LongFilter kyThuatHoTroId;
+
+    private LongFilter vatTuHoTroId;
+
+    private LongFilter nhanVienId;
+
+    private Boolean distinct;
+
+    public ChiDaoTuyenCriteria() {}
+
+    public ChiDaoTuyenCriteria(ChiDaoTuyenCriteria other) {
+        this.id = other.id == null ? null : other.id.copy();
+        this.soQuyetDinh = other.soQuyetDinh == null ? null : other.soQuyetDinh.copy();
+        this.ngayQuyetDinh = other.ngayQuyetDinh == null ? null : other.ngayQuyetDinh.copy();
+        this.soHD = other.soHD == null ? null : other.soHD.copy();
+        this.ngayHD = other.ngayHD == null ? null : other.ngayHD.copy();
+        this.noiDung = other.noiDung == null ? null : other.noiDung.copy();
+        this.ngayBatDau = other.ngayBatDau == null ? null : other.ngayBatDau.copy();
+        this.ngayKetThuc = other.ngayKetThuc == null ? null : other.ngayKetThuc.copy();
+        this.ghiChu = other.ghiChu == null ? null : other.ghiChu.copy();
+        this.ngayTao = other.ngayTao == null ? null : other.ngayTao.copy();
+        this.soBnKhamDieuTri = other.soBnKhamDieuTri == null ? null : other.soBnKhamDieuTri.copy();
+        this.soBnPhauThuat = other.soBnPhauThuat == null ? null : other.soBnPhauThuat.copy();
+        this.soCanBoChuyenGiao = other.soCanBoChuyenGiao == null ? null : other.soCanBoChuyenGiao.copy();
+        this.luuTru = other.luuTru == null ? null : other.luuTru.copy();
+        this.tienAn = other.tienAn == null ? null : other.tienAn.copy();
+        this.tienO = other.tienO == null ? null : other.tienO.copy();
+        this.tienDiLai = other.tienDiLai == null ? null : other.tienDiLai.copy();
+        this.taiLieu = other.taiLieu == null ? null : other.taiLieu.copy();
+        this.giangDay = other.giangDay == null ? null : other.giangDay.copy();
+        this.khac = other.khac == null ? null : other.khac.copy();
+        this.lyDoCongTacId = other.lyDoCongTacId == null ? null : other.lyDoCongTacId.copy();
+        this.noiDenCongTacId = other.noiDenCongTacId == null ? null : other.noiDenCongTacId.copy();
+        this.ketQuaCongTacId = other.ketQuaCongTacId == null ? null : other.ketQuaCongTacId.copy();
+        this.kyThuatHoTroId = other.kyThuatHoTroId == null ? null : other.kyThuatHoTroId.copy();
+        this.vatTuHoTroId = other.vatTuHoTroId == null ? null : other.vatTuHoTroId.copy();
+        this.nhanVienId = other.nhanVienId == null ? null : other.nhanVienId.copy();
+        this.distinct = other.distinct;
+    }
+  //Getter, setter, equals, hasCode, toString
+}
+```
+
+### 6.QueryService
+- Trong ``QueryService`` sẽ có 1 hàm ``createSpecification``, [Specicification](https://loda.me/spring-jpa-huong-dan-su-dung-specification-phan-1-loda1575947295198/).
+Đại loại specification ở các ``QueryService`` ta có thể hiểu là phần phía sau ``where`` của một câu query.
+- Một ``Specification<TenEntity>`` sẽ được sử dụng trong Repository với hàm ``findAll()``.
+- Có thể ghép nhiều ``Specification`` lại với nhau thông qua ``.and`` hoặc ``.or``  
+- Code mẫu 1 số cách sử dụng Specification:
+```java
+package com.mycompany.myapp.service;
+
+import com.mycompany.myapp.domain.*; // for static metamodels
+import com.mycompany.myapp.domain.ChiDaoTuyen;
+import com.mycompany.myapp.repository.ChiDaoTuyenRepository;
+import com.mycompany.myapp.service.criteria.ChiDaoTuyenCriteria;
+import com.mycompany.myapp.service.dto.ChiDaoTuyenDTO;
+import com.mycompany.myapp.service.mapper.ChiDaoTuyenMapper;
+import java.util.List;
+import javax.persistence.criteria.JoinType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tech.jhipster.service.QueryService;
+
+/**
+ * Service for executing complex queries for {@link ChiDaoTuyen} entities in the database.
+ * The main input is a {@link ChiDaoTuyenCriteria} which gets converted to {@link Specification},
+ * in a way that all the filters must apply.
+ * It returns a {@link List} of {@link ChiDaoTuyenDTO} or a {@link Page} of {@link ChiDaoTuyenDTO} which fulfills the criteria.
+ */
+@Service
+@Transactional(readOnly = true)
+public class ChiDaoTuyenQueryService extends QueryService<ChiDaoTuyen> {
+
+    private final Logger log = LoggerFactory.getLogger(ChiDaoTuyenQueryService.class);
+
+    private final ChiDaoTuyenRepository chiDaoTuyenRepository;
+
+    private final ChiDaoTuyenMapper chiDaoTuyenMapper;
+
+    public ChiDaoTuyenQueryService(ChiDaoTuyenRepository chiDaoTuyenRepository, ChiDaoTuyenMapper chiDaoTuyenMapper) {
+        this.chiDaoTuyenRepository = chiDaoTuyenRepository;
+        this.chiDaoTuyenMapper = chiDaoTuyenMapper;
+    }
+
+    /**
+     * Return a {@link List} of {@link ChiDaoTuyenDTO} which matches the criteria from the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public List<ChiDaoTuyenDTO> findByCriteria(ChiDaoTuyenCriteria criteria) {
+        log.debug("find by criteria : {}", criteria);
+        final Specification<ChiDaoTuyen> specification = createSpecification(criteria);
+        return chiDaoTuyenMapper.toDto(chiDaoTuyenRepository.findAll(specification));
+    }
+
+    /**
+     * Return a {@link Page} of {@link ChiDaoTuyenDTO} which matches the criteria from the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @param page The page, which should be returned.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public Page<ChiDaoTuyenDTO> findByCriteria(ChiDaoTuyenCriteria criteria, Pageable page) {
+        log.debug("find by criteria : {}, page: {}", criteria, page);
+        final Specification<ChiDaoTuyen> specification = createSpecification(criteria);
+        return chiDaoTuyenRepository.findAll(specification, page).map(chiDaoTuyenMapper::toDto);
+    }
+
+    /**
+     * Return the number of matching entities in the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the number of matching entities.
+     */
+    @Transactional(readOnly = true)
+    public long countByCriteria(ChiDaoTuyenCriteria criteria) {
+        log.debug("count by criteria : {}", criteria);
+        final Specification<ChiDaoTuyen> specification = createSpecification(criteria);
+        return chiDaoTuyenRepository.count(specification);
+    }
+
+    /**
+     * Function to convert {@link ChiDaoTuyenCriteria} to a {@link Specification}
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @return the matching {@link Specification} of the entity.
+     */
+    protected Specification<ChiDaoTuyen> createSpecification(ChiDaoTuyenCriteria criteria) {
+        Specification<ChiDaoTuyen> specification = Specification.where(null);
+        if (criteria != null) {
+            // This has to be called first, because the distinct method returns null
+            if (criteria.getDistinct() != null) {
+                specification = specification.and(distinct(criteria.getDistinct()));
+            }
+            if (criteria.getId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getId(), ChiDaoTuyen_.id));
+            }
+            if (criteria.getSoQuyetDinh() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSoQuyetDinh(), ChiDaoTuyen_.soQuyetDinh));
+            }
+            if (criteria.getNgayQuyetDinh() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getNgayQuyetDinh(), ChiDaoTuyen_.ngayQuyetDinh));
+            }
+            if (criteria.getSoHD() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSoHD(), ChiDaoTuyen_.soHD));
+            }
+            if (criteria.getNgayHD() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getNgayHD(), ChiDaoTuyen_.ngayHD));
+            }
+            if (criteria.getNoiDung() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getNoiDung(), ChiDaoTuyen_.noiDung));
+            }
+            if (criteria.getNgayBatDau() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getNgayBatDau(), ChiDaoTuyen_.ngayBatDau));
+            }
+            if (criteria.getNgayKetThuc() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getNgayKetThuc(), ChiDaoTuyen_.ngayKetThuc));
+            }
+            if (criteria.getGhiChu() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getGhiChu(), ChiDaoTuyen_.ghiChu));
+            }
+            if (criteria.getNgayTao() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getNgayTao(), ChiDaoTuyen_.ngayTao));
+            }
+            if (criteria.getSoBnKhamDieuTri() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSoBnKhamDieuTri(), ChiDaoTuyen_.soBnKhamDieuTri));
+            }
+            if (criteria.getSoBnPhauThuat() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSoBnPhauThuat(), ChiDaoTuyen_.soBnPhauThuat));
+            }
+            if (criteria.getSoCanBoChuyenGiao() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getSoCanBoChuyenGiao(), ChiDaoTuyen_.soCanBoChuyenGiao));
+            }
+            if (criteria.getLuuTru() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLuuTru(), ChiDaoTuyen_.luuTru));
+            }
+            if (criteria.getTienAn() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTienAn(), ChiDaoTuyen_.tienAn));
+            }
+            if (criteria.getTienO() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTienO(), ChiDaoTuyen_.tienO));
+            }
+            if (criteria.getTienDiLai() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTienDiLai(), ChiDaoTuyen_.tienDiLai));
+            }
+            if (criteria.getTaiLieu() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTaiLieu(), ChiDaoTuyen_.taiLieu));
+            }
+            if (criteria.getGiangDay() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getGiangDay(), ChiDaoTuyen_.giangDay));
+            }
+            if (criteria.getKhac() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getKhac(), ChiDaoTuyen_.khac));
+            }
+            if (criteria.getLyDoCongTacId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getLyDoCongTacId(),
+                            root -> root.join(ChiDaoTuyen_.lyDoCongTac, JoinType.LEFT).get(LyDoCongTac_.id)
+                        )
+                    );
+            }
+            if (criteria.getNoiDenCongTacId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getNoiDenCongTacId(),
+                            root -> root.join(ChiDaoTuyen_.noiDenCongTac, JoinType.LEFT).get(NoiDenCongTac_.id)
+                        )
+                    );
+            }
+            if (criteria.getKetQuaCongTacId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getKetQuaCongTacId(),
+                            root -> root.join(ChiDaoTuyen_.ketQuaCongTac, JoinType.LEFT).get(KetQuaCongTac_.id)
+                        )
+                    );
+            }
+            if (criteria.getKyThuatHoTroId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getKyThuatHoTroId(),
+                            root -> root.join(ChiDaoTuyen_.kyThuatHoTro, JoinType.LEFT).get(KyThuatHoTro_.id)
+                        )
+                    );
+            }
+            if (criteria.getVatTuHoTroId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getVatTuHoTroId(),
+                            root -> root.join(ChiDaoTuyen_.vatTuHoTro, JoinType.LEFT).get(VatTuHoTro_.id)
+                        )
+                    );
+            }
+            if (criteria.getNhanVienId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getNhanVienId(),
+                            root -> root.join(ChiDaoTuyen_.nhanVien, JoinType.LEFT).get(NhanVien_.id)
+                        )
+                    );
+            }
+        }
+        return specification;
+    }
+}
+
+```
+
+
+***Diệp Thanh Huy & Cao Thanh Tuấn***
+<h1>Báo cáo thực tập tuần 6</h1>
+
+<img src="https://scontent.fsgn4-1.fna.fbcdn.net/v/t1.15752-9/286346948_356776589871969_6120382663026335379_n.png?_nc_cat=101&ccb=1-7&_nc_sid=ae9488&_nc_ohc=GJwrZ622J2sAX-EQcQD&_nc_ht=scontent.fsgn4-1.fna&oh=03_AVLJzSCp812H6_mz9Le3ASDMSjsDXm4-g8WRPC7LnqGIYw&oe=62E40818">
+- Đây là giao diện chủ khi người dùng đăng nhập vào
+
+
+<img src="https://scontent.fsgn13-4.fna.fbcdn.net/v/t1.15752-9/286314707_1532784020491570_2976475086756235986_n.png?_nc_cat=107&ccb=1-7&_nc_sid=ae9488&_nc_ohc=QuiSBKUAtbgAX9fu2xb&tn=JeuMJ6bi5WQPzS2N&_nc_ht=scontent.fsgn13-4.fna&oh=03_AVKcd7cxSicEPw3l9IMTAjEE11d9rz8nm8iBG9o1pqSmrQ&oe=62E55C24">
+- Trên thanh công cụ chọn Chi Dao Tuyen  -> Ly Do Cong Tac.
+- Trên màn hình cấu hình danh mục lý do công tác, sau khi điền đầy đủ thông tin nhấn nút Create để thêm Lý do công tác của bác sĩ ( khai báo đầy đủ thông tin của Lý do công tác như: Mã lý do, tên lý do, thứ tự SX).
+- Thông tin sẽ được hiển thị ở bên trái màn hình.
+- Để xóa thông tin nhập sai, chọn lý do cần xóa. Nhấn vào nút Delete. Thông tin Lý do công tác cần xóa đã được xóa.
+- Để sửa thông tin nhập sai, chọn Lý do công tác cần sửa. Sửa các thông tin. Sau đó nhấn nút Edit. Thông tin Lý do công tác sẽ được chỉnh sửa.
+
+<img src="https://scontent.fsgn13-4.fna.fbcdn.net/v/t1.15752-9/286582251_4015683241991217_5020803794271696994_n.png?_nc_cat=110&ccb=1-7&_nc_sid=ae9488&_nc_ohc=qCsts600jMQAX-WTSB_&_nc_ht=scontent.fsgn13-4.fna&oh=03_AVLhqbPcXYjb6kZ20fdICe7kVxt_yQ2dLG6BpTj6lIpokg&oe=62E4DF56">
+- Trên thanh công cụ chọn Chi Dao Tuyen  -> Ket Qua Cong Tac.
+- Trên màn hình cấu hình danh mục kết quả công tác, sau khi điền đầy đủ thông tin nhấn nút Create để thêm Kết quả công tác của bác sĩ ( khai báo đầy đủ thông tin của Kết quả công tác như: Mã kết quả, tên kết quả, thứ tự SX).
+- Thông tin sẽ được hiển thị ở bên trái màn hình.
+- Để xóa thông tin nhập sai, chọn Kết quả công tác cần xóa. Nhấn vào nút Delete. Thông tin Kết quả công tác cần xóa đã được xóa.
+- Để sửa thông tin nhập sai, chọn Kết quả công tác cần sửa. Sửa các thông tin. Sau đó nhấn nút Edit. Thông tin Kết quả công tác sẽ được chỉnh sửa.
+
+<img src="https://scontent.fsgn8-2.fna.fbcdn.net/v/t1.15752-9/288798125_701146927643341_4903978954718303917_n.png?_nc_cat=105&ccb=1-7&_nc_sid=ae9488&_nc_ohc=s_ETW9-qmgwAX8wooTM&_nc_ht=scontent.fsgn8-2.fna&oh=03_AVJja8IW0WeoFkob79pHQivtaJsutvpn_x4YcyvHuZAqeQ&oe=62E4B6D8">
+
+- Trên thanh công cụ chọn Chi Dao Tuyen  ->Ky Thuat Ho Tro.
+- Trên màn hình cấu hình danh mục kỹ thuật hỗ trợ, sau khi điền đầy đủ thông tin nhấn nút Create để thêm Kỹ thuật hỗ trợ của bác sĩ ( khai báo đầy đủ thông tin của Kỹ thuật hỗ trợ như: Mã kỹ thuật, tên kỹ thuật, thứ tự SX).
+- Thông tin sẽ được hiển thị ở bên trái màn hình.
+- Để xóa thông tin nhập sai, chọn Kỹ thuật hỗ trợ cần xóa. Nhấn vào nút Delete. Thông tin Kỹ thuật hỗ trợ cần xóa đã được xóa.
+- Để sửa thông tin nhập sai, chọn kỹ thuật hỗ trợ cần sửa. Sửa các thông tin. Sau đó nhấn nút Edit. Thông tin Kỹ thuật hỗ trợ sẽ được chỉnh sửa.
+
+<img src="https://scontent.fsgn13-2.fna.fbcdn.net/v/t1.15752-9/287951851_780415759757304_7771173869713048328_n.png?_nc_cat=106&ccb=1-7&_nc_sid=ae9488&_nc_ohc=Lsy6lIoAWs0AX9QxkRB&_nc_ht=scontent.fsgn13-2.fna&oh=03_AVJ3ccJDWL9q2z1Rv1MMfZ_mQ6t1l48Gluh0cSMbwDJ8cA&oe=62E4BE10">
+
+- Trên thanh công cụ chọn Chi Dao Tuyen  ->Noi Den Cong Tac.
+- Trên màn hình cấu hình danh mục nơi đến công tác, sau khi điền đầy đủ thông tin nhấn nút Create để thêm Nơi đến công tác của bác sĩ ( khai báo đầy đủ thông tin của Nơi đến công tác như: Mã nơi đến, tên nơi đến, thứ tự SX).
+- Thông tin sẽ được hiển thị ở bên trái màn hình.
+- Để xóa thông tin nhập sai, chọn Nơi đến công tác cần xóa. Nhấn vào nút Delete. Thông tin Nơi đến công tác cần xóa đã được xóa.
+- Để sửa thông tin nhập sai, chọn Nơi đến công tác cần sửa. Sửa các thông tin. Sau đó nhấn nút Edit. Thông tin Nơi đến công tác sẽ được chỉnh sửa.
+
+<img src="https://scontent.fsgn13-4.fna.fbcdn.net/v/t1.15752-9/282679183_1718035861867489_9202883709370947801_n.png?_nc_cat=110&ccb=1-7&_nc_sid=ae9488&_nc_ohc=y1ICohU4Cx8AX9_w_L8&_nc_ht=scontent.fsgn13-4.fna&oh=03_AVKWcKHh28127NWoAYgURqq7Ntf7wwh0JWgkbCFMea3doA&oe=62E4B170">
+
+- Trên thanh công cụ chọn Chi Dao Tuyen  ->Vat Tu Ho Tro.
+- Trên màn hình cấu hình danh mục vật tư hỗ trợ, sau khi điền đầy đủ thông tin nhấn nút Create để thêm Vật tư hỗ trợ của bác sĩ ( khai báo đầy đủ thông tin của Vật tư hỗ trợ như: Mã vật tư, tên vật tư, thứ tự SX).
+- Thông tin sẽ được hiển thị ở bên trái màn hình.
+- Để xóa thông tin nhập sai, chọn Vật tư hỗ trợ cần xóa. Nhấn vào nút Delete. Thông tin Vật tư hỗ trợ cần xóa đã được xóa.
+- Để sửa thông tin nhập sai, chọn Vật tư hỗ trợ cần sửa. Sửa các thông tin. Sau đó nhấn nút Edit. Thông tin Vật tư hỗ trợ sẽ được chỉnh sửa.
+
+<img src="https://scontent.fsgn8-2.fna.fbcdn.net/v/t1.15752-9/289054200_1473073346471361_8741898594378866951_n.png?_nc_cat=105&ccb=1-7&_nc_sid=ae9488&_nc_ohc=imHjcgyhUuYAX8apQJB&_nc_ht=scontent.fsgn8-2.fna&oh=03_AVKuuFwOZz91GZlOKMLLRjZq7-7ioQOxhhn3tQIHoh8JpA&oe=62E5D37A">
+
+- Trên thanh công cụ chọn Chi Dao Tuyen  ->Nhan Vien.
+- Trên màn hình cấu hình danh mục vật tư hỗ trợ, sau khi điền đầy đủ thông tin nhấn nút Create để thêm Nhân viên( khai báo đầy đủ thông tin ủa nhân viên như: Mã Nhân viên, chức vụ).
+- Thông tin sẽ được hiển thị ở bên trái màn hình.
+- Để xóa thông tin nhập sai, chọn Nhân viên cần xóa. Nhấn vào nút Delete. Thông tin Nhân viên cần xóa đã được xóa.
+- Để sửa thông tin nhập sai, chọn Nhân viên cần sửa. Sửa các thông tin. Sau đó nhấn nút Edit. Thông tin Nhân viên sẽ được chỉnh sửa.
+
+<img src="https://scontent.fsgn4-1.fna.fbcdn.net/v/t1.15752-9/289994162_482165663673606_4195901214651386204_n.png?_nc_cat=103&ccb=1-7&_nc_sid=ae9488&_nc_ohc=t1ASAbLAwPAAX8pe-jJ&_nc_ht=scontent.fsgn4-1.fna&oh=03_AVKIL424L_6uJMJirSHVpvT79TMUdIN8o6ADo8XoW-quCw&oe=62E3A68D">
+
+- Trên thanh công cụ chọn Chi Dao Tuyen  ->Chi Dao Tuyen.
+- Trên màn hình cấu hình danh mục vật tư hỗ trợ, nhấn vào nút Create để thêm mới chỉ đạo tuyến, sau khi điền đầy đủ thông tin của chỉ đạo tuyến nhấn vào nút lưu để lưu các thông tin đã được khai báo( khai báo đầy đủ thông tin của Chỉ đạo tuyến như: Số quyết định, ngày quyết định, số hợp đồng, ngày hợp đồng, Nội dung, từ ngày , đến ngày, ghi chú, ngày tạo, nhân viên, kỹ thuật hỗ trợ, vật tư hỗ trợ, Số bệnh nhân khám và điều trị, số bệnh nhân phẫu thuật, số cán bộ được chuyển giao, đánh giá kết quả công tác, lưu trú, tiền ăn, tiền ở, tiền đi lại, tài liệu, giảng dạy, khác.).
+- Thông tin sẽ được hiển thị ở bên trái màn hình.
+- Để xóa thông tin nhập sai, chọn chỉ đạo tuyến cần xóa. Nhấn vào nút Delete. Thông tin chỉ đạo tuyến cần xóa đã được xóa.
