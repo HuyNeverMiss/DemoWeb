@@ -1532,3 +1532,126 @@ public class ChiDaoTuyenQueryService extends QueryService<ChiDaoTuyen> {
 - Trên màn hình cấu hình danh mục vật tư hỗ trợ, nhấn vào nút Create để thêm mới chỉ đạo tuyến, sau khi điền đầy đủ thông tin của chỉ đạo tuyến nhấn vào nút lưu để lưu các thông tin đã được khai báo( khai báo đầy đủ thông tin của Chỉ đạo tuyến như: Số quyết định, ngày quyết định, số hợp đồng, ngày hợp đồng, Nội dung, từ ngày , đến ngày, ghi chú, ngày tạo, nhân viên, kỹ thuật hỗ trợ, vật tư hỗ trợ, Số bệnh nhân khám và điều trị, số bệnh nhân phẫu thuật, số cán bộ được chuyển giao, đánh giá kết quả công tác, lưu trú, tiền ăn, tiền ở, tiền đi lại, tài liệu, giảng dạy, khác.).
 - Thông tin sẽ được hiển thị ở bên trái màn hình.
 - Để xóa thông tin nhập sai, chọn chỉ đạo tuyến cần xóa. Nhấn vào nút Delete. Thông tin chỉ đạo tuyến cần xóa đã được xóa.
+
+<br>
+<h2>Báo cáo tuần 7</h2>
+<h3>Chức năng đăng nhập</h3>
+<table>
+	<thead>
+      <th> STT </th>
+      <th> Miêu tả test case </th>
+      <th> Các bước kiểm thử </th>
+      <th> Kết quả mong đợi </th>
+      <th> Kết quả đạt được </th>
+      <th> Ngày test </th>
+   </thead>
+  	<tbody>
+      <td>1</td>
+      <td>Đăng nhập admin</td>
+       <td>-Bước 1: Vào trang chủ <br>
+           -Bước 2: Chọn Admin -> đăng nhập.<br>
+           -Bước 3: Đăng nhập với Username/Password là admim/admin
+      </td>
+      <td> -Bước 1: Truy cập vào trang chủ thành công <br>
+           -Bước 2: Truy cập vào đăng nhập thành công.<br>
+           -Bước 3: Đăng nhập thành công
+      </td>
+      <td> Thành công</td>
+      <td> 06/7/2022</td>
+    </tbody>
+  
+
+</table>
+
+<h3> Chức năng thêm Lý do công tác </h3>
+<table>
+	<thead>
+      <th> STT </th>
+      <th> Miêu tả test case </th>
+      <th> Các bước kiểm thử </th>
+      <th> Kết quả mong đợi </th>
+      <th> Kết quả đạt được </th>
+      <th> Ngày test </th>
+   </thead>
+  	<tbody>
+      <td>1</td>
+      <td>Thêm mới Lý do công tác</td>
+       <td>-Bước 1: Vào trang chủ <br>
+           -Bước 2:Chọn Chỉ đạo tuyến-> Lý do công tác -> Nhập dữ liệu: <br>
+         		+ Mã Lý do<br>
+         		+ Tên Lý Do<br>
+         		+ Thứ tự sắp xếp<br>
+           -Bước 3: Nhấp nút "Lưu" để lưu thông tin Lý do công tác vào cơ sở dữ liệu /"Hủy" để hủy thêm mới Lý do công tác
+      </td>
+      <td> -Bước 1: Truy cập vào trang chủ thành công <br>
+           -Bước 2: Vào được danh mục Lý do công tác và thực hiện được các tác vụ.<br>
+           -Bước 3: Thực hiện thành công thao tác và quay lại trang Lý do công tác
+      </td>
+      <td> Thành công</td>
+      <td> 06/7/2022</td>
+    </tbody>
+  
+
+</table>
+<br>
+
+<h3> Chức năng sửa Lý do công tác </h3>
+<table>
+	<thead>
+      <th> STT </th>
+      <th> Miêu tả test case </th>
+      <th> Các bước kiểm thử </th>
+      <th> Kết quả mong đợi </th>
+      <th> Kết quả đạt được </th>
+      <th> Ngày test </th>
+   </thead>
+  	<tbody>
+      <td>1</td>
+      <td>Thêm mới Lý do công tác</td>
+       <td>-Bước 1: Vào trang chủ <br>
+           -Bước 2:Chọn Chỉ đạo tuyến-> Lý do công tác -> Chọn vào dữ liệu muốn chỉnh sửa-> Thay đổi: <br>
+         		+ Mã Lý do<br>
+         		+ Tên Lý Do<br>
+         		+ Thứ tự sắp xếp<br>
+           -Bước 3: Nhấp nút "Sửa" để lưu thông tin Lý do công tác đã được thay đổi vào cơ sở dữ liệu /"Hủy" để hủy sửa Lý do công tác
+      </td>
+      <td> -Bước 1: Truy cập vào trang chủ thành công <br>
+           -Bước 2: Vào được danh mục Lý do công tác và thực hiện được các tác vụ.<br>
+           -Bước 3: Thực hiện thành công thao tác và quay lại trang Lý do công tác
+      </td>
+      <td> Thành công</td>
+      <td> 06/7/2022</td>
+    </tbody>
+  
+
+</table>
+<br>
+
+<h3> Chức năng xóa Lý do công tác </h3>
+<table>
+	<thead>
+      <th> STT </th>
+      <th> Miêu tả test case </th>
+      <th> Các bước kiểm thử </th>
+      <th> Kết quả mong đợi </th>
+      <th> Kết quả đạt được </th>
+      <th> Ngày test </th>
+   </thead>
+  	<tbody>
+      <td>1</td>
+      <td>Thêm mới Lý do công tác</td>
+       <td>-Bước 1: Vào trang chủ <br>
+           -Bước 2:Chọn Chỉ đạo tuyến-> Lý do công tác -> Chọn vào dữ liệu muốn xóa> Thay đổi: <br>
+           -Bước 3: Nhấp nút "Xóa" để xóa thông tin Lý do công tác ra khỏi cơ sở dữ liệu /"Hủy" để hủy xóa Lý do công tác
+      </td>
+      <td> -Bước 1: Truy cập vào trang chủ thành công <br>
+           -Bước 2: Vào được danh mục Lý do công tác và thực hiện được các tác vụ.<br>
+           -Bước 3: Thực hiện thành công thao tác và quay lại trang Lý do công tác
+      </td>
+      <td> Thành công</td>
+      <td> 06/7/2022</td>
+    </tbody>
+  
+
+</table>
+<br>
