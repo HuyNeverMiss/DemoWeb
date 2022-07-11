@@ -36,6 +36,9 @@ export class KetQuaCongTacComponent implements OnInit {
   maKetQua1 = '';
   tenKetQua1 = '';
   thuTuSX1 = '';
+  maKQ = '';
+  tenKQ = '';
+  ttsx = '';
 
   editForm = this.fb.group({
     id: [],

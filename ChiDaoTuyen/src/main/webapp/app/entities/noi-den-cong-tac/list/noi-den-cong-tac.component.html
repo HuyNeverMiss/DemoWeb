@@ -135,24 +135,28 @@
  
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="maND" [(ngModel)]="maND" type="text"> 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="tenND" [(ngModel)]="tenND" type="text"> 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="ttsx" [(ngModel)]="ttsx" type="text"> 
                 </td> 
  
               </tr> 
+              <ng-container *ngFor="let noiDenCongTac of noiDenCongTacs; trackBy: trackId" data-cy="entityTable">
+                <ng-container *ngIf="(noiDenCongTac?.tenNoiDen)?.includes(tenND)">
               <tr (click)="showInfor(noiDenCongTac.id, noiDenCongTac.maNoiDen ?? '', noiDenCongTac.tenNoiDen ?? '', noiDenCongTac.thuTuSX ?? ''
-              )" *ngFor="let noiDenCongTac of noiDenCongTacs; trackBy: trackId" data-cy="entityTable">
+              )">
                 <td>
                   <a [routerLink]="['/noi-den-cong-tac', noiDenCongTac.id, 'view']">{{ noiDenCongTac.id }}</a>
                 </td>
                 <td>{{ noiDenCongTac.maNoiDen }}</td>
                 <td>{{ noiDenCongTac.tenNoiDen }}</td>
                 <td>{{ noiDenCongTac.thuTuSX }}</td> 
+              </ng-container>
+              </ng-container>
             </tbody> 
              
           </table> 

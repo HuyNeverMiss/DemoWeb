@@ -136,26 +136,31 @@
  
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="maKQ" [(ngModel)]="maKQ" type="text" > 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="tenKQ" [(ngModel)]="tenKQ" type="text" > 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="TTSX" [(ngModel)]="ttsx" type="text" > 
                 </td> 
  
               </tr> 
-              <tr (click)="showInfor(ketQuaCongTac.id, ketQuaCongTac.maKetQua ?? '', ketQuaCongTac.tenKetQua ?? '', ketQuaCongTac.thuTuSX ?? ''
-              )" *ngFor="let ketQuaCongTac of ketQuaCongTacs; trackBy: trackId" data-cy="entityTable">
+              <ng-container *ngFor="let ketQuaCongTac of ketQuaCongTacs; trackBy: trackId" data-cy="entityTable">
+              <ng-container *ngIf="(ketQuaCongTac?.tenKetQua)?.includes(tenKQ)">
+                <tr (click)="showInfor(ketQuaCongTac.id, ketQuaCongTac.maKetQua ?? '', ketQuaCongTac.tenKetQua ?? '', ketQuaCongTac.thuTuSX ?? ''
+              )">
                 <td>
                   <a [routerLink]="['/ket-qua-cong-tac', ketQuaCongTac.id, 'view']">{{ ketQuaCongTac.id }}</a>
                 </td>
                 <td>{{ ketQuaCongTac.maKetQua }}</td>
                 <td>{{ ketQuaCongTac.tenKetQua }}</td>
                 <td>{{ ketQuaCongTac.thuTuSX }}</td> 
+
+                </tr>
+              </ng-container>
+            </ng-container>
             </tbody> 
-             
           </table> 
         </div> 
         <!-- <div *ngIf="ketQuaCongTacs && ketQuaCongTacs.length > 0"> 

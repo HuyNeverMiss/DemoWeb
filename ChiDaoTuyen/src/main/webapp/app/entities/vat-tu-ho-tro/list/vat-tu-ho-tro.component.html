@@ -136,24 +136,28 @@
  
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input  name="maVT" [(ngModel)]="maVT" type="text"> 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input  name="tenVT" [(ngModel)]="tenVT" type="text"> 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input  name="ttsx" [(ngModel)]="ttsx" type="text"> 
                 </td> 
  
               </tr> 
+              <ng-container *ngFor="let vatTuHoTro of vatTuHoTros; trackBy: trackId" data-cy="entityTable">
+                <ng-container *ngIf="(vatTuHoTro?.tenVatTu)?.includes(tenVT)">
               <tr (click)="showInfor(vatTuHoTro.id, vatTuHoTro.maVatTu ?? '', vatTuHoTro.tenVatTu ?? '', vatTuHoTro.thuTuSX ?? ''
-              )" *ngFor="let vatTuHoTro of vatTuHoTros; trackBy: trackId" data-cy="entityTable">
+              )" >
                 <td>
                   <a [routerLink]="['/vat-tu-ho-tro', vatTuHoTro.id, 'view']">{{ vatTuHoTro.id }}</a>
                 </td>
                 <td>{{ vatTuHoTro.maVatTu }}</td>
                 <td>{{ vatTuHoTro.tenVatTu }}</td>
                 <td>{{ vatTuHoTro.thuTuSX }}</td> 
+              </ng-container>
+              </ng-container>
             </tbody> 
              
           </table> 

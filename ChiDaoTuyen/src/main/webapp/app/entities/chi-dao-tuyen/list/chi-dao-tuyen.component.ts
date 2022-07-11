@@ -18,6 +18,7 @@ import { finalize, map } from 'rxjs/operators';
 
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ILyDoCongTac } from 'app/entities/ly-do-cong-tac/ly-do-cong-tac.model';
 import { LyDoCongTacService } from 'app/entities/ly-do-cong-tac/service/ly-do-cong-tac.service';
 import { INoiDenCongTac } from 'app/entities/noi-den-cong-tac/noi-den-cong-tac.model';
@@ -81,14 +82,14 @@ export class ChiDaoTuyenComponent implements OnInit {
 
   ids?: number;
   soQuyetDinhs?: string;
-  ngayQuyetDinhs? = dayjs(this.editForm.get(['ngayQuyetDinh'])!.value, DATE_TIME_FORMAT);
+  ngayQuyetDinhs? = dayjs(this.editForm.get(['ngayQuyetDinh'])!.value, DATE_FORMAT);
   soHDs?: string;
-  ngayHDs? = dayjs(this.editForm.get(['ngayHD'])!.value, DATE_TIME_FORMAT);
+  ngayHDs? = dayjs(this.editForm.get(['ngayHD'])!.value, DATE_FORMAT);
   noiDungs?: string;
-  ngayBatDaus = dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_TIME_FORMAT);
-  ngayKetThucs = dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_TIME_FORMAT);
+  ngayBatDaus? = dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_FORMAT);
+  ngayKetThucs ?= dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_FORMAT);
   ghiChus?: string;
-  ngayTaos = dayjs(this.editForm.get(['ngayTao'])!.value, DATE_TIME_FORMAT);
+  ngayTaos ?= dayjs(this.editForm.get(['ngayTao'])!.value, DATE_FORMAT);
   soBnKhamDieuTris?: string;
   soBnPhauThuats?: string;
   soCanBoChuyenGiaos?: string;
@@ -132,6 +133,9 @@ export class ChiDaoTuyenComponent implements OnInit {
   kyThuatHoTro1 = this.editForm.get(['kyThuatHoTro'])!.value;
   vatTuHoTro1 = this.editForm.get(['vatTuHoTro'])!.value;
   nhanVien1 = this.editForm.get(['nhanVien'])!.value;
+  soQD = '';
+  ngayQD = '';
+  nd = '';
 
   isSaving = false;
 
@@ -188,15 +192,130 @@ export class ChiDaoTuyenComponent implements OnInit {
     return item.id!;
   }
 
-  delete(chiDaoTuyen: IChiDaoTuyen): void {
+  delete(): void {
+    const deleteChiDaoTuyen = this.createFromForm();
+    deleteChiDaoTuyen.id = this.ids;
+    deleteChiDaoTuyen.soQuyetDinh = this.soQuyetDinhs;
+    deleteChiDaoTuyen.ngayQuyetDinh = this.ngayQuyetDinhs;
+    deleteChiDaoTuyen.soHD = this.soHDs;
+    deleteChiDaoTuyen.ngayHD = this.ngayHDs;
+    deleteChiDaoTuyen.noiDung = this.noiDungs;
+    deleteChiDaoTuyen.ngayBatDau = this.ngayBatDaus;
+    deleteChiDaoTuyen.ngayKetThuc = this.ngayKetThucs;
+    deleteChiDaoTuyen.ghiChu = this.ghiChus;
+    deleteChiDaoTuyen.ngayTao = this.ngayTaos;
+    deleteChiDaoTuyen.soBnKhamDieuTri = this.soBnKhamDieuTris;
+    deleteChiDaoTuyen.soBnPhauThuat = this.soBnPhauThuats;
+    deleteChiDaoTuyen.soCanBoChuyenGiao = this.soCanBoChuyenGiaos;
+    deleteChiDaoTuyen.luuTru = this.luuTrus;
+    deleteChiDaoTuyen.tienAn = this.tienAns;
+    deleteChiDaoTuyen.tienO = this.tienOs;
+    deleteChiDaoTuyen.tienDiLai = this.tienDiLais;
+    deleteChiDaoTuyen.taiLieu = this.taiLieus;
+    deleteChiDaoTuyen.giangDay = this.giangDays;
+    deleteChiDaoTuyen.khac = this.khacs;
+    deleteChiDaoTuyen.lyDoCongTac = this.lyDoCongTac;
+    deleteChiDaoTuyen.noiDenCongTac = this.noiDenCongTac;
+    deleteChiDaoTuyen.ketQuaCongTac = this.ketQuaCongTac;
+    deleteChiDaoTuyen.kyThuatHoTro = this.kyThuatHoTro;
+    deleteChiDaoTuyen.vatTuHoTro = this.vatTuHoTro;
+    deleteChiDaoTuyen.nhanVien = this.nhanVien;
     const modalRef = this.modalService.open(ChiDaoTuyenDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.chiDaoTuyen = chiDaoTuyen;
+    modalRef.componentInstance.chiDaoTuyen = deleteChiDaoTuyen;
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
         this.loadPage();
       }
+
     });
+    this.ids = undefined;
+    this.soQuyetDinhs = '';
+    this.ngayQuyetDinhs = dayjs(this.ngayQuyetDinhs);
+    this.soHDs = '';
+    this.ngayHDs = dayjs(this.ngayHDs);
+    this.noiDungs = '';
+    this.ngayBatDaus = dayjs(this.ngayBatDaus);
+    this.ngayKetThucs = dayjs(this.ngayKetThucs);
+    this.ghiChus = '';
+    this.ngayTaos = dayjs(this.ngayTaos);
+    this.soBnKhamDieuTris = '';
+    this.soBnPhauThuats = '';
+    this.soCanBoChuyenGiaos = '';
+    this.luuTrus = '';
+    this.tienAns = '';
+    this.tienOs = '';
+    this.tienDiLais = '';
+    this.taiLieus = '';
+    this.giangDays = '';
+    this.khacs = '';
+    this.lyDoCongTacs = undefined;
+    this.noiDenCongTacs = undefined;
+    this.ketQuaCongTacs = undefined;
+    this.kyThuatHoTros = undefined;
+    this.vatTuHoTros = undefined;
+    this.nhanViens = undefined;
+  }
+
+  create(): void{
+    this.isSaving = true;
+    const createChiDaoTuyen = this.createFromForm();
+    this.subscribeToSaveResponse(this.chiDaoTuyenService.create(createChiDaoTuyen))
+    this.ids = undefined;
+    this.soQuyetDinhs = '';
+    this.ngayQuyetDinhs = dayjs(this.ngayQuyetDinhs);
+    this.soHDs = '';
+    this.ngayHDs = dayjs(this.ngayQuyetDinhs);
+    this.noiDungs = '';
+    this.ngayBatDaus = dayjs(this.ngayBatDaus);
+    this.ngayKetThucs = dayjs(this.ngayKetThucs);
+    this.ghiChus = '';
+    this.ngayTaos = dayjs(this.ngayTaos);
+    this.soBnKhamDieuTris = '';
+    this.soBnPhauThuats = '';
+    this.soCanBoChuyenGiaos = '';
+    this.luuTrus = '';
+    this.tienAns = '';
+    this.tienOs = '';
+    this.tienDiLais = '';
+    this.taiLieus = '';
+    this.giangDays = '';
+    this.khacs = '';
+    this.lyDoCongTacs = undefined;
+    this.noiDenCongTacs = undefined;
+    this.ketQuaCongTacs = undefined;
+    this.kyThuatHoTros = undefined;
+    this.vatTuHoTros = undefined;
+    this.nhanViens = undefined;
+  }
+  cancel(): void{
+    this.ids = undefined;
+    this.soQuyetDinhs = '';
+    this.ngayQuyetDinhs = undefined ;
+    this.soHDs = '';
+    this.ngayHDs = undefined;
+    this.noiDungs = '';
+    this.ngayBatDaus = undefined ;
+    this.ngayKetThucs = undefined ;
+    this.ghiChus = '';
+    this.ngayTaos = undefined;
+    this.soBnKhamDieuTris = '';
+    this.soBnPhauThuats = '';
+    this.soCanBoChuyenGiaos = '';
+    this.luuTrus = '';
+    this.tienAns = '';
+    this.tienOs = '';
+    this.tienDiLais = '';
+    this.taiLieus = '';
+    this.giangDays = '';
+    this.khacs = '';
+    this.lyDoCongTacs = undefined;
+    this.noiDenCongTacs = undefined;
+    this.ketQuaCongTacs = undefined;
+    this.kyThuatHoTros = undefined;
+    this.vatTuHoTros = undefined;
+    this.nhanViens = undefined;
+
   }
 
   previousState(): void {
@@ -206,14 +325,14 @@ export class ChiDaoTuyenComponent implements OnInit {
   showInfor(
     id?: number,
     soQuyetDinh?: string,
-    ngayQuyetDinh = dayjs(this.editForm.get(['ngayQuyetDinh'])!.value, DATE_TIME_FORMAT),
+    ngayQuyetDinh = dayjs(this.editForm.get(['ngayQuyetDinh'])!.value, DATE_FORMAT),
     soHD?: string,
-    ngayHD = dayjs(this.editForm.get(['ngayHD'])!.value, DATE_TIME_FORMAT),
+    ngayHD = dayjs(this.editForm.get(['ngayHD'])!.value, DATE_FORMAT),
     noiDung?: string,
-    ngayBatDau = dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_TIME_FORMAT),
-    ngayKetThuc = dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_TIME_FORMAT),
+    ngayBatDau = dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_FORMAT),
+    ngayKetThuc = dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_FORMAT),
     ghiChu?: string,
-    ngayTao = dayjs(this.editForm.get(['ngayTao'])!.value, DATE_TIME_FORMAT),
+    ngayTao = dayjs(this.editForm.get(['ngayTao'])!.value, DATE_FORMAT),
     soBnKhamDieuTri?: string,
     soBnPhauThuat?: string,
     soCanBoChuyenGiao?: string,
@@ -262,14 +381,74 @@ export class ChiDaoTuyenComponent implements OnInit {
     
   }
 
+  // save(): void {
+  //   this.isSaving = true;
+  //   const chiDaoTuyen = this.createFromForm();
+  //   if (chiDaoTuyen.id !== undefined) {
+  //     this.subscribeToSaveResponse(this.chiDaoTuyenService.update(chiDaoTuyen));
+  //   } else {
+  //     this.subscribeToSaveResponse(this.chiDaoTuyenService.create(chiDaoTuyen));
+  //   }
+  // }
+
   save(): void {
     this.isSaving = true;
     const chiDaoTuyen = this.createFromForm();
-    if (chiDaoTuyen.id !== undefined) {
-      this.subscribeToSaveResponse(this.chiDaoTuyenService.update(chiDaoTuyen));
-    } else {
-      this.subscribeToSaveResponse(this.chiDaoTuyenService.create(chiDaoTuyen));
-    }
+    chiDaoTuyen.id = this.id1 || this.ids;
+    chiDaoTuyen.soQuyetDinh = this.soQuyetDinh1 || this.soQuyetDinhs;
+    chiDaoTuyen.ngayQuyetDinh = dayjs(this.editForm.get(['ngayQuyetDinh'])!.value, DATE_FORMAT);
+    chiDaoTuyen.soHD = this.soHD1 || this.soHDs;
+    chiDaoTuyen.ngayHD = dayjs(this.editForm.get(['ngayHD'])!.value, DATE_FORMAT);
+    chiDaoTuyen.noiDung = this.noiDung1 || this.noiDungs;
+    chiDaoTuyen.ngayBatDau = dayjs(this.editForm.get(['ngayBatDau'])!.value, DATE_FORMAT);
+    chiDaoTuyen.ngayKetThuc = dayjs(this.editForm.get(['ngayKetThuc'])!.value, DATE_FORMAT);
+    chiDaoTuyen.ghiChu = this.ghiChu1 || this.ghiChus;
+    chiDaoTuyen.ngayTao = dayjs(this.editForm.get(['ngayTao'])!.value, DATE_FORMAT);
+    chiDaoTuyen.soBnKhamDieuTri = this.soBnKhamDieuTri1 || this.soBnKhamDieuTris;
+    chiDaoTuyen.soBnPhauThuat = this.soBnPhauThuat1 || this.soBnPhauThuats;
+    chiDaoTuyen.soCanBoChuyenGiao = this.soCanBoChuyenGiao1 || this.soCanBoChuyenGiaos;
+    chiDaoTuyen.luuTru = this.luuTru1 || this.luuTrus;
+    chiDaoTuyen.tienAn = this.tienAn1 || this.tienAns;
+    chiDaoTuyen.tienO = this.tienO1 || this.tienOs;
+    chiDaoTuyen.tienDiLai = this.tienDiLai1 || this.tienDiLais;
+    chiDaoTuyen.taiLieu = this.taiLieu1 || this.taiLieus;
+    chiDaoTuyen.giangDay = this.giangDay1 || this.giangDays;
+    chiDaoTuyen.khac = this.khac1 || this.khacs;
+    chiDaoTuyen.lyDoCongTac = this.lyDoCongTac1 || this.lyDoCongTacs;
+    chiDaoTuyen.noiDenCongTac = this.noiDenCongTac1 || this.noiDenCongTacs;
+    chiDaoTuyen.ketQuaCongTac = this.ketQuaCongTac1 || this.ketQuaCongTacs;
+    chiDaoTuyen.kyThuatHoTro = this.kyThuatHoTro1 || this.kyThuatHoTros;
+    chiDaoTuyen.vatTuHoTro = this.vatTuHoTro1 || this.vatTuHoTros;
+    chiDaoTuyen.nhanVien = this.nhanVien1 || this.nhanViens;
+    // eslint-disable-next-line no-console
+    console.log(chiDaoTuyen);
+    this.subscribeToSaveResponse(this.chiDaoTuyenService.update(chiDaoTuyen))
+    this.ids = undefined;
+    this.soQuyetDinhs = '';
+    this.ngayQuyetDinhs = dayjs(this.ngayQuyetDinhs);
+    this.soHDs = '';
+    this.ngayHDs = dayjs(this.ngayHDs);
+    this.noiDungs = '';
+    this.ngayBatDaus = dayjs(this.ngayBatDaus);
+    this.ngayKetThucs = dayjs(this.ngayKetThucs);
+    this.ghiChus = '';
+    this.ngayTaos = dayjs(this.ngayTaos);
+    this.soBnKhamDieuTris = '';
+    this.soBnPhauThuats = '';
+    this.soCanBoChuyenGiaos = '';
+    this.luuTrus = '';
+    this.tienAns = '';
+    this.tienOs = '';
+    this.tienDiLais = '';
+    this.taiLieus = '';
+    this.giangDays = '';
+    this.khacs = '';
+    this.lyDoCongTacs = undefined;
+    this.noiDenCongTacs = undefined;
+    this.ketQuaCongTacs = undefined;
+    this.kyThuatHoTros = undefined;
+    this.vatTuHoTros = undefined;
+    this.nhanViens = undefined;
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IChiDaoTuyen>>): void {

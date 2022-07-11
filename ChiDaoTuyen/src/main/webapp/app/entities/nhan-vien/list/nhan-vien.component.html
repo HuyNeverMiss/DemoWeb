@@ -128,20 +128,24 @@
  
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input  name="maNV" [(ngModel)]="maNV" type="text"> 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input  name="cv" [(ngModel)]="cv" type="text"> 
                 </td> 
  
               </tr> 
+              <ng-container *ngFor="let nhanVien of nhanViens; trackBy: trackId" data-cy="entityTable">
+                <ng-container *ngIf="(nhanVien?.chucVu)?.includes(cv)">
               <tr (click)="showInfor(nhanVien.id, nhanVien.maNhanVien ?? '', nhanVien.chucVu ?? ''
-              )" *ngFor="let nhanVien of nhanViens; trackBy: trackId" data-cy="entityTable">
+              )" >
                 <td>
                   <a [routerLink]="['/nhan-vien', nhanVien.id, 'view']">{{ nhanVien.id }}</a>
                 </td>
                 <td>{{ nhanVien.maNhanVien }}</td>
                 <td>{{ nhanVien.chucVu }}</td>
+              </ng-container>
+              </ng-container>
             </tbody> 
              
           </table> 

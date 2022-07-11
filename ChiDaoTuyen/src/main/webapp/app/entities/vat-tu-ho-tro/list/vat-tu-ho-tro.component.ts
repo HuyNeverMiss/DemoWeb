@@ -36,6 +36,9 @@ export class VatTuHoTroComponent implements OnInit {
   maVatTu1 = '';
   tenVatTu1 = '';
   thuTuSX1 = '';
+  maVT = '';
+  tenVT = '';
+  ttsx = '';
 
   editForm = this.fb.group({
     id: [],

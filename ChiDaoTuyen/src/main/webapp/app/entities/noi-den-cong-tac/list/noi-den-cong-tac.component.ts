@@ -35,6 +35,9 @@ export class NoiDenCongTacComponent implements OnInit {
   maNoiDen1 = '';
   tenNoiDen1 = '';
   thuTuSX1 = '';
+  maND = '';
+  tenND = '';
+  ttsx = '';
 
   editForm = this.fb.group({
     id: [],

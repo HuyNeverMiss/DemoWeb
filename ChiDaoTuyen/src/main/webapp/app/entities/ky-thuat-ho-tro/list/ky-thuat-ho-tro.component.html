@@ -136,24 +136,28 @@
  
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="maKT" [(ngModel)]="maKT" type="text"> 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="tenKT" [(ngModel)]="tenKT" type="text"> 
                 </td> 
                 <td> 
-                  <input type="text"> 
+                  <input name="ttsx" [(ngModel)]="ttsx" type="text"> 
                 </td> 
  
               </tr> 
+              <ng-container *ngFor="let kyThuatHoTro of kyThuatHoTros; trackBy: trackId" data-cy="entityTable">
+                <ng-container *ngIf="(kyThuatHoTro?.tenKyThuat)?.includes(tenKT)">
               <tr (click)="showInfor(kyThuatHoTro.id, kyThuatHoTro.maKyThuat ?? '', kyThuatHoTro.tenKyThuat ?? '', kyThuatHoTro.thuTuSX ?? ''
-              )" *ngFor="let kyThuatHoTro of kyThuatHoTros; trackBy: trackId" data-cy="entityTable">
+              )">
                 <td>
                   <a [routerLink]="['/ky-thuat-ho-tro', kyThuatHoTro.id, 'view']">{{ kyThuatHoTro.id }}</a>
                 </td>
                 <td>{{ kyThuatHoTro.maKyThuat }}</td>
                 <td>{{ kyThuatHoTro.tenKyThuat }}</td>
-                <td>{{ kyThuatHoTro.thuTuSX }}</td> 
+                <td>{{ kyThuatHoTro.thuTuSX }}</td>
+              </ng-container>
+              </ng-container>
             </tbody> 
              
           </table> 

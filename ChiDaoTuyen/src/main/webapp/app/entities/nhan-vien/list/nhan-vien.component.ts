@@ -34,6 +34,8 @@ export class NhanVienComponent implements OnInit {
   id1: any;
   maNhanVien1 = '';
   chucVu1 = '';
+  maNV = '';
+  cv = '';
 
   editForm = this.fb.group({
     id: [],

@@ -37,11 +37,15 @@ export class LyDoCongTacComponent implements OnInit {
   maLyDos?: string;
   tenLyDos?: string;
   thuTuSXs?: string;
+  maLD = '';
+  tenLD = '';
+  TTSX = '';
   isSaving = false;
   id1 :any;
   maLyDo1 = '';
   tenLyDo1 = '';
   thuTuSX1 = '';
+
 
   editForm = this.fb.group({
     id: [],

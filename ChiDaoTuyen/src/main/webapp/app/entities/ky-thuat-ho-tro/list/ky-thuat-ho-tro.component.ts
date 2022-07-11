@@ -35,6 +35,9 @@ export class KyThuatHoTroComponent implements OnInit {
   maKyThuat1 = '';
   tenKyThuat1 = '';
   thuTuSX1 = '';
+  maKT = '';
+  tenKT = '';
+  ttsx = '';
 
   editForm = this.fb.group({
     id: [],
